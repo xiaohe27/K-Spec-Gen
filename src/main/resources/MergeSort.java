@@ -2,6 +2,7 @@ class MergeSort
 {
 	public static void main(String[] args) 
 	{
+		//Some hard coded array.
 		int[] a={-2,22,37,0,1,-2,-5,95,82,64};
 		System.out.println("Before sorting: \n");
 		for (int i:a)
@@ -13,6 +14,12 @@ class MergeSort
 		for (int i:a)
 		System.out.print(" "+i+" ");
 	}
+
+    /**
+     * Split phase.
+     * @param a
+     * @return
+     */
 	public static int[] ms(int[] a)
 	{
 		int size=a.length;
@@ -30,6 +37,13 @@ class MergeSort
 		return a;
 	}
 
+    /**
+     * The merge phase.
+     * @param a
+     * @param b
+     * @param c
+     * @return
+     */
 	public static int[] merge(int[]a,int[]b,int[]c)
 	{
 		int p=b.length, q=c.length;

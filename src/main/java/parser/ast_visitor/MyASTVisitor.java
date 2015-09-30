@@ -1,9 +1,6 @@
 package parser.ast_visitor;
 
-import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.SimpleName;
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+import org.eclipse.jdt.core.dom.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -36,4 +33,28 @@ public class MyASTVisitor extends ASTVisitor {
 		}
 		return true;
 	}
+
+    public boolean visit(LineComment node) {
+        int start = node.getStartPosition();
+        int end = start + node.getLength();
+//        String comment = source.substring(start, end);
+//        System.out.println(comment);
+        System.out.println("visit comment line " + node.toString());
+        return true;
+    }
+
+    public boolean visit(BlockComment node) {
+        int start = node.getStartPosition();
+        int end = start + node.getLength();
+//        String comment = source.substring(start, end);
+//        System.out.println(comment);
+        return true;
+    }
+
+    public boolean visit(Javadoc node) {
+        int start = node.getStartPosition();
+        int end = start + node.getLength();
+        System.out.println(node);
+        return true;
+    }
 }
