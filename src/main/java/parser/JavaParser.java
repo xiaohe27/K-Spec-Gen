@@ -4,16 +4,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
- 
+
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.SimpleName;
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
- 
+import parser.ast_visitor.MyASTVisitor;
+
 public class JavaParser {
  
 	//use ASTParse to parse string
@@ -24,27 +20,7 @@ public class JavaParser {
  
 		final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
  
-		cu.accept(new ASTVisitor() {
- 
-			Set names = new HashSet();
- 
-			public boolean visit(VariableDeclarationFragment node) {
-				SimpleName name = node.getName();
-				this.names.add(name.getIdentifier());
-				System.out.println("Declaration of '" + name + "' at line"
-						+ cu.getLineNumber(name.getStartPosition()));
-				return false; // do not continue 
-			}
- 
-			public boolean visit(SimpleName node) {
-				if (this.names.contains(node.getIdentifier())) {
-					System.out.println("Usage of '" + node + "' at line "
-							+ cu.getLineNumber(node.getStartPosition()));
-				}
-				return true;
-			}
-		});
- 
+		cu.accept(new MyASTVisitor(cu));
 	}
  
 	//read file content into a string
@@ -87,4 +63,5 @@ public class JavaParser {
 	public static void main(String[] args) throws IOException {
 		ParseFilesInDir(args[0]);
 	}
+
 }
