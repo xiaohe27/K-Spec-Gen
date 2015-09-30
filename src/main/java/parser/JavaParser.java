@@ -1,50 +1,35 @@
 package parser;
 
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import parser.ast_visitor.MyASTVisitor;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
- 
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.SimpleName;
-import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
- 
+
 public class JavaParser {
  
 	//use ASTParse to parse string
-	public static void parse(String str) {
+	public static void parse(String pgmTxt) {
 		ASTParser parser = ASTParser.newParser(AST.JLS8);
-		parser.setSource(str.toCharArray());
+		parser.setSource(pgmTxt.toCharArray());
 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
  
 		final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
- 
-		cu.accept(new ASTVisitor() {
- 
-			Set names = new HashSet();
- 
-			public boolean visit(VariableDeclarationFragment node) {
-				SimpleName name = node.getName();
-				this.names.add(name.getIdentifier());
-				System.out.println("Declaration of '" + name + "' at line"
-						+ cu.getLineNumber(name.getStartPosition()));
-				return false; // do not continue 
-			}
- 
-			public boolean visit(SimpleName node) {
-				if (this.names.contains(node.getIdentifier())) {
-					System.out.println("Usage of '" + node + "' at line "
-							+ cu.getLineNumber(node.getStartPosition()));
-				}
-				return true;
-			}
-		});
- 
+
+		MyASTVisitor myASTVisitor = new MyASTVisitor(cu);
+		cu.accept(myASTVisitor);
+
+        myASTVisitor.getMethodsWithAnnotations().forEach(methNode ->
+                System.out.println("Method " + methNode.toString()));
+
+        System.out.println("Here comes the internal comments.");
+
+        //we do not need to use comment visitor to get the contents of the comments.
+        //we can associate the comments with their context by checking the pos.
 	}
  
 	//read file content into a string
@@ -87,4 +72,5 @@ public class JavaParser {
 	public static void main(String[] args) throws IOException {
 		ParseFilesInDir(args[0]);
 	}
+
 }
