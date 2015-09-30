@@ -1,0 +1,7 @@
+*.class
+*.bak
+*~
+*.iml
+
+target/*
+.idea/*
