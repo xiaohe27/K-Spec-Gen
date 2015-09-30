@@ -1,26 +1,36 @@
 package parser;
 
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.Comment;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import parser.ast_visitor.CommentVisitor;
+import parser.ast_visitor.MyASTVisitor;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import parser.ast_visitor.MyASTVisitor;
+import java.util.List;
 
 public class JavaParser {
  
 	//use ASTParse to parse string
-	public static void parse(String str) {
+	public static void parse(String pgmTxt) {
 		ASTParser parser = ASTParser.newParser(AST.JLS8);
-		parser.setSource(str.toCharArray());
+		parser.setSource(pgmTxt.toCharArray());
 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
  
 		final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
- 
-		cu.accept(new MyASTVisitor(cu));
+
+		MyASTVisitor myASTVisitor = new MyASTVisitor(cu);
+		cu.accept(myASTVisitor);
+
+        System.out.println("Here comes the internal comments.");
+
+        for (Comment comment : (List<Comment>) cu.getCommentList()) {
+            comment.accept(new CommentVisitor(cu, pgmTxt));
+        }
 	}
  
 	//read file content into a string
