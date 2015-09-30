@@ -7,7 +7,7 @@ class MergeSort
 		System.out.println("Before sorting: \n");
 		for (int i:a)
 		System.out.print(" "+i+" ");
-		
+
 		a=ms(a);
 		
 		System.out.println("\n\nAfter sorting: \n");
@@ -28,6 +28,7 @@ class MergeSort
 			int half = size/2;
 			int[] b=new int[half];
 			int[] c=new int[size - half];
+            //split the array to two halves
 			System.arraycopy(a,0,b,0,half);
 			System.arraycopy(a,half,c,0,size - half);
 			b=ms(b);
