@@ -2,13 +2,16 @@ package parser.ast_visitor;
 
 import org.eclipse.jdt.core.dom.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
  * Created by hx312 on 30/09/2015.
  */
 public class MyASTVisitor extends ASTVisitor {
+    private List<ASTNode> methodsWithAnnotations = new ArrayList<>();
 
     private final CompilationUnit cu;
     Set names;
@@ -34,27 +37,15 @@ public class MyASTVisitor extends ASTVisitor {
 		return true;
 	}
 
-    public boolean visit(LineComment node) {
-        int start = node.getStartPosition();
-        int end = start + node.getLength();
-//        String comment = source.substring(start, end);
-//        System.out.println(comment);
-        System.out.println("visit comment line " + node.toString());
+    public boolean visit(MethodDeclaration methodNode) {
+        if (methodNode.getJavadoc() != null) {
+            this.methodsWithAnnotations.add(methodNode);
+        }
+
         return true;
     }
 
-    public boolean visit(BlockComment node) {
-        int start = node.getStartPosition();
-        int end = start + node.getLength();
-//        String comment = source.substring(start, end);
-//        System.out.println(comment);
-        return true;
-    }
-
-    public boolean visit(Javadoc node) {
-        int start = node.getStartPosition();
-        int end = start + node.getLength();
-        System.out.println(node);
-        return true;
+    public List<ASTNode> getMethodsWithAnnotations() {
+        return methodsWithAnnotations;
     }
 }

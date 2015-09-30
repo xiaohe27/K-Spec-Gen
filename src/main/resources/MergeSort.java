@@ -50,6 +50,8 @@ class MergeSort
 		int p=b.length, q=c.length;
 		int i=0,j=0,k=0;
 		while (i<p&&j<q)
+        //@ 0 <= i <= p
+        //@ 0 <= j <= q
 		{
 			if (b[i]<c[j])
 			{

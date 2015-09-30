@@ -26,6 +26,9 @@ public class JavaParser {
 		MyASTVisitor myASTVisitor = new MyASTVisitor(cu);
 		cu.accept(myASTVisitor);
 
+        myASTVisitor.getMethodsWithAnnotations().forEach(methNode ->
+                System.out.println("Method " + methNode.toString()));
+
         System.out.println("Here comes the internal comments.");
 
         for (Comment comment : (List<Comment>) cu.getCommentList()) {

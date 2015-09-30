@@ -22,6 +22,8 @@ public class CommentVisitor extends ASTVisitor {
         int start = node.getStartPosition();
         int end = start + node.getLength();
         String comment = source.substring(start, end);
+
+        System.out.println("Start pos : " + start + ";\n End pos: " + end);
         System.out.println(comment);
         return true;
     }
@@ -30,6 +32,8 @@ public class CommentVisitor extends ASTVisitor {
         int start = node.getStartPosition();
         int end = start + node.getLength();
         String comment = source.substring(start, end);
+
+        System.out.println("Start pos : " + start + ";\n End pos: " + end);
         System.out.println(comment);
         return true;
     }
