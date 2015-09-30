@@ -2,16 +2,13 @@ package parser;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.Comment;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import parser.ast_visitor.CommentVisitor;
 import parser.ast_visitor.MyASTVisitor;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
 
 public class JavaParser {
  
@@ -31,9 +28,8 @@ public class JavaParser {
 
         System.out.println("Here comes the internal comments.");
 
-        for (Comment comment : (List<Comment>) cu.getCommentList()) {
-            comment.accept(new CommentVisitor(cu, pgmTxt));
-        }
+        //we do not need to use comment visitor to get the contents of the comments.
+        //we can associate the comments with their context by checking the pos.
 	}
  
 	//read file content into a string

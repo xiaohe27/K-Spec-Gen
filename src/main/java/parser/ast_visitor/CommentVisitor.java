@@ -1,9 +1,6 @@
 package parser.ast_visitor;
 
-import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.BlockComment;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.LineComment;
+import org.eclipse.jdt.core.dom.*;
 
 /**
  * Created by xiaohe on 9/30/15.
@@ -12,9 +9,8 @@ public class CommentVisitor extends ASTVisitor {
     private CompilationUnit cu;
     private String source;
 
-    public CommentVisitor(CompilationUnit cu, String pgmTxt) {
+    public CommentVisitor(String pgmTxt) {
         super();
-        this.cu = cu;
         this.source = pgmTxt;
     }
 
@@ -25,6 +21,8 @@ public class CommentVisitor extends ASTVisitor {
 
         System.out.println("Start pos : " + start + ";\n End pos: " + end);
         System.out.println(comment);
+
+        System.out.println("The parent node is " + node.getRoot());
         return true;
     }
 
