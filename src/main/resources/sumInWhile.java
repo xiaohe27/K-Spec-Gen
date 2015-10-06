@@ -26,6 +26,10 @@ public void methB(){
 System.out.println(retInt());
 }
 
+public String abc() {return "str";}
+
+public double ddd() {return 2.0;}
+
 }
 
 // sum 1..4=10

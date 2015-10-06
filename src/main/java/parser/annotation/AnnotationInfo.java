@@ -9,7 +9,6 @@ import java.util.HashMap;
  */
 public class AnnotationInfo {
     private HashMap<Integer, MethodInfo> methodsInfo = new HashMap<>();
-    private HashMap<Integer, LoopInfo> loopsInfo = new HashMap<>();
 
 
     public void addMethod(int index, MethodInfo methodInfo) {
@@ -18,14 +17,6 @@ public class AnnotationInfo {
 
     public MethodInfo getMethodInfo(int index) {
         return methodsInfo.get(index);
-    }
-
-    public void addLoopInfo(int index, LoopInfo loopInfo) {
-        this.loopsInfo.put(index, loopInfo);
-    }
-
-    public LoopInfo getLoopInfo(int index) {
-        return loopsInfo.get(index);
     }
 
     public void printInfo() {
