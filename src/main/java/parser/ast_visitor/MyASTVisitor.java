@@ -1,24 +1,29 @@
 package parser.ast_visitor;
 
 import org.eclipse.jdt.core.dom.*;
+import parser.annotation.AnnotationInfo;
+import parser.annotation.MethodInfo;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
  * Created by hx312 on 30/09/2015.
  */
 public class MyASTVisitor extends ASTVisitor {
-    private List<ASTNode> methodsWithAnnotations = new ArrayList<>();
+    private int curMethNodeId;
+    private int curLoopId;
 
     private final CompilationUnit cu;
     Set names;
 
+    private final AnnotationInfo annotationInfo;
+
     public MyASTVisitor(CompilationUnit cu) {
         this.cu = cu;
         names = new HashSet();
+
+        this.annotationInfo = new AnnotationInfo();
     }
 
     public boolean visit(VariableDeclarationFragment node) {
@@ -39,13 +44,16 @@ public class MyASTVisitor extends ASTVisitor {
 
     public boolean visit(MethodDeclaration methodNode) {
         if (methodNode.getJavadoc() != null) {
-            this.methodsWithAnnotations.add(methodNode);
+            MethodInfo methodInfo = new MethodInfo(methodNode.getName().toString(),
+                    methodNode.getJavadoc().toString());
+            this.annotationInfo.addMethod(this.curMethNodeId, methodInfo);
         }
 
+        this.curMethNodeId++;
         return true;
     }
 
-    public List<ASTNode> getMethodsWithAnnotations() {
-        return methodsWithAnnotations;
+    public AnnotationInfo getAnnotationInfo() {
+        return annotationInfo;
     }
 }
