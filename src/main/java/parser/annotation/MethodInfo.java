@@ -7,7 +7,8 @@ import java.util.HashMap;
  */
 public class MethodInfo {
     private String methName;
-    private String preAndPostCond;
+    private String preCondStr;
+    private String postCondStr;
 
     /**
      * The index is the pos of the loop:
@@ -19,7 +20,11 @@ public class MethodInfo {
 
     public MethodInfo(String methName, String preAndPostCond) {
         this.methName = methName;
-        this.preAndPostCond = preAndPostCond;
+        parseMethodContract(preAndPostCond);
+    }
+
+    private void parseMethodContract(String preAndPostCond) {
+
     }
 
     public void addLoopInfo(int index, LoopInfo loopInfo) {
@@ -32,8 +37,9 @@ public class MethodInfo {
 
 
     public String toString() {
-        String ret = "Method " + methName + " 's pre and post condition is \n";
-        ret += preAndPostCond;
+        String ret = "Method " + methName + " 's contract is \n";
+        ret += "pre-condition: " + this.preCondStr;
+        ret += "post-condition: " + this.postCondStr;
         ret += "\nLoop info is :\n";
 
         for (Integer index : loopsInfo.keySet()) {

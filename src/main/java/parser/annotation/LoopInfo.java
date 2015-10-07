@@ -2,6 +2,9 @@ package parser.annotation;
 
 import java.util.ArrayList;
 
+/**
+ * The pos of the loop can be used in the process of gathering loop invariant from the annotation.
+ */
 public class LoopInfo {
     private ArrayList<String> loopInvs;
 
