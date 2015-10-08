@@ -18,10 +18,12 @@ private int aaa() {return 0;}
         System.out.println("Sum to 5:" + sum_iterative(5));
     }
 
-/**@
-requires n >= 0;
-ensures @return (n * (n + 1)) / 2;
-@*/
+/**
+* @requires n >= 0;
+ * @requires someOtherPre;
+* @ensures true;
+* @returns (n * (n + 1)) / 2;
+*/
     static int sum_iterative (int n)
 /*@ rule <k> $ => return (n * (n + 1)) / 2; ...</k>
     if n >= 0 */

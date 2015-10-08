@@ -26,26 +26,28 @@ public class MyASTVisitor extends ASTVisitor {
         this.annotationInfo = new AnnotationInfo();
     }
 
-    public boolean visit(VariableDeclarationFragment node) {
-		SimpleName name = node.getName();
-		this.names.add(name.getIdentifier());
-		System.out.println("Declaration of '" + name + "' at line"
-				+ cu.getLineNumber(name.getStartPosition()));
-		return false; // do not continue
-	}
-
-    public boolean visit(SimpleName node) {
-		if (this.names.contains(node.getIdentifier())) {
-			System.out.println("Usage of '" + node + "' at line "
-					+ cu.getLineNumber(node.getStartPosition()));
-		}
-		return true;
-	}
+//    public boolean visit(VariableDeclarationFragment node) {
+//		SimpleName name = node.getName();
+//		this.names.add(name.getIdentifier());
+//		System.out.println("Declaration of '" + name + "' at line"
+//				+ cu.getLineNumber(name.getStartPosition()));
+//		return false; // do not continue
+//	}
+//
+//    public boolean visit(SimpleName node) {
+//		if (this.names.contains(node.getIdentifier())) {
+//			System.out.println("Usage of '" + node + "' at line "
+//					+ cu.getLineNumber(node.getStartPosition()));
+//		}
+//		return true;
+//	}
 
     public boolean visit(MethodDeclaration methodNode) {
         if (methodNode.getJavadoc() != null) {
             MethodInfo methodInfo = new MethodInfo(methodNode.getName().toString(),
                     methodNode.getJavadoc().toString());
+
+//            System.out.println(methodNode.getJavadoc().toString() + " is the javadoc!!!");
             this.annotationInfo.addMethod(this.curMethNodeId, methodInfo);
         }
 
