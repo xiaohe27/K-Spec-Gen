@@ -22,8 +22,8 @@ public class Patterns {
 
     public static final Pattern POST_COND_PATTERN = Pattern.compile(postCondPattern);
 
-    public static final Pattern METHOD_CONTRACT = Pattern.compile("/\\*\\*@\\p{Space}+" +
-            "(((" + preCondPattern + ")|(" + postCondPattern + "))\\p{Space}*)*@\\*/");
+    public static final Pattern METHOD_CONTRACT =
+            Pattern.compile("/\\*\\*@\\p{Space}+(((requires)|(ensures))\\p{Blank}+([\\p{Print}\\p{Blank}&&[^;]]*);\\p{Space}*)*@\\*/");
 
     public static void main(String[] args) {
         String input = "/**@" +
