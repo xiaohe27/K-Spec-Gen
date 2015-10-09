@@ -19,15 +19,19 @@ public class LoopInfo {
         return loopInvs.size();
     }
 
-    public boolean add(String s) {
-        return loopInvs.add(s);
+    public boolean isPosInside(int pos) {
+        return pos >= startPos && pos < endPos;
     }
 
-    public LoopInfo(int start, int end) {
+    public boolean addLI(String loopInvStr) {
+        return loopInvs.add(loopInvStr);
+    }
+
+    public LoopInfo(int start, int len) {
         this.loopInvs = new ArrayList<>();
 
         this.startPos = start;
-        this.endPos = end;
+        this.endPos = start + len;
     }
 
     public String toString() {

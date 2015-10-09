@@ -13,7 +13,6 @@ import java.util.Set;
  */
 public class MyASTVisitor extends ASTVisitor {
     private int curMethNodeId = 0;
-    private int curLoopId = 0;
 
     private final CompilationUnit cu;
     Set names;
@@ -66,18 +65,19 @@ public class MyASTVisitor extends ASTVisitor {
         if (this.curMethNodeId > 0) {
             MethodInfo curMethod = this.annotationInfo.getMethodInfo(this.curMethNodeId - 1);
             if (curMethod != null) {
-               curMethod.addLoopInfo(this.curLoopId, new LoopInfo(whileNode.getStartPosition(),
+               curMethod.addLoopInfo(new LoopInfo(whileNode.getStartPosition(),
                        whileNode.getLength()));
             }
         }
 
-        this.curLoopId++;
         return true;
     }
 
     public boolean visit(MethodDeclaration methodNode) {
         if (methodNode.getJavadoc() != null) {
             MethodInfo methodInfo = new MethodInfo(methodNode.getName().toString(),
+                    methodNode.getStartPosition(),
+                    methodNode.getLength(),
                     methodNode.getJavadoc().toString());
 
 //            System.out.println(methodNode.getJavadoc().toString() + " is the javadoc!!!");
@@ -85,7 +85,6 @@ public class MyASTVisitor extends ASTVisitor {
         }
 
         this.curMethNodeId++;
-        this.curLoopId = 0;
         return true;
     }
 

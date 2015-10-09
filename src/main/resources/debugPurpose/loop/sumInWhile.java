@@ -36,6 +36,7 @@ private int aaa() {return 0;}
             //@LI cond1;
             //@LI cond2;
             //@LI cond3;
+            //sth not a LI.
 
             s = s + n;
             n = n - 1;
@@ -51,9 +52,22 @@ int r = 0;
 	//@ LI for the second loop
         while (x > 0) {
             //@LI cond22;
+            //sth not a LI too.
             //@LI cond25;
             //@LI cond27;
             r = r + x;
+
+            //third
+            while (x > 0) {
+                //@LI cond11111111111111;
+                //@LI cond2222222222222221;
+                //@LI cond3333333333333337;
+                r = r + x;
+                x = x - 1;
+
+                String debug = "findMe 3!";
+            }
+
             x = x - 1;
 
         String debug = "findMe too!";
@@ -63,7 +77,7 @@ int r = 0;
 x = 3;
 r = 0;
 
-	//@ LI for the third loop
+	//@ LI for the fourth loop
         while (x > 0) {
             //@LI cond11;
             //@LI cond21;

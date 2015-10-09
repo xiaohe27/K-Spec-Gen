@@ -8,7 +8,10 @@ import java.util.regex.Matcher;
  * Created by xiaohe on 10/6/15.
  */
 public class MethodInfo {
-    private String methName;
+    private final String methName;
+    private final int startPos;
+    private final int endPos;
+
     private ArrayList<String> preCondList = new ArrayList<>();
     private ArrayList<String> postCondList = new ArrayList<>();
     private String retVal;
@@ -18,13 +21,19 @@ public class MethodInfo {
      * If in the ordinary traversal, the loop is the nth to be visited,
      * then its index is n.
      */
-    private HashMap<Integer, LoopInfo> loopsInfo = new HashMap<>();
+    private ArrayList<LoopInfo> loopsInfo = new ArrayList<>();
 
 
-    public MethodInfo(String methName, String preAndPostCond) {
+    public MethodInfo(String methName, int startPos, int len, String preAndPostCond) {
         this.methName = methName;
+        this.startPos = startPos;
+        this.endPos = startPos + len;
 
         parseMethodContract(preAndPostCond);
+    }
+
+    public boolean isInsideMethod(int pos) {
+        return pos >= this.startPos && pos < this.endPos;
     }
 
     private void parseMethodContract(String preAndPostCond) {
@@ -72,8 +81,30 @@ public class MethodInfo {
         }
     }
 
-    public void addLoopInfo(int index, LoopInfo loopInfo) {
-        this.loopsInfo.put(index, loopInfo);
+    public void addPotentialLI(String loopInv, int commentStartPos) {
+        for (int i = 0; i < this.loopsInfo.size() - 1; i++) {
+            LoopInfo curLoop = this.loopsInfo.get(i);
+            LoopInfo nxtLoop = this.loopsInfo.get(i + 1);
+            //if the LI is inside the current loop but not the next loop,
+            //then it must be belong to the current loop.
+            //this is true for both sequential and nested cases.
+            if (curLoop.isPosInside(commentStartPos) &&
+                    ! nxtLoop.isPosInside(commentStartPos)) {
+                curLoop.addLI(loopInv);
+                return;
+            }
+        }
+
+        if (this.loopsInfo.size() > 0) {
+            LoopInfo lastLoop = this.loopsInfo.get(this.loopsInfo.size() - 1);
+            if (lastLoop.isPosInside(commentStartPos)) {
+                lastLoop.addLI(loopInv);
+            }
+        }
+    }
+
+    public void addLoopInfo(LoopInfo loopInfo) {
+        this.loopsInfo.add(loopInfo);
     }
 
     public LoopInfo getLoopInfo(int index) {
@@ -91,7 +122,7 @@ public class MethodInfo {
         sb.append("@ret: " + this.retVal + ";\n");
         sb.append("\nLoop info is :\n");
 
-        for (Integer index : loopsInfo.keySet()) {
+        for (int index = 0; index < this.loopsInfo.size(); index++) {
             sb.append("Loop No. " + index + "'s info is :\n");
             sb.append(getLoopInfo(index));
         }

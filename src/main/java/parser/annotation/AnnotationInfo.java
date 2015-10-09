@@ -15,6 +15,20 @@ public class AnnotationInfo {
         this.methodsInfo.put(index, methodInfo);
     }
 
+    //The line comment may be a LI if its pos is inside some loop.
+    public void addPotentialLI(String loopInv, int commentStartPos) {
+        methodsInfo.keySet().forEach(
+                index -> {
+                    MethodInfo curMethod = methodsInfo.get(index);
+                    if (curMethod.isInsideMethod(commentStartPos)) {
+                        curMethod.addPotentialLI(loopInv, commentStartPos);
+                        return;
+                    }
+                }
+        );
+
+    }
+
     public MethodInfo getMethodInfo(int index) {
         return methodsInfo.get(index);
     }

@@ -2,6 +2,7 @@ package parser;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.Comment;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.ast_visitor.MyASTVisitor;
 
@@ -25,7 +26,19 @@ public class JavaParser {
 		cu.accept(myASTVisitor);
 
         //check each line comment and judge whether they are LI
-
+        cu.getCommentList().forEach(commentObj ->
+        {if (commentObj instanceof Comment) {
+            Comment comment = (Comment) commentObj;
+            if (comment.isLineComment()) {
+                int commentStartPos = comment.getStartPosition();
+                //the comment with regex: //@LI some expression here
+                //is considered a LI.
+                String lpInvStr = pgmTxt.substring(commentStartPos, commentStartPos + comment.getLength());
+                if (lpInvStr.matches("//@LI\\p{Blank}+[\\p{Print}\\p{Blank}&&[^;]]+;"))
+                myASTVisitor.getAnnotationInfo().addPotentialLI(lpInvStr, commentStartPos);
+            }
+        }
+        });
 
         System.out.println("Method with pre and post conditions:");
         myASTVisitor.getAnnotationInfo().printInfo();
