@@ -33,6 +33,10 @@ private int aaa() {return 0;}
         s = 0;
         //@ inv s = ((old(n) - n) * (old(n) + n + 1)) / 2 /\ n >= 0
         while (n > 0) {
+            //@LI cond1;
+            //@LI cond2;
+            //@LI cond3;
+
             s = s + n;
             n = n - 1;
 
@@ -46,6 +50,9 @@ int r = 0;
 
 	//@ LI for the second loop
         while (x > 0) {
+            //@LI cond22;
+            //@LI cond25;
+            //@LI cond27;
             r = r + x;
             x = x - 1;
 
@@ -58,6 +65,9 @@ r = 0;
 
 	//@ LI for the third loop
         while (x > 0) {
+            //@LI cond11;
+            //@LI cond21;
+            //@LI cond37;
             r = r + x;
             x = x - 1;
 

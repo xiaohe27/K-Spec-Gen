@@ -20,13 +20,16 @@ public class JavaParser {
  
 		final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 
-		MyASTVisitor myASTVisitor = new MyASTVisitor(cu);
+		//MyASTVisitor myASTVisitor = new MyASTVisitor(cu);
+        MyASTVisitor myASTVisitor = new MyASTVisitor(cu, pgmTxt);
 		cu.accept(myASTVisitor);
+
+        //check each line comment and judge whether they are LI
+
 
         System.out.println("Method with pre and post conditions:");
         myASTVisitor.getAnnotationInfo().printInfo();
 
-        System.out.println("Here comes the internal comments.");
 
         //we do not need to use comment visitor to get the contents of the comments.
         //we can associate the comments with their context by checking the pos.
