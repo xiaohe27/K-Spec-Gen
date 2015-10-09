@@ -4,7 +4,9 @@
  */
 class sum {
 
-@Pre (a > 0)
+//@Pre (a > 0)
+@Pre (b > a + c)
+@post (d == a+b*c)
 public static void zz(int a) {}
 
 private String ddd() {return "";}

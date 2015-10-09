@@ -91,6 +91,10 @@ public class MyASTVisitor extends ASTVisitor {
 
         Expression exp = condition.getValue();
         System.out.println("Exp of this annotation is " + exp);
+        if (exp instanceof InfixExpression) {
+            System.out.println("It is infix exp whose operator is " + ((InfixExpression) exp)
+                    .getOperator());
+        }
 
         return true;
     }
