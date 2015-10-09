@@ -4,13 +4,15 @@
  */
 class sum {
 
-public static void zz() {}
+@Pre (a > 0)
+public static void zz(int a) {}
 
 private String ddd() {return "";}
 
 private int fff() {return 0;}
 
-private int ggg() {return 0;}
+@Pre(s != null)
+private int ggg(String s) {return 0;}
 
 private int aaa() {return 0;}
 
@@ -32,6 +34,7 @@ private int aaa() {return 0;}
 
         s = 0;
         //@ inv s = ((old(n) - n) * (old(n) + n + 1)) / 2 /\ n >= 0
+        //@LI (n >= 0)
         while (n > 0) {
             //@LI cond1;
             //@LI cond2;

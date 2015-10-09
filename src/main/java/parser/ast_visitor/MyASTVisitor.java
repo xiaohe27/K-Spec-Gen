@@ -73,7 +73,31 @@ public class MyASTVisitor extends ASTVisitor {
         return true;
     }
 
+    public boolean visit(SingleMemberAnnotation condition) {
+        System.out.println("The annotation of " + condition.getParent().toString() + " is " + condition
+                .toString());
+
+//        ITypeBinding binding = condition.resolveTypeBinding();
+//        if (binding != null) {
+//            System.out.println("Type binding:");
+//            System.out.println(binding);
+//        }
+//
+//        IAnnotationBinding annotationBinding = condition.resolveAnnotationBinding();
+//        if (annotationBinding != null) {
+//            System.out.println("Annotation binding is ");
+//            System.out.println(annotationBinding);
+//        }
+
+        Expression exp = condition.getValue();
+        System.out.println("Exp of this annotation is " + exp);
+
+        return true;
+    }
+
     public boolean visit(MethodDeclaration methodNode) {
+        System.out.println("Method " + methodNode.getName() + " is visited!");
+
         if (methodNode.getJavadoc() != null) {
             MethodInfo methodInfo = new MethodInfo(methodNode.getName().toString(),
                     methodNode.getStartPosition(),
