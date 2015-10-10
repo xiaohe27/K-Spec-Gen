@@ -4,34 +4,43 @@
  */
 class sum {
 
-//@Pre (a > 0)
-@Pre (b > a + c)
-@post (d == a+b*c)
-public static void zz(int a) {}
+    //@Pre (a > 0)
+    @Pre(b > a + c)
+    @post(d == a + b * c)
+    public static void zz(int a) {
+    }
 
-private String ddd() {return "";}
+    private String ddd() {
+        return "";
+    }
 
-private int fff() {return 0;}
+    private int fff() {
+        return 0;
+    }
 
-@Pre(s != null)
-private int ggg(String s) {return 0;}
+    @Pre(s != null)
+    private int ggg(String s) {
+        return 0;
+    }
 
-private int aaa() {return 0;}
+    private int aaa() {
+        return 0;
+    }
 
     public static void main(String[] args) {
         System.out.println("Sum to 5:" + sum_iterative(5));
     }
 
-/**
-* @requires n >= 0;
- * @requires someOtherPre;
-* @ensures true;
-* @returns (n * (n + 1)) / 2;
-*/
-    static int sum_iterative (int n)
+    /**
+     * @requires n >= 0;
+     * @requires someOtherPre;
+     * @ensures true;
+     * @requires-notSupported forall i :: 0 <= i < 5 ==> list[i] >= n;
+     * @returns (n * (n + 1)) / 2;
+     */
+    static int sum_iterative(int n)
 /*@ rule <k> $ => return (n * (n + 1)) / 2; ...</k>
-    if n >= 0 */
-    {
+    if n >= 0 */ {
         int s;
 
         s = 0;
@@ -46,15 +55,15 @@ private int aaa() {return 0;}
             s = s + n;
             n = n - 1;
 
-        String debug = "findMe!";
+            String debug = "findMe!";
         }
 
 
 //test multiple loops executed in a seq
-int x = 3;
-int r = 0;
+        int x = 3;
+        int r = 0;
 
-	//@ LI for the second loop
+        //@ LI for the second loop
         while (x > 0) {
             //@LI cond22;
             //sth not a LI too.
@@ -75,14 +84,14 @@ int r = 0;
 
             x = x - 1;
 
-        String debug = "findMe too!";
+            String debug = "findMe too!";
         }
 
 
-x = 3;
-r = 0;
+        x = 3;
+        r = 0;
 
-	//@ LI for the fourth loop
+        //@ LI for the fourth loop
         while (x > 0) {
             //@LI cond11;
             //@LI cond21;
@@ -90,7 +99,7 @@ r = 0;
             r = r + x;
             x = x - 1;
 
-        String debug = "findMe 3!";
+            String debug = "findMe 3!";
         }
 
         return s;

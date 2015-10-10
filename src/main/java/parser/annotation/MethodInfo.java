@@ -1,7 +1,9 @@
 package parser.annotation;
 
+import org.eclipse.jdt.core.dom.Expression;
+import parser.ExpressionParser;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 
 /**
@@ -12,8 +14,8 @@ public class MethodInfo {
     private final int startPos;
     private final int endPos;
 
-    private ArrayList<String> preCondList = new ArrayList<>();
-    private ArrayList<String> postCondList = new ArrayList<>();
+    private ArrayList<Expression> preCondList = new ArrayList<>();
+    private ArrayList<Expression> postCondList = new ArrayList<>();
     private String retVal;
 
     /**
@@ -43,7 +45,7 @@ public class MethodInfo {
         System.out.println("Group size is " + groupSize);
 
         String contractStr = null;
-        if(matcher.find()) {
+        if (matcher.find()) {
             contractStr = matcher.group(1);
         }
 
@@ -62,12 +64,14 @@ public class MethodInfo {
             switch (category) {
                 case Patterns.REQUIRES:
 //                    System.out.println("@pre : " + matcher.group(2));
-                    this.preCondList.add(matcher.group(2));
+                    String preCondStr = matcher.group(2);
+                    this.preCondList.add(ExpressionParser.parseExprStr(preCondStr));
                     break;
 
                 case Patterns.ENSURES:
 //                    System.out.println("@post : " + matcher.group(2));
-                    this.postCondList.add(matcher.group(2));
+                    String postCondStr = matcher.group(2);
+                    this.postCondList.add(ExpressionParser.parseExprStr(postCondStr));
                     break;
 
                 case Patterns.RETURNS:
@@ -89,7 +93,7 @@ public class MethodInfo {
             //then it must be belong to the current loop.
             //this is true for both sequential and nested cases.
             if (curLoop.isPosInside(commentStartPos) &&
-                    ! nxtLoop.isPosInside(commentStartPos)) {
+                    !nxtLoop.isPosInside(commentStartPos)) {
                 curLoop.addLI(loopInv);
                 return;
             }
@@ -114,10 +118,14 @@ public class MethodInfo {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-               sb.append("Method " + methName + " 's contract is \n");
+        sb.append("Method " + methName + " 's contract is \n");
 
-        this.preCondList.forEach(preCondStr -> {sb.append("@pre: " + preCondStr + ";\n");});
-        this.postCondList.forEach(postCondStr -> {sb.append("@post: " + postCondStr + ";\n");});
+        this.preCondList.forEach(preCondStr -> {
+            sb.append("@pre: " + preCondStr + ";\n");
+        });
+        this.postCondList.forEach(postCondStr -> {
+            sb.append("@post: " + postCondStr + ";\n");
+        });
 
         sb.append("@ret: " + this.retVal + ";\n");
         sb.append("\nLoop info is :\n");

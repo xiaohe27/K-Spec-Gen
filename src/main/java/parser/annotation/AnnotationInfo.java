@@ -36,6 +36,6 @@ public class AnnotationInfo {
     public void printInfo() {
         //method info
         methodsInfo.keySet().forEach(index -> System.out.println(
-               "Method No." + index + ":\t" + getMethodInfo(index).toString()));
+                "Method No." + index + ":\t" + getMethodInfo(index).toString()));
     }
 }

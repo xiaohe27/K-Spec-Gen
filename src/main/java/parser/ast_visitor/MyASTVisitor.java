@@ -65,8 +65,8 @@ public class MyASTVisitor extends ASTVisitor {
         if (this.curMethNodeId > 0) {
             MethodInfo curMethod = this.annotationInfo.getMethodInfo(this.curMethNodeId - 1);
             if (curMethod != null) {
-               curMethod.addLoopInfo(new LoopInfo(whileNode.getStartPosition(),
-                       whileNode.getLength()));
+                curMethod.addLoopInfo(new LoopInfo(whileNode.getStartPosition(),
+                        whileNode.getLength()));
             }
         }
 

@@ -39,7 +39,7 @@ public class Patterns {
         System.out.println("Group size is " + groupSize);
 
         String contractStr = null;
-        if(matcher.find()) {
+        if (matcher.find()) {
             contractStr = matcher.group(1);
         }
 
