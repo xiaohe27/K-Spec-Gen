@@ -1,17 +1,20 @@
 package parser.annotation;
 
+import org.eclipse.jdt.core.dom.Expression;
+import parser.ExpressionParser;
+
 import java.util.ArrayList;
 
 /**
  * The pos of the loop can be used in the process of gathering loop invariant from the annotation.
  */
 public class LoopInfo {
-    private ArrayList<String> loopInvs;
+    private ArrayList<Expression> loopInvs;
 
     private final int startPos;
     private final int endPos;
 
-    public String get(int index) {
+    public Expression get(int index) {
         return loopInvs.get(index);
     }
 
@@ -24,7 +27,9 @@ public class LoopInfo {
     }
 
     public boolean addLI(String loopInvStr) {
-        return loopInvs.add(loopInvStr);
+        System.out.println("The loopInvStr is " + loopInvStr);
+        Expression li = ExpressionParser.parseExprStr(loopInvStr);
+        return loopInvs.add(li);
     }
 
     public LoopInfo(int start, int len) {

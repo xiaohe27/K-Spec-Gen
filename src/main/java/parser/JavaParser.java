@@ -10,6 +10,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class JavaParser {
 
@@ -35,8 +37,10 @@ public class JavaParser {
                     //the comment with regex: //@LI some expression here
                     //is considered a LI.
                     String lpInvStr = pgmTxt.substring(commentStartPos, commentStartPos + comment.getLength());
-                    if (lpInvStr.matches("//@LI\\p{Blank}+[\\p{Print}\\p{Blank}&&[^;]]+;"))
-                        myASTVisitor.getAnnotationInfo().addPotentialLI(lpInvStr, commentStartPos);
+                    Pattern pattern = Pattern.compile("//@LI\\p{Blank}+([\\p{Print}\\p{Blank}&&[^;]]+);");
+                    Matcher matcher = pattern.matcher(lpInvStr);
+                    if (matcher.find())
+                        myASTVisitor.getAnnotationInfo().addPotentialLI(matcher.group(1), commentStartPos);
                 }
             }
         });

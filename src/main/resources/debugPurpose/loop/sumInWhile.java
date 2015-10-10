@@ -47,9 +47,9 @@ class sum {
         //@ inv s = ((old(n) - n) * (old(n) + n + 1)) / 2 /\ n >= 0
         //@LI (n >= 0)
         while (n > 0) {
-            //@LI cond1;
+            //@LI a - 5 > c * d;
             //@LI cond2;
-            //@LI cond3;
+            //@LI cond3 && cond4;
             //sth not a LI.
 
             s = s + n;
