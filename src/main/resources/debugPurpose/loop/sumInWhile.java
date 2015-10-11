@@ -5,8 +5,6 @@
 class sum {
 
     //@Pre (a > 0)
-    @Pre(b > a + c)
-    @post(d == a + b * c)
     public static void zz(int a) {
     }
 
@@ -18,7 +16,6 @@ class sum {
         return 0;
     }
 
-    @Pre(s != null)
     private int ggg(String s) {
         return 0;
     }
