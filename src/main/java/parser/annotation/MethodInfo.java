@@ -34,6 +34,10 @@ public class MethodInfo {
         parseMethodContract(preAndPostCond);
     }
 
+    public String getMethodName() {
+        return this.methName;
+    }
+
     public boolean isInsideMethod(int pos) {
         return pos >= this.startPos && pos < this.endPos;
     }
