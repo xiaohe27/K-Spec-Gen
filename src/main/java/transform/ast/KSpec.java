@@ -13,6 +13,7 @@ public class KSpec extends KASTNode {
 
     public KSpec(String name, AnnotationInfo annotationInfo) {
         super(name);
+        reqClauses.add(new KReqClause());
         annotationInfo.getAllMethodsInfo().forEach(
                 methodInfo -> {
                     KModule kModule = new KModule(methodInfo);
@@ -21,9 +22,11 @@ public class KSpec extends KASTNode {
         );
     }
 
-
     @Override
     public String toString() {
-        return null;
+        StringBuilder sb = new StringBuilder();
+        reqClauses.forEach(reqClause -> sb.append(reqClause.toString() + "\n"));
+        modules.forEach(module -> sb.append(module.toString() + "\n"));
+        return sb.toString();
     }
 }

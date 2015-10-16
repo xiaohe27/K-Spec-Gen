@@ -119,6 +119,9 @@ public class MethodInfo {
         return loopsInfo.get(index);
     }
 
+    public int getNumOfLoops() {
+        return loopsInfo.size();
+    }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
