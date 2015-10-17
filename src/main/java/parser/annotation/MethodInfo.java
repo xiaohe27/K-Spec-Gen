@@ -123,6 +123,18 @@ public class MethodInfo {
         return loopsInfo.size();
     }
 
+    public ArrayList<Expression> getPreCondList() {
+        ArrayList<Expression> copiedPreCondList = new ArrayList<>();
+        copiedPreCondList.addAll(this.preCondList);
+        return copiedPreCondList;
+    }
+
+    public ArrayList<Expression> getPostCondList() {
+        ArrayList<Expression> copiedPostCondList = new ArrayList<>();
+        copiedPostCondList.addAll(this.postCondList);
+        return copiedPostCondList;
+    }
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Method " + methName + " 's contract is \n");
