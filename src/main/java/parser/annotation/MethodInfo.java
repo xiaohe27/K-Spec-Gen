@@ -135,6 +135,10 @@ public class MethodInfo {
         return copiedPostCondList;
     }
 
+    public String getRetVal() {
+        return retVal;
+    }
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Method " + methName + " 's contract is \n");
