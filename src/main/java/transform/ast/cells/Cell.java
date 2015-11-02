@@ -2,6 +2,8 @@ package transform.ast.cells;
 
 import transform.ast.KASTNode;
 
+import java.util.ArrayList;
+
 /**
  * Created by hx312 on 13/10/2015.
  */
@@ -24,9 +26,13 @@ public class Cell extends KASTNode {
     public static final String OBJ_STORE = "objectStore";
 
 
+    protected ArrayList<Cell> childrenCells;
+
     public Cell(String name) {
         super(name);
+        this.childrenCells = new ArrayList<>();
     }
+
 
     public static Cell getFixedCellWithName(String cellName) {
         return new Cell(cellName);
@@ -46,29 +52,31 @@ public class Cell extends KASTNode {
     @Override
     public String toString() {
         switch (this.name) {
-            case HOLDS :
+            case HOLDS:
                 return surroundWithTags(" .Map ");
 
-            case CLASSES :
+            case CLASSES:
                 return surroundWithTags(" CLASSES:Bag ");
 
-            case NumOfClassesToUnfold :
+            case NumOfClassesToUnfold:
                 return surroundWithTags(" 0 ");
 
-            case PROGRAM :
+            case PROGRAM:
                 return surroundWithTags(" .K ");
 
-            case GlobalPhase :
+            case GlobalPhase:
                 return surroundWithTags(" ExecutionPhase ");
 
-            case BUSY :
+            case BUSY:
                 return surroundWithTags(" .Set ");
 
-            case NEXT_LOC :
+            case NEXT_LOC:
                 return surroundWithTags(" I:Int => ?_:Int ");
 
             default:
-                return "";
+                StringBuilder sb = new StringBuilder();
+                this.childrenCells.forEach(childCell -> sb.append(childCell.toString() + "\n"));
+                return surroundWithTags(sb.toString());
         }
 
     }

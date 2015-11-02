@@ -4,10 +4,7 @@ import org.eclipse.jdt.core.dom.Expression;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import transform.ast.cells.Cell;
-import transform.ast.cells.StoreCell;
-import transform.ast.cells.StoreMetaDataCell;
-import transform.ast.cells.ThreadsCell;
+import transform.ast.cells.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,7 +47,7 @@ public class KRule extends KASTNode {
 
     private ArrayList<Cell> constructCells(MethodInfo methodInfo, LoopInfo loopInfo) {
         ArrayList<Cell> cells = new ArrayList<>();
-        cells.add(new ThreadsCell("Threads", methodInfo, loopInfo));
+        cells.add(new ThreadsCell(methodInfo, loopInfo, this.env));
 
         cells.add(Cell.getFixedCellWithName(Cell.CLASSES));
         cells.add(Cell.getFixedCellWithName(Cell.NumOfClassesToUnfold));
@@ -62,6 +59,7 @@ public class KRule extends KASTNode {
 
         cells.add(Cell.getFixedCellWithName(Cell.BUSY));
         cells.add(Cell.getFixedCellWithName(Cell.NEXT_LOC));
+        cells.add(new ObjectStoreCell(this.objectStore));
         return cells;
     }
 

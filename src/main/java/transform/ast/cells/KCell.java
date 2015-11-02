@@ -11,8 +11,8 @@ public class KCell extends Cell {
 
     private final LoopInfo loopInfo;
 
-    public KCell(String name, MethodInfo methodInfo, LoopInfo loopInfo) {
-        super(name);
+    public KCell(MethodInfo methodInfo, LoopInfo loopInfo) {
+        super(Cell.K);
         this.methodInfo = methodInfo;
         this.loopInfo = loopInfo;
     }
