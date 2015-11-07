@@ -29,11 +29,12 @@ public class KRule extends KASTNode {
 
     public KRule(MethodInfo methodInfo, LoopInfo loopInfo) {
         super("'KRule");
+        initStackAndHeap(methodInfo, loopInfo);
+
         this.preConds.addAll(extractAllPreCond(methodInfo.getPreCondList()));
         this.postConds.addAll(extractAllPostCond(methodInfo.getPostCondList()));
         this.retVal = methodInfo.getRetVal();
         this.cells = constructCells(methodInfo, loopInfo);
-        initStackAndHeap(methodInfo, loopInfo);
     }
 
     private void initStackAndHeap(MethodInfo methodInfo, LoopInfo loopInfo) {
@@ -74,6 +75,11 @@ public class KRule extends KASTNode {
 
     @Override
     public String toString() {
-        return null;
+        StringBuilder sb = new StringBuilder();
+        sb.append("rule\n");
+        this.cells.forEach(cell -> sb.append(cell.toString()));
+        this.preConds.forEach(preCond -> sb.append(preCond.toString()));
+        this.postConds.forEach(postCond -> sb.append(postCond.toString()));
+        return sb.toString();
     }
 }
