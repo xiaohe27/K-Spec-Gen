@@ -14,14 +14,14 @@ import java.util.HashMap;
  * Created by hx312 on 13/10/2015.
  */
 public class KRule extends KASTNode {
-    private ArrayList<KCondition> preConds;
-    private ArrayList<KCondition> postConds;
+    private ArrayList<KCondition> preConds = new ArrayList<>();
+    private ArrayList<KCondition> postConds = new ArrayList<>();
     private String retVal;
-    private ArrayList<Cell> cells;
+    private ArrayList<Cell> cells = new ArrayList<>();
 
-    private HashMap<String, String> env; //env maps vars to vals
-    private HashMap<String, String> store;  //store maps addr to primitive vals?
-    private HashMap<String, String> objectStore; //obj store maps addr to obj?
+    private HashMap<String, String> env = new HashMap<>(); //env maps vars to vals
+    private HashMap<String, String> store = new HashMap<>();  //store maps addr to primitive vals?
+    private HashMap<String, String> objectStore = new HashMap<>(); //obj store maps addr to obj?
 
     public KRule(MethodInfo methodInfo) {
         this(methodInfo, null);
@@ -29,7 +29,8 @@ public class KRule extends KASTNode {
 
     public KRule(MethodInfo methodInfo, LoopInfo loopInfo) {
         super("'KRule");
-        initStackAndHeap(methodInfo, loopInfo);
+
+//        initStackAndHeap(methodInfo, loopInfo);
 
         this.preConds.addAll(extractAllPreCond(methodInfo.getPreCondList()));
         this.postConds.addAll(extractAllPostCond(methodInfo.getPostCondList()));
@@ -66,11 +67,13 @@ public class KRule extends KASTNode {
 
 
     private Collection<? extends KCondition> extractAllPostCond(ArrayList<Expression> postCondList) {
-        return null;
+        Collection<? extends KCondition> allPostCond = new ArrayList<>();
+        return allPostCond;
     }
 
     private Collection<? extends KCondition> extractAllPreCond(ArrayList<Expression> preCondList) {
-        return null;
+        Collection<? extends KCondition> allPreCond = new ArrayList<>();
+        return allPreCond;
     }
 
     @Override
@@ -81,5 +84,15 @@ public class KRule extends KASTNode {
         this.preConds.forEach(preCond -> sb.append(preCond.toString()));
         this.postConds.forEach(postCond -> sb.append(postCond.toString()));
         return sb.toString();
+    }
+
+    /**
+     * Test the KRule's toString().
+     * @param args
+     */
+    public static void main(String[] args) {
+        KRule kRule = new KRule(new MethodInfo("test", 0, 10, "fakePreAndPostCond"));
+        System.out.println("KRule looks like:\n");
+        System.out.println(kRule.toString());
     }
 }
