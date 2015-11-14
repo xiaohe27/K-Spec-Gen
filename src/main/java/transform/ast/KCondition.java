@@ -13,6 +13,6 @@ public class KCondition {
     private CondExpression expression;
 
     public static KCondition extractPreCond(Expression preCondExpr) {
-
+        return null;
     }
 }

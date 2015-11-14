@@ -10,12 +10,14 @@ import java.util.regex.Matcher;
  * Created by xiaohe on 10/6/15.
  */
 public class MethodInfo {
-    private final String methName;
+    private final MethodSig signature;
     private final int startPos;
     private final int endPos;
 
+    //The pre and post condition list are extracted from the method contract.
     private ArrayList<Expression> preCondList = new ArrayList<>();
     private ArrayList<Expression> postCondList = new ArrayList<>();
+    //the expected return value according to the method contract.
     private String retVal;
 
     /**
@@ -26,8 +28,8 @@ public class MethodInfo {
     private ArrayList<LoopInfo> loopsInfo = new ArrayList<>();
 
 
-    public MethodInfo(String methName, int startPos, int len, String preAndPostCond) {
-        this.methName = methName;
+    public MethodInfo(MethodSig methSig, int startPos, int len, String preAndPostCond) {
+        this.signature = methSig;
         this.startPos = startPos;
         this.endPos = startPos + len;
 
@@ -35,7 +37,7 @@ public class MethodInfo {
     }
 
     public String getMethodName() {
-        return this.methName;
+        return this.signature.getMethodName();
     }
 
     public boolean isInsideMethod(int pos) {
@@ -141,7 +143,10 @@ public class MethodInfo {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Method " + methName + " 's contract is \n");
+
+        //method sig
+
+        sb.append("Method " + this.signature.getMethodName() + " 's contract is \n");
 
         this.preCondList.forEach(preCondStr -> {
             sb.append("@pre: " + preCondStr + ";\n");
