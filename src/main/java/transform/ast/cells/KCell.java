@@ -24,7 +24,7 @@ public class KCell extends Cell {
         this.methodInfo = methodInfo;
         this.loopInfo = loopInfo;
 
-        this.qualifiedClsName = this.methodInfo.getQualifiedClassName();
+        this.qualifiedClsName = this.methodInfo.getQualifiedName();
         this.methodName = this.methodInfo.getMethodName();
         this.methArgs.addAll(this.methodInfo.getFormalParams());
         this.retVal = this.methodInfo.getRetVal();

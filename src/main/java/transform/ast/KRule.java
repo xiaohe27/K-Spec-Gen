@@ -91,8 +91,8 @@ public class KRule extends KASTNode {
      * @param args
      */
     public static void main(String[] args) {
-        KRule kRule = new KRule(new MethodInfo("test", 0, 10, "fakePreAndPostCond"));
-        System.out.println("KRule looks like:\n");
-        System.out.println(kRule.toString());
+//        KRule kRule = new KRule(new MethodInfo("test", 0, 10, "fakePreAndPostCond"));
+//        System.out.println("KRule looks like:\n");
+//        System.out.println(kRule.toString());
     }
 }
