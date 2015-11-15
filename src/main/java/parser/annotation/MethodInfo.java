@@ -1,6 +1,7 @@
 package parser.annotation;
 
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import parser.ExpressionParser;
 
 import java.util.ArrayList;
@@ -34,10 +35,6 @@ public class MethodInfo {
         this.endPos = startPos + len;
 
         parseMethodContract(preAndPostCond);
-    }
-
-    public String getMethodName() {
-        return this.signature.getMethodName();
     }
 
     public boolean isInsideMethod(int pos) {
@@ -139,6 +136,30 @@ public class MethodInfo {
 
     public String getRetVal() {
         return retVal;
+    }
+
+    public String getPackageName() {
+        return signature.getPackageName();
+    }
+
+    public String getRetType() {
+        return signature.getRetType();
+    }
+
+    public ArrayList<SingleVariableDeclaration> getFormalParams() {
+        return signature.getFormalParams();
+    }
+
+    public String getClassName() {
+        return signature.getClassName();
+    }
+
+    public String getQualifiedClassName() {
+        return signature.getQualifiedClsName();
+    }
+
+    public String getMethodName() {
+        return signature.getMethodName();
     }
 
     public String toString() {

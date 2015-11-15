@@ -1,5 +1,6 @@
 package transform.ast.cells;
 
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
 
@@ -13,9 +14,9 @@ public class KCell extends Cell {
 
     private final LoopInfo loopInfo;
 
-    private final String className;
+    private final String qualifiedClsName;
     private final String methodName;
-    private final ArrayList<String> methArgs = new ArrayList<>();
+    private final ArrayList<SingleVariableDeclaration> methArgs = new ArrayList<>();
     private String retVal;
 
     public KCell(MethodInfo methodInfo, LoopInfo loopInfo) {
@@ -23,11 +24,11 @@ public class KCell extends Cell {
         this.methodInfo = methodInfo;
         this.loopInfo = loopInfo;
 
-        init();
+        this.qualifiedClsName = this.methodInfo.getQualifiedClassName();
+        this.methodName = this.methodInfo.getMethodName();
+        this.methArgs.addAll(this.methodInfo.getFormalParams());
+        this.retVal = this.methodInfo.getRetVal();
     }
 
-    private void init() {
-        this.className = this.methodInfo.
-    }
 
 }

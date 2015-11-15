@@ -26,6 +26,14 @@ public class MethodSig {
         return packageName;
     }
 
+    public String getQualifiedClsName() {
+        if (packageName == null) {
+            return className;
+        } else {
+            return packageName + "." + className;
+        }
+    }
+
     public String getClassName() {
         return className;
     }
