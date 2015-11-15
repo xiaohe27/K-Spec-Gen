@@ -13,6 +13,8 @@ import java.util.Set;
  */
 public class MyASTVisitor extends ASTVisitor {
     private int curMethNodeId = 0;
+    private String curPackageName = null;
+    private String curClsName = null;
 
     private final CompilationUnit cu;
     Set names;
@@ -35,6 +37,19 @@ public class MyASTVisitor extends ASTVisitor {
         this.cu = cu;
         this.srcCode = srcCode;
         this.annotationInfo = new AnnotationInfo();
+    }
+
+    public boolean visit(PackageDeclaration packageDeclaration) {
+        this.curPackageName = packageDeclaration.getName().getFullyQualifiedName();
+
+        System.out.println("Visit package" + this.curPackageName);
+        return true;
+    }
+
+    public boolean visit(TypeDeclaration typeDeclaration) {
+        System.out.println("decl type " + typeDeclaration.toString());
+
+        return true;
     }
 
 //    public boolean visit(VariableDeclarationFragment node) {
@@ -103,7 +118,7 @@ public class MyASTVisitor extends ASTVisitor {
         System.out.println("Method " + methodNode.getName() + " is visited!");
 
         if (methodNode.getJavadoc() != null) {
-            MethodInfo methodInfo = new MethodInfo(methodNode.getName().toString(),
+            MethodInfo methodInfo = new MethodInfo(methodNode,
                     methodNode.getStartPosition(),
                     methodNode.getLength(),
                     methodNode.getJavadoc().toString());

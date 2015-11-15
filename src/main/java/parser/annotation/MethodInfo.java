@@ -1,6 +1,7 @@
 package parser.annotation;
 
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import parser.ExpressionParser;
 
@@ -11,7 +12,7 @@ import java.util.regex.Matcher;
  * Created by xiaohe on 10/6/15.
  */
 public class MethodInfo {
-    private final MethodSig signature;
+    private final MethodDeclaration methodDecl;
     private final int startPos;
     private final int endPos;
 
@@ -29,8 +30,8 @@ public class MethodInfo {
     private ArrayList<LoopInfo> loopsInfo = new ArrayList<>();
 
 
-    public MethodInfo(MethodSig methSig, int startPos, int len, String preAndPostCond) {
-        this.signature = methSig;
+    public MethodInfo(MethodDeclaration methodDecl, int startPos, int len, String preAndPostCond) {
+        this.methodDecl = methodDecl;
         this.startPos = startPos;
         this.endPos = startPos + len;
 
@@ -138,28 +139,22 @@ public class MethodInfo {
         return retVal;
     }
 
-    public String getPackageName() {
-        return signature.getPackageName();
-    }
-
     public String getRetType() {
-        return signature.getRetType();
+        return methodDecl.getReturnType2().toString();
     }
 
     public ArrayList<SingleVariableDeclaration> getFormalParams() {
-        return signature.getFormalParams();
-    }
-
-    public String getClassName() {
-        return signature.getClassName();
-    }
-
-    public String getQualifiedClassName() {
-        return signature.getQualifiedClsName();
+        ArrayList<SingleVariableDeclaration> methodArgs = new ArrayList<>();
+        methodArgs.addAll(methodDecl.parameters());
+        return methodArgs;
     }
 
     public String getMethodName() {
-        return signature.getMethodName();
+        return methodDecl.getName().toString();
+    }
+
+    public String getQualifiedName() {
+        return methodDecl.getName().getFullyQualifiedName();
     }
 
     public String toString() {
@@ -167,7 +162,7 @@ public class MethodInfo {
 
         //method sig
 
-        sb.append("Method " + this.signature.getMethodName() + " 's contract is \n");
+        sb.append("Method " + this.getQualifiedName() + " 's contract is \n");
 
         this.preCondList.forEach(preCondStr -> {
             sb.append("@pre: " + preCondStr + ";\n");
