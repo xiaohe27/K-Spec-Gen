@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
  * Created by xiaohe on 10/6/15.
  */
 public class MethodInfo {
+    private final String className;
     private final MethodDeclaration methodDecl;
     private final int startPos;
     private final int endPos;
@@ -30,7 +31,9 @@ public class MethodInfo {
     private ArrayList<LoopInfo> loopsInfo = new ArrayList<>();
 
 
-    public MethodInfo(MethodDeclaration methodDecl, int startPos, int len, String preAndPostCond) {
+    public MethodInfo(String className, MethodDeclaration methodDecl, int startPos, int len, String
+            preAndPostCond) {
+        this.className = className;
         this.methodDecl = methodDecl;
         this.startPos = startPos;
         this.endPos = startPos + len;
@@ -154,7 +157,7 @@ public class MethodInfo {
     }
 
     public String getQualifiedName() {
-        return methodDecl.getName().getFullyQualifiedName();
+        return this.className + "." + methodDecl.getName().getFullyQualifiedName();
     }
 
     public String toString() {

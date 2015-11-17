@@ -73,8 +73,14 @@ public class JavaParser {
 
     //loop directory to get file list
     public static void ParseFilesInDir(String path) throws IOException {
-        File dirs = new File(path);
-        String dirPath = dirs.getCanonicalPath() + File.separator;
+        File file = new File(path);
+
+        if (file.isFile()) {
+            parse(readFileToString(file.getAbsolutePath()));
+            return;
+        }
+
+        String dirPath = file.getCanonicalPath() + File.separator;
 
         File root = new File(dirPath);
         //System.out.println(rootDir.listFiles());

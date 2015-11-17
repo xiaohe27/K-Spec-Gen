@@ -36,6 +36,9 @@ public class MyASTVisitor extends ASTVisitor {
     public MyASTVisitor(CompilationUnit cu, String srcCode) {
         this.cu = cu;
         this.srcCode = srcCode;
+
+        this.names = new HashSet();
+
         this.annotationInfo = new AnnotationInfo();
     }
 
@@ -47,8 +50,7 @@ public class MyASTVisitor extends ASTVisitor {
     }
 
     public boolean visit(TypeDeclaration typeDeclaration) {
-        System.out.println("decl type " + typeDeclaration.toString());
-
+        this.curClsName = typeDeclaration.getName().getFullyQualifiedName();
         return true;
     }
 
@@ -89,8 +91,8 @@ public class MyASTVisitor extends ASTVisitor {
     }
 
     public boolean visit(SingleMemberAnnotation condition) {
-        System.out.println("The annotation of " + condition.getParent().toString() + " is " + condition
-                .toString());
+        System.out.println("The annotation of " + condition.getParent().toString() + " is " +
+                condition.toString());
 
 //        ITypeBinding binding = condition.resolveTypeBinding();
 //        if (binding != null) {
@@ -115,10 +117,11 @@ public class MyASTVisitor extends ASTVisitor {
     }
 
     public boolean visit(MethodDeclaration methodNode) {
-        System.out.println("Method " + methodNode.getName() + " is visited!");
+        System.out.println("Method " + this.curClsName  + "." + methodNode.getName()
+                .getFullyQualifiedName() + " is visited!");
 
         if (methodNode.getJavadoc() != null) {
-            MethodInfo methodInfo = new MethodInfo(methodNode,
+            MethodInfo methodInfo = new MethodInfo(this.curClsName, methodNode,
                     methodNode.getStartPosition(),
                     methodNode.getLength(),
                     methodNode.getJavadoc().toString());
