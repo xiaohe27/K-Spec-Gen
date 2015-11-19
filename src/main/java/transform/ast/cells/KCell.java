@@ -24,10 +24,18 @@ public class KCell extends Cell {
         this.methodInfo = methodInfo;
         this.loopInfo = loopInfo;
 
-        this.qualifiedClsName = this.methodInfo.getQualifiedName();
+        this.qualifiedClsName = this.methodInfo.getClassName();
         this.methodName = this.methodInfo.getMethodName();
         this.methArgs.addAll(this.methodInfo.getFormalParams());
         this.retVal = this.methodInfo.getRetVal();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        //TODO
+
+        return sb.toString();
     }
 
 

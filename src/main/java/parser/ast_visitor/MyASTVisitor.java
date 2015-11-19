@@ -126,6 +126,7 @@ public class MyASTVisitor extends ASTVisitor {
                     methodNode.getLength(),
                     methodNode.getJavadoc().toString());
 
+            System.out.println(methodInfo.toString());
 //            System.out.println(methodNode.getJavadoc().toString() + " is the javadoc!!!");
             this.annotationInfo.addMethod(this.curMethNodeId, methodInfo);
         }

@@ -138,6 +138,10 @@ public class MethodInfo {
         return copiedPostCondList;
     }
 
+    public String getClassName() {
+        return className;
+    }
+
     public String getRetVal() {
         return retVal;
     }
@@ -160,10 +164,47 @@ public class MethodInfo {
         return this.className + "." + methodDecl.getName().getFullyQualifiedName();
     }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Transform the given string to K's ID.
+     */
+    public static String string2ID(String inputStr) {
+        return "String2Id(\"" + inputStr + "\")";
+    }
+
+    /**
+     * Transform the class name to K's ID.
+     * @return
+     */
+    public static String className2ID(String clsName) {
+        return "(class " + string2ID("." + clsName) + ")";
+    }
+
+    /**
+     * Transform the method name to K's ID.
+     * @return
+     */
+    public static String methodName2ID(String methName) {
+        return string2ID(methName);
+    }
+
+    public String className2ID() {
+        return className2ID(this.getClassName());
+    }
+
+    public String methodName2ID() {
+        return methodName2ID(this.getMethodName());
+    }
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
         //method sig
+        sb.append("Method " + getQualifiedName() + "'s args are \n");
+        this.getFormalParams().forEach(param ->
+                sb.append(param.getName().toString() + " of type " + param.getType().toString
+                        () + "\n"));
 
         sb.append("Method " + this.getQualifiedName() + " 's contract is \n");
 
