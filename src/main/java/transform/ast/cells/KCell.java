@@ -3,6 +3,7 @@ package transform.ast.cells;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
+import transform.utils.TypeMapping;
 
 import java.util.ArrayList;
 
@@ -33,6 +34,17 @@ public class KCell extends Cell {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        sb.append(this.methodInfo.className2ID() + ".");
+        sb.append(this.methodInfo.methodName2ID());
+        sb.append(":Id(");
+
+        for (int i = 0; i < this.methArgs.size() - 1; i++) {
+            sb.append(TypeMapping.convert2KType(this.methArgs.get(i)) + ", ");
+        }
+
+        sb.append(TypeMapping.convert2KType(this.methArgs.get(this.methArgs.size() - 1)));
+        sb.append(")\n");
+
         //TODO
 
         return sb.toString();
