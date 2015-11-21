@@ -39,10 +39,6 @@ public class KRule extends KASTNode {
     }
 
     private void initStackAndHeap(MethodInfo methodInfo, LoopInfo loopInfo) {
-        this.env = new HashMap<>();
-        this.store = new HashMap<>();
-        this.objectStore = new HashMap<>();
-
         /* TODO */
         throw new NotImplementedException();
     }

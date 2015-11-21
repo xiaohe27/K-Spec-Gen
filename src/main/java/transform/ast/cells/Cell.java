@@ -8,6 +8,9 @@ import java.util.ArrayList;
  * Created by hx312 on 13/10/2015.
  */
 public class Cell extends KASTNode {
+    protected boolean hasLeftOmission = false;
+    protected boolean hasRightOmission = false;
+
     public static final String HOLDS = "holds";
     public static final String CLASSES = "classes";
     public static final String NumOfClassesToUnfold = "NumOfClassesToUnfold";
@@ -38,19 +41,12 @@ public class Cell extends KASTNode {
         return new Cell(cellName);
     }
 
-    private String surroundWithTagsFull(String content, boolean hasOmission) {
+    protected String surroundWithTags(String content) {
         return "<" + this.name + ">\n"
+                + (this.hasLeftOmission ? " ... " : "")
                 + content + "\n"
-                + (hasOmission ? "..." : "")
+                + (this.hasRightOmission ? " ... " : "")
                 + "</" + this.name + ">\n";
-    }
-
-    public String surroundWithTags(String content) {
-        return surroundWithTagsFull(content, false);
-    }
-
-    public String surroundWithTags_hasOmission(String content) {
-        return surroundWithTagsFull(content, true);
     }
 
     @Override

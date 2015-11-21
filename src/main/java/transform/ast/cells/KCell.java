@@ -20,6 +20,7 @@ public class KCell extends Cell {
 
     public KCell(MethodInfo methodInfo, LoopInfo loopInfo) {
         super(Cell.K);
+        this.hasRightOmission = true;
         this.methodInfo = methodInfo;
         this.loopInfo = loopInfo;
 
@@ -49,7 +50,7 @@ public class KCell extends Cell {
 
             sb.append(this.methodInfo.getRetVal() + "::" + retTypeInJavaSemantics);
         }
-        return super.surroundWithTags_hasOmission(sb.toString());
+        return super.surroundWithTags(sb.toString());
     }
 
 
