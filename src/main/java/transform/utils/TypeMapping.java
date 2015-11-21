@@ -35,6 +35,14 @@ public class TypeMapping {
         return "RawRefVal";
     }
 
+    public static String getTypeInJavaSemantics(String type) {
+        if (isIn(intTypes, type)) {
+            return "int";
+        }
+
+        if ()
+    }
+
     /**
      * Generate a fresh var based on 'baseName'.
      * The general strategy is
@@ -74,12 +82,12 @@ public class TypeMapping {
         String varName = v.getName().toString();
         boolean isPrimitive = v.getType().isPrimitiveType();
 
-        String jTypeInKSpec = isPrimitive ? jType : MethodInfo.className2ID(jType);
+        String jTypeInJavaSemantics = isPrimitive ? jType : MethodInfo.className2ID(jType);
 
         String result = freshVar(varName, isPrimitive);
         result += ":" + getKBuiltInType4SimpleJType(jType);
         result = isPrimitive ? result : "(" + result + ")";
-        result += "::" + jTypeInKSpec;
+        result += "::" + jTypeInJavaSemantics;
         return result;
     }
 
