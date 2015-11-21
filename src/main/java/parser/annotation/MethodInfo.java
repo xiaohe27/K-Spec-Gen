@@ -198,6 +198,14 @@ public class MethodInfo {
         return methodName2ID(this.getMethodName());
     }
 
+    public String getKModuleName() {
+        String methodName = this.getMethodName();
+        String modName = this.className + "-" + (methodName.equals(this.className) ? ""
+                : methodName + "-") + "SPEC";
+
+        return modName.toUpperCase();
+    }
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
 

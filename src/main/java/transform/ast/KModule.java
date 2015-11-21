@@ -13,7 +13,7 @@ public class KModule extends KASTNode {
     private ArrayList<KRule> rules = new ArrayList<>();
 
     public KModule(MethodInfo methodInfo) {
-        super(methodInfo.getMethodName());
+        super(methodInfo.getKModuleName());
         imports.add(new KImport());
         this.rules.add(getMethodContractRule(methodInfo));
         this.rules.addAll(getRulesFromLoops(methodInfo));

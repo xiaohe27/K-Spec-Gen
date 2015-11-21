@@ -1,4 +1,4 @@
-public class MinClass {
+public class min {
 
 /**
 * @returns minInt(x,y);	
