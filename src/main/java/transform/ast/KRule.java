@@ -1,6 +1,7 @@
 package transform.ast;
 
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -32,7 +33,7 @@ public class KRule extends KASTNode {
 
 //        initStackAndHeap(methodInfo, loopInfo);
 
-        this.preConds.addAll(extractAllPreCond(methodInfo.getPreCondList()));
+        this.preConds.addAll(extractAllPreCond(methodInfo.getPreCondList(), methodInfo.getFormalParams()));
         this.postConds.addAll(extractAllPostCond(methodInfo.getPostCondList()));
         this.retVal = methodInfo.getRetVal();
         this.cells = constructCells(methodInfo, loopInfo);
@@ -67,8 +68,10 @@ public class KRule extends KASTNode {
         return allPostCond;
     }
 
-    private Collection<? extends KCondition> extractAllPreCond(ArrayList<Expression> preCondList) {
+    private Collection<? extends KCondition> extractAllPreCond(ArrayList<Expression> preCondList,
+                                               ArrayList<SingleVariableDeclaration> formalParams) {
         Collection<? extends KCondition> allPreCond = new ArrayList<>();
+
         return allPreCond;
     }
 
@@ -84,6 +87,7 @@ public class KRule extends KASTNode {
 
     /**
      * Test the KRule's toString().
+     *
      * @param args
      */
     public static void main(String[] args) {
