@@ -8,8 +8,8 @@ import java.util.ArrayList;
  * Created by hx312 on 13/10/2015.
  */
 public class KSpec extends KASTNode {
-    private ArrayList<KReqClause> reqClauses;
-    private ArrayList<KModule> modules;
+    private ArrayList<KReqClause> reqClauses = new ArrayList<>();
+    private ArrayList<KModule> modules = new ArrayList<>();
 
     public KSpec(String name, AnnotationInfo annotationInfo) {
         super(name);

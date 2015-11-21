@@ -1,6 +1,7 @@
 package transform.ast.cells;
 
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.Type;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
 import transform.utils.TypeMapping;
@@ -42,9 +43,13 @@ public class KCell extends Cell {
 
             sb.append("==>\n");
 
-            sb.append(this.methodInfo.getRetVal() + "::" + )
+            Type retType = this.methodInfo.getRetType();
+            String retTypeInJavaSemantics = retType.isPrimitiveType() ? retType.toString() :
+                    MethodInfo.className2ID(retType.toString());
+
+            sb.append(this.methodInfo.getRetVal() + "::" + retTypeInJavaSemantics);
         }
-        return sb.toString();
+        return super.surroundWithTags_hasOmission(sb.toString());
     }
 
 

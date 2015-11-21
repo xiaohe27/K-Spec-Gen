@@ -8,9 +8,9 @@ import java.util.ArrayList;
  * Created by hx312 on 13/10/2015.
  */
 public class KModule extends KASTNode {
-    private ArrayList<KImport> imports;
+    private ArrayList<KImport> imports = new ArrayList<>();
 
-    private ArrayList<KRule> rules;
+    private ArrayList<KRule> rules = new ArrayList<>();
 
     public KModule(MethodInfo methodInfo) {
         super(methodInfo.getMethodName());

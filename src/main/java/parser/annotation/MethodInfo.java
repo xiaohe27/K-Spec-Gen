@@ -3,6 +3,7 @@ package parser.annotation;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.Type;
 import parser.ExpressionParser;
 
 import java.util.ArrayList;
@@ -146,8 +147,8 @@ public class MethodInfo {
         return retVal;
     }
 
-    public String getRetType() {
-        return methodDecl.getReturnType2().toString();
+    public Type getRetType() {
+        return methodDecl.getReturnType2();
     }
 
     public ArrayList<SingleVariableDeclaration> getFormalParams() {

@@ -4,7 +4,9 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.Comment;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import parser.annotation.AnnotationInfo;
 import parser.ast_visitor.MyASTVisitor;
+import transform.ast.KSpec;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -45,12 +47,16 @@ public class JavaParser {
             }
         });
 
-        System.out.println("Method with pre and post conditions:");
-        myASTVisitor.getAnnotationInfo().printInfo();
-
-
         //we do not need to use comment visitor to get the contents of the comments.
         //we can associate the comments with their context by checking the pos.
+
+        AnnotationInfo annotationInfo = myASTVisitor.getAnnotationInfo();
+
+//        System.out.println("Method with pre and post conditions:");
+//        annotationInfo.printInfo();
+        KSpec kSpec = new KSpec("MY-K-Spec", annotationInfo);
+
+        System.out.println(kSpec.toString());
     }
 
     //read file content into a string

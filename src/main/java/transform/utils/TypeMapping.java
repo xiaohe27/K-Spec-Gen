@@ -35,14 +35,6 @@ public class TypeMapping {
         return "RawRefVal";
     }
 
-    public static String getTypeInJavaSemantics(String type) {
-        if (isIn(intTypes, type)) {
-            return "int";
-        }
-
-        if ()
-    }
-
     /**
      * Generate a fresh var based on 'baseName'.
      * The general strategy is

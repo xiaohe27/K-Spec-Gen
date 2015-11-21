@@ -38,7 +38,7 @@ public class Cell extends KASTNode {
         return new Cell(cellName);
     }
 
-    public String surroundWithTagsFull(String content, boolean hasOmission) {
+    private String surroundWithTagsFull(String content, boolean hasOmission) {
         return "<" + this.name + ">\n"
                 + content + "\n"
                 + (hasOmission ? "..." : "")
@@ -47,6 +47,10 @@ public class Cell extends KASTNode {
 
     public String surroundWithTags(String content) {
         return surroundWithTagsFull(content, false);
+    }
+
+    public String surroundWithTags_hasOmission(String content) {
+        return surroundWithTagsFull(content, true);
     }
 
     @Override
