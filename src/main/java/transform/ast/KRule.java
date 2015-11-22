@@ -6,6 +6,8 @@ import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import transform.ast.cells.*;
+import transform.utils.ConstraintGen;
+import transform.utils.TypeMapping;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -68,9 +70,15 @@ public class KRule extends KASTNode {
         return allPostCond;
     }
 
-    private Collection<? extends KCondition> extractAllPreCond(ArrayList<Expression> preCondList,
-                                               ArrayList<SingleVariableDeclaration> formalParams) {
-        Collection<? extends KCondition> allPreCond = new ArrayList<>();
+    private Collection<KCondition> extractAllPreCond(ArrayList<Expression> preCondList,
+                                                     ArrayList<SingleVariableDeclaration> formalParams) {
+        Collection<KCondition> allPreCond = new ArrayList<>();
+        //default params range conditions
+        formalParams.forEach(varDecl -> allPreCond.add(new KCondition(ConstraintGen
+                .genRangeConstraint4Type(varDecl.getType().toString(),
+                        TypeMapping.freshVar(varDecl.getName().toString(),varDecl.getType().isPrimitiveType())))));
+
+        //TODO: constraints generated from expressions.
 
         return allPreCond;
     }
@@ -80,8 +88,25 @@ public class KRule extends KASTNode {
         StringBuilder sb = new StringBuilder();
         sb.append("rule\n");
         this.cells.forEach(cell -> sb.append(cell.toString()));
-        this.preConds.forEach(preCond -> sb.append(preCond.toString()));
-        this.postConds.forEach(postCond -> sb.append(postCond.toString()));
+
+        if (!this.preConds.isEmpty()) {
+            sb.append("requires ");
+            this.preConds.forEach(preCond ->
+                    sb.append(preCond.toString() +
+                            ((this.preConds.get(this.preConds.size() - 1).equals
+                                    (preCond)) ? "\n" : " andBool ")
+                    ));
+        }
+
+        if (!this.postConds.isEmpty()) {
+            sb.append("ensures ");
+            this.postConds.forEach(postCond ->
+                    sb.append(postCond.toString() +
+                            ((this.postConds.get(this.postConds.size() - 1).equals
+                                    (postCond)) ? "\n" : " andBool ")
+                    ));
+        }
+
         return sb.toString();
     }
 
