@@ -21,6 +21,11 @@ public class ExpressionParser extends ASTVisitor {
         return ((Expression) expParser.createAST(null));
     }
 
+    /**
+     * Return the kind of the operand.
+     */
+    public static boolean
+
     public boolean visit(InfixExpression exp) {
 //        System.out.println("Visit exp " + exp);
 //        System.out.println("The operator is " + exp.getOperator());
