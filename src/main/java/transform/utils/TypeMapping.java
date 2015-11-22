@@ -7,6 +7,14 @@ import parser.annotation.MethodInfo;
  * Created by hx312 on 19/11/2015.
  */
 public class TypeMapping {
+    /**
+     * The type of the operands, 0 for int and 1 for floating point numbers.
+     */
+    public static final int INT_OPERAND = 0;
+    public static final int FLOAT_OPERAND = 1;
+    public static final int STRING_OPERAND = 2;
+    public static final int OTHER_OPERAND = 3;
+
     private final static String[] intTypes = {"byte", "short", "char", "int", "long"};
     private final static String[] floatTypes = {"float", "double"};
     private final static String[] prefixOp = {"!", "-", "+"};
@@ -87,6 +95,22 @@ public class TypeMapping {
         return result;
     }
 
+    public static String convert2KOP(String oldOp, int operandType) {
+        switch (operandType) {
+            case INT_OPERAND :
+                return covert2KOp_Int(oldOp);
+
+            case FLOAT_OPERAND :
+                return covert2KOp_Float(oldOp);
+
+            case STRING_OPERAND :
+                return covert2KOp_String(oldOp);
+
+            default: return oldOp;
+
+        }
+    }
+
     public static String covert2KOp_Int(String oldOp) {
         if (isIn(infixOp, oldOp)) {
             return oldOp + "Int";
@@ -94,7 +118,6 @@ public class TypeMapping {
             return "notBool";
         } else {
             return oldOp;
-//            throw new UnsupportedOperationException("Not supported conversion for op " + oldOp);
         }
     }
 
@@ -105,7 +128,16 @@ public class TypeMapping {
             return "notBool";
         } else {
             return oldOp;
-//            throw new UnsupportedOperationException("Not supported conversion.");
+        }
+    }
+
+    public static String covert2KOp_String(String oldOp) {
+        if (isIn(infixOp, oldOp)) {
+            return oldOp + "String";
+        } else if ("!".equals(oldOp)) {
+            return "notBool";
+        } else {
+            return oldOp;
         }
     }
 

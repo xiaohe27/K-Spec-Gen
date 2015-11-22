@@ -21,10 +21,6 @@ public class ExpressionParser extends ASTVisitor {
         return ((Expression) expParser.createAST(null));
     }
 
-    /**
-     * Return the kind of the operand.
-     */
-    public static boolean
 
     public boolean visit(InfixExpression exp) {
 //        System.out.println("Visit exp " + exp);
@@ -55,5 +51,6 @@ public class ExpressionParser extends ASTVisitor {
 
         System.out.println("The corresponding k op for exp2 is: ");
         System.out.println(CondExpression.transformJExpr2KExpr(exp2));
+
     }
 }

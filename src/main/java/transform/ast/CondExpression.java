@@ -13,23 +13,20 @@ public class CondExpression {
     private boolean isFunctionApp = false;
     private ArrayList<String> operands;
 
-    /**
-     * The type of the operands, 0 for int and 1 for floating point numbers.
-     */
-    public static final int INT_OPERAND = 0;
-    public static final int FLOAT_OPERAND = 1;
-
     public CondExpression(String op, ArrayList<String> operands) {
-        this(op, false, operands, INT_OPERAND);
+        this(op, false, operands, TypeMapping.INT_OPERAND);
     }
 
     public CondExpression(String op, boolean isFunctionApp, ArrayList<String> operands,
                           int operandType) {
-        this.op = (operandType == INT_OPERAND ? TypeMapping.covert2KOp_Int(op) : (operandType ==
-                FLOAT_OPERAND ? TypeMapping.covert2KOp_Float(op) : op));
+        this.op = TypeMapping.convert2KOP(op, operandType);
 
         this.isFunctionApp = isFunctionApp;
         this.operands = operands;
+    }
+
+    private String addParen(String str) {
+        return "(" + str + ")";
     }
 
     public String toString() {
@@ -63,7 +60,6 @@ public class CondExpression {
     }
 
     public static CondExpression transformJExpr2KExpr(Expression operation) {
-        System.out.println("The type of the exp is " + operation.getNodeType());
         ArrayList<String> operands = new ArrayList<>();
 
         if (operation instanceof InfixExpression) {
