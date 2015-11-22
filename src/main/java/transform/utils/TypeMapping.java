@@ -30,6 +30,18 @@ public class TypeMapping {
         return false;
     }
 
+    public static int getTypeId(String type) {
+        if (isIn(intTypes, type)) {
+            return INT_OPERAND;
+        } else if (isIn(floatTypes, type)) {
+            return FLOAT_OPERAND;
+        } else if ("String".equals(type)) {
+            return STRING_OPERAND;
+        } else {
+            return OTHER_OPERAND;
+        }
+    }
+
     private static String getKBuiltInType4SimpleJType(String javaType) {
         if (isIn(intTypes, javaType))
             return "Int";
