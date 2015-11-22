@@ -1,6 +1,7 @@
 package parser;
 
 import org.eclipse.jdt.core.dom.*;
+import transform.ast.CondExpression;
 
 /**
  * Created by xiaohe on 10/9/15.
@@ -21,10 +22,10 @@ public class ExpressionParser extends ASTVisitor {
     }
 
     public boolean visit(InfixExpression exp) {
-        System.out.println("Visit exp " + exp);
-        System.out.println("The operator is " + exp.getOperator());
-        System.out.println("Left operand is " + exp.getLeftOperand());
-        System.out.println("Right operand is " + exp.getRightOperand());
+//        System.out.println("Visit exp " + exp);
+//        System.out.println("The operator is " + exp.getOperator());
+//        System.out.println("Left operand is " + exp.getLeftOperand());
+//        System.out.println("Right operand is " + exp.getRightOperand());
 
         return true;
     }
@@ -43,5 +44,11 @@ public class ExpressionParser extends ASTVisitor {
         System.out.println(exp2);
 
         exp2.accept(myExpVisitor);
+
+        System.out.println("The corresponding k op for exp1 is: ");
+        System.out.println(CondExpression.transformJExpr2KExpr(exp1));
+
+        System.out.println("The corresponding k op for exp2 is: ");
+        System.out.println(CondExpression.transformJExpr2KExpr(exp2));
     }
 }

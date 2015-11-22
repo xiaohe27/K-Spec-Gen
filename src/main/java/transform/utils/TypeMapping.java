@@ -9,6 +9,10 @@ import parser.annotation.MethodInfo;
 public class TypeMapping {
     private final static String[] intTypes = {"byte", "short", "char", "int", "long"};
     private final static String[] floatTypes = {"float", "double"};
+    private final static String[] prefixOp = {"!", "-", "+"};
+    private final static String[] infixOp = {"+", "-", "*", "/", "^", "%", "<", "<=", ">", ">=",
+            "==", "&&", "||",
+            "<<", ">>"};
 
     private static boolean isIn(String[] strArr, String tarStr) {
         for (int i = 0; i < strArr.length; i++) {
@@ -81,6 +85,28 @@ public class TypeMapping {
         result = isPrimitive ? result : "(" + result + ")";
         result += "::" + jTypeInJavaSemantics;
         return result;
+    }
+
+    public static String covert2KOp_Int(String oldOp) {
+        if (isIn(infixOp, oldOp)) {
+            return oldOp + "Int";
+        } else if ("!".equals(oldOp)) {
+            return "notBool";
+        } else {
+            return oldOp;
+//            throw new UnsupportedOperationException("Not supported conversion for op " + oldOp);
+        }
+    }
+
+    public static String covert2KOp_Float(String oldOp) {
+        if (isIn(infixOp, oldOp)) {
+            return oldOp + "Float";
+        } else if ("!".equals(oldOp)) {
+            return "notBool";
+        } else {
+            return oldOp;
+//            throw new UnsupportedOperationException("Not supported conversion.");
+        }
     }
 
     public static void main(String[] args) {
