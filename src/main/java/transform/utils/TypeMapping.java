@@ -3,6 +3,8 @@ package transform.utils;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import parser.annotation.MethodInfo;
 
+import java.util.ArrayList;
+
 /**
  * Created by hx312 on 19/11/2015.
  */
@@ -18,9 +20,28 @@ public class TypeMapping {
     private final static String[] intTypes = {"byte", "short", "char", "int", "long"};
     private final static String[] floatTypes = {"float", "double"};
     private final static String[] prefixOp = {"!", "-", "+"};
-    private final static String[] infixOp = {"+", "-", "*", "/", "^", "%", "<", "<=", ">", ">=",
-            "==", "&&", "||",
-            "<<", ">>"};
+
+    private final static String[] commonInfixOP = {"+", "-", "*", "/", "%", "<", "<=", ">", ">=",
+            "==", "!="};
+
+    private final static String[] intSpecOP = {"<<", ">>", "~", "^", "&", "|"};
+    private final static String[] boolOP = {"&&", "||"};
+
+    private final static String[] infixOP = initInfixOPs();
+
+    private static String[] initInfixOPs() {
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = 0; i < commonInfixOP.length; i++) {
+            list.add(commonInfixOP[i]);
+        }
+        for (int i = 0; i < intSpecOP.length; i++) {
+            list.add(intSpecOP[i]);
+        }
+
+        String[] tmpStrArr = new String[commonInfixOP.length + intSpecOP.length];
+        return list.toArray(tmpStrArr);
+    }
+
 
     private static boolean isIn(String[] strArr, String tarStr) {
         for (int i = 0; i < strArr.length; i++) {
@@ -108,49 +129,64 @@ public class TypeMapping {
     }
 
     public static String convert2KOP(String oldOp, int operandType) {
+        if ("!".equals(oldOp)) {
+            return "notBool";
+        } else if ("&&".equals(oldOp)) {
+            return "andBool";
+        } else if ("||".equals(oldOp)) {
+            return "orBool";
+        }
+
         switch (operandType) {
-            case INT_OPERAND :
+            case INT_OPERAND:
                 return covert2KOp_Int(oldOp);
 
-            case FLOAT_OPERAND :
+            case FLOAT_OPERAND:
                 return covert2KOp_Float(oldOp);
 
-            case STRING_OPERAND :
+            case STRING_OPERAND:
                 return covert2KOp_String(oldOp);
 
-            default: return oldOp;
+            default:
+                return oldOp;
 
         }
     }
 
     public static String covert2KOp_Int(String oldOp) {
-        if (isIn(infixOp, oldOp)) {
+        if ("!=".equals(oldOp)) {
+            return "=/=Int";
+        } else if (isIn(infixOP, oldOp)) {
             return oldOp + "Int";
-        } else if ("!".equals(oldOp)) {
-            return "notBool";
         } else {
             return oldOp;
         }
     }
 
     public static String covert2KOp_Float(String oldOp) {
-        if (isIn(infixOp, oldOp)) {
+        if ("!=".equals(oldOp)) {
+            return "=/=Float";
+        } else if (isIn(commonInfixOP, oldOp)) {
             return oldOp + "Float";
-        } else if ("!".equals(oldOp)) {
-            return "notBool";
         } else {
             return oldOp;
         }
     }
 
     public static String covert2KOp_String(String oldOp) {
-        if (isIn(infixOp, oldOp)) {
+        String[] excludeList = {"-", "*", "/", "%"};
+        if ("!=".equals(oldOp)) {
+            return "=/=String";
+        } else if (isIn(commonInfixOP, oldOp) && !isIn(excludeList,oldOp)) {
             return oldOp + "String";
-        } else if ("!".equals(oldOp)) {
-            return "notBool";
         } else {
             return oldOp;
         }
+    }
+
+    public static String transform2KExpr(String jExpr, int type) {
+
+
     }
 
     public static void main(String[] args) {
