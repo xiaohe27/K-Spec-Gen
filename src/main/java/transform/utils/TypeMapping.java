@@ -1,6 +1,7 @@
 package transform.utils;
 
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.Type;
 import parser.ExpressionParser;
 import parser.annotation.MethodInfo;
 
@@ -226,6 +227,15 @@ public class TypeMapping {
         return sb.toString();
     }
 
+
+    private static String toRegEx(String exp) {
+        if (exp == null) return "";
+
+        if (exp.equals("+") || exp.equals("*"))
+            return "\\" + exp;
+
+        return exp;
+    }
     /**
      * We can assume that there is neither '&&' nor '||' in the literal, and focus on
      * transforming the literal according to the type of atoms.
@@ -237,26 +247,22 @@ public class TypeMapping {
      */
     public static String fromLiteral2KExpr(String literal, int typeId) {
         String kexp = literal;
+        //replace each pattern in the array to its corresponding k-form.
+        String[] transformCandidates = (typeId == TypeMapping.INT_OPERAND ? TypeMapping.infixOP
+            : (typeId == TypeMapping.FLOAT_OPERAND ? TypeMapping.commonInfixOP : null));
 
-        if (typeId == TypeMapping.INT_OPERAND) {
-            for (int i = 0; i < TypeMapping.infixOP.length; i++) {
-                String curOp = TypeMapping.infixOP[i];
+        if (transformCandidates == null)
+            return literal;
 
-                if (! literal.contains(curOp)) continue;
-                String curOp_reg = curOp;
-                if (curOp.equals("+")) {curOp_reg = "\\+";}
+        for (int i = 0; i < transformCandidates.length; i++) {
+            String curOp = transformCandidates[i];
+            if (! literal.contains(curOp))
+                continue;
 
-                kexp = kexp.replaceAll(curOp_reg, TypeMapping.convert2KOP(curOp, typeId));
-            }
-        } else if (typeId == TypeMapping.FLOAT_OPERAND) {
-            for (int i = 0; i < TypeMapping.commonInfixOP.length; i++) {
-                String curOp = TypeMapping.commonInfixOP[i];
-                kexp = kexp.replaceAll(curOp, TypeMapping.convert2KOP(curOp, typeId));
-            }
-
-        }  else {
+            kexp = kexp.replaceAll(toRegEx(curOp), TypeMapping.convert2KOP(curOp, typeId));
 
         }
+
 
         return kexp;
     }
