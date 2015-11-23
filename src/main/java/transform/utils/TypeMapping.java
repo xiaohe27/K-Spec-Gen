@@ -234,6 +234,9 @@ public class TypeMapping {
         if (exp.equals("+") || exp.equals("*"))
             return "\\" + exp;
 
+        if (exp.equals("<") || exp.equals(">"))
+            return exp + "(?!=)";
+
         return exp;
     }
     /**
@@ -260,16 +263,14 @@ public class TypeMapping {
                 continue;
 
             kexp = kexp.replaceAll(toRegEx(curOp), TypeMapping.convert2KOP(curOp, typeId));
-
         }
-
 
         return kexp;
     }
 
 
     public static void main(String[] args) {
-        String goodExp = ExpressionParser.parseExprStr("a + c -d/e >= 72").toString();
+        String goodExp = ExpressionParser.parseExprStr("min(a,b) + c -d/e >= 72").toString();
         System.out.println(fromLiteral2KExpr(goodExp, TypeMapping.INT_OPERAND));
     }
 
