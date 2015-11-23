@@ -176,6 +176,7 @@ public class MethodInfo {
 
     /**
      * Transform the class name to K's ID.
+     *
      * @return
      */
     public static String className2ID(String clsName) {
@@ -184,6 +185,7 @@ public class MethodInfo {
 
     /**
      * Transform the method name to K's ID.
+     *
      * @return
      */
     public static String methodName2ID(String methName) {

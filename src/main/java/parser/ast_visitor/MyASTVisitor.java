@@ -117,7 +117,7 @@ public class MyASTVisitor extends ASTVisitor {
     }
 
     public boolean visit(MethodDeclaration methodNode) {
-        System.out.println("Method " + this.curClsName  + "." + methodNode.getName()
+        System.out.println("Method " + this.curClsName + "." + methodNode.getName()
                 .getFullyQualifiedName() + " is visited!");
 
         if (methodNode.getJavadoc() != null) {

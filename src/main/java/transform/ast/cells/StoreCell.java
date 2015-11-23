@@ -20,7 +20,7 @@ public class StoreCell extends Cell {
     public String toString() {
         String ret = "";
         if (store.isEmpty()) {
-           ret = super.surroundWithTags(".Map => ?_:Map");
+            ret = super.surroundWithTags(".Map => ?_:Map");
         } else {
             //TODO
         }

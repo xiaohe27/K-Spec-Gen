@@ -44,6 +44,7 @@ public class ExpressionParser extends ASTVisitor {
 
     /**
      * Return the type id (see the def in TypeMapping class) of the operands of the expression.
+     *
      * @param exprStr
      * @return
      */
@@ -60,6 +61,7 @@ public class ExpressionParser extends ASTVisitor {
 
     /**
      * Return the type id (see the def in TypeMapping class) of the operands of the expression.
+     *
      * @param exprStr
      * @return
      */
@@ -88,10 +90,10 @@ public class ExpressionParser extends ASTVisitor {
 
         boolean isInt = false;
         try {
-            long num = Long.parseLong(numberLiteral+"");
+            long num = Long.parseLong(numberLiteral + "");
             isInt = true;
-        } catch(NumberFormatException e) {
-        } catch(NullPointerException e) {
+        } catch (NumberFormatException e) {
+        } catch (NullPointerException e) {
         }
 
         if (isInt)

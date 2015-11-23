@@ -76,7 +76,7 @@ public class KRule extends KASTNode {
         //default params range conditions
         formalParams.forEach(varDecl -> allPreCond.add(new KCondition(ConstraintGen
                 .genRangeConstraint4Type(varDecl.getType().toString(),
-                        TypeMapping.freshVar(varDecl.getName().toString(),varDecl.getType().isPrimitiveType())))));
+                        TypeMapping.freshVar(varDecl.getName().toString(), varDecl.getType().isPrimitiveType())))));
 
         //TODO: constraints generated from expressions.
 
@@ -93,8 +93,8 @@ public class KRule extends KASTNode {
             sb.append("requires ");
             this.preConds.forEach(preCond ->
                     sb.append(preCond.toString() +
-                            ((this.preConds.get(this.preConds.size() - 1).equals
-                                    (preCond)) ? "\n" : " andBool ")
+                                    ((this.preConds.get(this.preConds.size() - 1).equals
+                                            (preCond)) ? "\n" : " andBool ")
                     ));
         }
 
@@ -102,8 +102,8 @@ public class KRule extends KASTNode {
             sb.append("ensures ");
             this.postConds.forEach(postCond ->
                     sb.append(postCond.toString() +
-                            ((this.postConds.get(this.postConds.size() - 1).equals
-                                    (postCond)) ? "\n" : " andBool ")
+                                    ((this.postConds.get(this.postConds.size() - 1).equals
+                                            (postCond)) ? "\n" : " andBool ")
                     ));
         }
 

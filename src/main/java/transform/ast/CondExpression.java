@@ -79,7 +79,7 @@ public class CondExpression {
             methInvoc.arguments().forEach(argExp ->
                     operands.add(transformJExpr2KExpr((Expression) argExp).toString()));
             return new CondExpression(funcName, operands);
-        } else if (operation instanceof ParenthesizedExpression){
+        } else if (operation instanceof ParenthesizedExpression) {
             ParenthesizedExpression parenExp = (ParenthesizedExpression) operation;
             String parenOp = "()";
             operands.add(transformJExpr2KExpr(parenExp.getExpression()).toString());
