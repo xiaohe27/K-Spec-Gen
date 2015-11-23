@@ -6,6 +6,7 @@ import transform.utils.TypeMapping;
 import java.util.ArrayList;
 
 /**
+ * Implement the AST transformation approach.
  * Created by hx312 on 13/10/2015.
  */
 public class CondExpression {

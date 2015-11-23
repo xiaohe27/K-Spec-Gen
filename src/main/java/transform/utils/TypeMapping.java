@@ -196,7 +196,7 @@ public class TypeMapping {
      * @param formalParams
      * @return
      */
-    public static String fromJExpr2KExpr(String jexpr, ArrayList<SingleVariableDeclaration>
+    public static String fromJExpr2KExprString(String jexpr, ArrayList<SingleVariableDeclaration>
             formalParams) {
         String[] disjuncts = jexpr.split("&&");
 
