@@ -5,6 +5,7 @@ import parser.ExpressionParser;
 import parser.annotation.MethodInfo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by hx312 on 19/11/2015.
@@ -227,14 +228,43 @@ public class TypeMapping {
 
     /**
      * We can assume that there is neither '&&' nor '||' in the literal, and focus on
-     * transforming the literal according to the
+     * transforming the literal according to the type of atoms.
+     * Currently, only int operations and floating operations are supported.
      *
      * @param literal
      * @param typeId
      * @return
      */
-    private static String fromLiteral2KExpr(String literal, int typeId) {
-        return null;
+    public static String fromLiteral2KExpr(String literal, int typeId) {
+        String kexp = literal;
+
+        if (typeId == TypeMapping.INT_OPERAND) {
+            for (int i = 0; i < TypeMapping.infixOP.length; i++) {
+                String curOp = TypeMapping.infixOP[i];
+
+                if (! literal.contains(curOp)) continue;
+                String curOp_reg = curOp;
+                if (curOp.equals("+")) {curOp_reg = "\\+";}
+
+                kexp = kexp.replaceAll(curOp_reg, TypeMapping.convert2KOP(curOp, typeId));
+            }
+        } else if (typeId == TypeMapping.FLOAT_OPERAND) {
+            for (int i = 0; i < TypeMapping.commonInfixOP.length; i++) {
+                String curOp = TypeMapping.commonInfixOP[i];
+                kexp = kexp.replaceAll(curOp, TypeMapping.convert2KOP(curOp, typeId));
+            }
+
+        }  else {
+
+        }
+
+        return kexp;
+    }
+
+
+    public static void main(String[] args) {
+        String goodExp = ExpressionParser.parseExprStr("a + c -d/e >= 72").toString();
+        System.out.println(fromLiteral2KExpr(goodExp, TypeMapping.INT_OPERAND));
     }
 
 }

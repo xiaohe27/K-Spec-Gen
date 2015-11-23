@@ -144,5 +144,7 @@ public class ExpressionParser extends ASTVisitor {
         System.out.println("The type of exp1 is " + getTypeIdOfTheExpr(test1, myTyEnv));
         System.out.println("The type of exp2 is " + getTypeIdOfTheExpr(test2, myTyEnv));
 
+        Expression exp3 = parseExprStr("1 < 2 <= 3");
+        System.out.println(exp3 + " is also ok.");
     }
 }
