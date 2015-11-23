@@ -107,7 +107,6 @@ public class ExpressionParser extends ASTVisitor {
 //        System.out.println("The operator is " + exp.getOperator());
 //        System.out.println("Left operand is " + exp.getLeftOperand());
 //        System.out.println("Right operand is " + exp.getRightOperand());
-
         return true;
     }
 

@@ -1,6 +1,7 @@
 package transform.utils;
 
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import parser.ExpressionParser;
 import parser.annotation.MethodInfo;
 
 import java.util.ArrayList;
@@ -177,16 +178,63 @@ public class TypeMapping {
         String[] excludeList = {"-", "*", "/", "%"};
         if ("!=".equals(oldOp)) {
             return "=/=String";
-        } else if (isIn(commonInfixOP, oldOp) && !isIn(excludeList,oldOp)) {
+        } else if (isIn(commonInfixOP, oldOp) && !isIn(excludeList, oldOp)) {
             return oldOp + "String";
         } else {
             return oldOp;
         }
     }
 
-    public static String transform2KExpr(String jExpr, int type) {
+    /**
+     * Construct the KExpr from JavaExpression; Decompose the jexpr into conjunctions of
+     * disjunctions, and transform each disjunction separately. Then the final result can be a
+     * combination of sub-results via 'andBool' K-operator.
+     *
+     * @param jexpr
+     * @param formalParams
+     * @return
+     */
+    public static String fromJExpr2KExpr(String jexpr, ArrayList<SingleVariableDeclaration>
+            formalParams) {
+        String[] disjuncts = jexpr.split("&&");
 
 
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < disjuncts.length - 1; i++) {
+            String disjunction = disjuncts[i];
+            String subResult = fromDisjunct2KExpr(disjunction, formalParams);
+            sb.append(subResult + " andBool ");
+        }
+
+        sb.append(fromDisjunct2KExpr(disjuncts[disjuncts.length - 1], formalParams) + "\n");
+
+        return sb.toString();
+    }
+
+    private static String fromDisjunct2KExpr(String disjunction, ArrayList<SingleVariableDeclaration> formalParams) {
+        String[] literals = disjunction.split("||");
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < literals.length; i++) {
+            String literal = literals[i];
+            int typeId = ExpressionParser.getTypeIdOfTheExpr(literal, formalParams);
+            String subResult = fromLiteral2KExpr(literal, typeId);
+            sb.append(subResult + (i == literals.length - 1 ? " " : " orBool "));
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * We can assume that there is neither '&&' nor '||' in the literal, and focus on
+     * transforming the literal according to the
+     *
+     * @param literal
+     * @param typeId
+     * @return
+     */
+    private static String fromLiteral2KExpr(String literal, int typeId) {
+        return null;
     }
 
     public static void main(String[] args) {
@@ -194,5 +242,8 @@ public class TypeMapping {
         String bst_t = "t";
         System.out.println(freshVar(int_v, true));
         System.out.println(freshVar(bst_t, false));
+
+        String test = "2 + 3 / 4 == 5 && 1.1 - 0.9 == -0.2";
+        System.out.println(fromJExpr2KExpr(test));
     }
 }
