@@ -214,7 +214,7 @@ public class TypeMapping {
     }
 
     private static String fromDisjunct2KExpr(String disjunction, ArrayList<SingleVariableDeclaration> formalParams) {
-        String[] literals = disjunction.split("||");
+        String[] literals = disjunction.split("\\|\\|");
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < literals.length; i++) {
