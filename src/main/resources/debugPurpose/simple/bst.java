@@ -1,7 +1,7 @@
 public class bst {
-int value;
-bst left;
-bst right;
+    int value;
+    bst left;
+    bst right;
 
 /*
   public static void main(String[] args) {
@@ -13,16 +13,15 @@ node1.right = node3;
 }
 */
 
-static boolean find(int v, bst t)
-{
-  if (t == null)
-    return false;
-  else if (v == t.value)
-    return true;
-  else if (v < t.value)
-    return find(v, t.left);
-  else
-    return find(v, t.right);
-}
+    static boolean find(int v, bst t) {
+        if (t == null)
+            return false;
+        else if (v == t.value)
+            return true;
+        else if (v < t.value)
+            return find(v, t.left);
+        else
+            return find(v, t.right);
+    }
 
 }

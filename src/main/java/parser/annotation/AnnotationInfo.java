@@ -1,5 +1,6 @@
 package parser.annotation;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 /**
@@ -31,6 +32,10 @@ public class AnnotationInfo {
 
     public MethodInfo getMethodInfo(int index) {
         return methodsInfo.get(index);
+    }
+
+    public Collection<MethodInfo> getAllMethodsInfo() {
+        return methodsInfo.values();
     }
 
     public void printInfo() {

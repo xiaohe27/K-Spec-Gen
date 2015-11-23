@@ -1,6 +1,9 @@
 package parser.annotation;
 
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.Type;
 import parser.ExpressionParser;
 
 import java.util.ArrayList;
@@ -10,12 +13,15 @@ import java.util.regex.Matcher;
  * Created by xiaohe on 10/6/15.
  */
 public class MethodInfo {
-    private final String methName;
+    private final String className;
+    private final MethodDeclaration methodDecl;
     private final int startPos;
     private final int endPos;
 
+    //The pre and post condition list are extracted from the method contract.
     private ArrayList<Expression> preCondList = new ArrayList<>();
     private ArrayList<Expression> postCondList = new ArrayList<>();
+    //the expected return value according to the method contract.
     private String retVal;
 
     /**
@@ -26,8 +32,10 @@ public class MethodInfo {
     private ArrayList<LoopInfo> loopsInfo = new ArrayList<>();
 
 
-    public MethodInfo(String methName, int startPos, int len, String preAndPostCond) {
-        this.methName = methName;
+    public MethodInfo(String className, MethodDeclaration methodDecl, int startPos, int len, String
+            preAndPostCond) {
+        this.className = className;
+        this.methodDecl = methodDecl;
         this.startPos = startPos;
         this.endPos = startPos + len;
 
@@ -115,10 +123,101 @@ public class MethodInfo {
         return loopsInfo.get(index);
     }
 
+    public int getNumOfLoops() {
+        return loopsInfo.size();
+    }
+
+    public ArrayList<Expression> getPreCondList() {
+        ArrayList<Expression> copiedPreCondList = new ArrayList<>();
+        copiedPreCondList.addAll(this.preCondList);
+        return copiedPreCondList;
+    }
+
+    public ArrayList<Expression> getPostCondList() {
+        ArrayList<Expression> copiedPostCondList = new ArrayList<>();
+        copiedPostCondList.addAll(this.postCondList);
+        return copiedPostCondList;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public String getRetVal() {
+        return retVal;
+    }
+
+    public Type getRetType() {
+        return methodDecl.getReturnType2();
+    }
+
+    public ArrayList<SingleVariableDeclaration> getFormalParams() {
+        ArrayList<SingleVariableDeclaration> methodArgs = new ArrayList<>();
+        methodArgs.addAll(methodDecl.parameters());
+        return methodArgs;
+    }
+
+    public String getMethodName() {
+        return methodDecl.getName().toString();
+    }
+
+    public String getQualifiedName() {
+        return this.className + "." + methodDecl.getName().getFullyQualifiedName();
+    }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Transform the given string to K's ID.
+     */
+    public static String string2ID(String inputStr) {
+        return "String2Id(\"" + inputStr + "\")";
+    }
+
+    /**
+     * Transform the class name to K's ID.
+     *
+     * @return
+     */
+    public static String className2ID(String clsName) {
+        return "(class " + string2ID("." + clsName) + ")";
+    }
+
+    /**
+     * Transform the method name to K's ID.
+     *
+     * @return
+     */
+    public static String methodName2ID(String methName) {
+        return string2ID(methName);
+    }
+
+    public String className2ID() {
+        return className2ID(this.getClassName());
+    }
+
+    public String methodName2ID() {
+        return methodName2ID(this.getMethodName());
+    }
+
+    public String getKModuleName() {
+        String methodName = this.getMethodName();
+        String modName = this.className + "-" + (methodName.equals(this.className) ? ""
+                : methodName + "-") + "SPEC";
+
+        return modName.toUpperCase();
+    }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Method " + methName + " 's contract is \n");
+
+        //method sig
+        sb.append("Method " + getQualifiedName() + "'s args are \n");
+        this.getFormalParams().forEach(param ->
+                sb.append(param.getName().toString() + " of type " + param.getType().toString
+                        () + "\n"));
+
+        sb.append("Method " + this.getQualifiedName() + " 's contract is \n");
 
         this.preCondList.forEach(preCondStr -> {
             sb.append("@pre: " + preCondStr + ";\n");
