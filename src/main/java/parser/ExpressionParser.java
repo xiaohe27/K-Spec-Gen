@@ -42,13 +42,6 @@ public class ExpressionParser extends ASTVisitor {
         return ((Expression) expParser.createAST(null));
     }
 
-    public static Statement parseExprStr2Stmt(String str) {
-        expParser.setSource(str.toCharArray());
-        expParser.setKind(ASTParser.K_STATEMENTS);
-
-        return ((Statement) expParser.createAST(null));
-    }
-
 
 
     /**
@@ -157,8 +150,5 @@ public class ExpressionParser extends ASTVisitor {
         Expression exp3 = parseExprStr("1 < 2 <= 3");
         System.out.println(exp3 + " is also ok.");
 
-        System.out.println();
-        Statement stmt = parseExprStr2Stmt("int a = 5;");
-        System.out.println(stmt.toString());
     }
 }

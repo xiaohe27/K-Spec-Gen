@@ -36,7 +36,7 @@ public class KRule extends KASTNode {
 //        initStackAndHeap(methodInfo, loopInfo);
 
         this.preConds.addAll(extractAllPreCond(methodInfo.getPreCondList(), methodInfo.getFormalParams()));
-        this.postConds.addAll(extractAllPostCond(methodInfo.getPostCondList()));
+        this.postConds.addAll(extractAllPostCond(methodInfo.getPostCondList(), methodInfo.getFormalParams()));
         this.retVal = methodInfo.getRetVal();
         this.cells = constructCells(methodInfo, loopInfo);
     }
@@ -65,8 +65,15 @@ public class KRule extends KASTNode {
     }
 
 
-    private Collection<? extends KCondition> extractAllPostCond(ArrayList<Expression> postCondList) {
-        Collection<? extends KCondition> allPostCond = new ArrayList<>();
+    private Collection<? extends KCondition> extractAllPostCond(ArrayList<Expression> postCondList,
+                                                                ArrayList<SingleVariableDeclaration> formalParams) {
+        Collection<KCondition> allPostCond = new ArrayList<>();
+
+        postCondList.forEach(postCondExpr ->
+                allPostCond.add(KCondition.genKConditionFromJavaExpr(postCondExpr, formalParams)));
+
+        //also include the constraint related to the return expression.
+
         return allPostCond;
     }
 
