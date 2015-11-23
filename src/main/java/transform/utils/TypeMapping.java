@@ -237,13 +237,4 @@ public class TypeMapping {
         return null;
     }
 
-    public static void main(String[] args) {
-        String int_v = "v";
-        String bst_t = "t";
-        System.out.println(freshVar(int_v, true));
-        System.out.println(freshVar(bst_t, false));
-
-        String test = "2 + 3 / 4 == 5 && 1.1 - 0.9 == -0.2";
-        System.out.println(fromJExpr2KExpr(test));
-    }
 }
