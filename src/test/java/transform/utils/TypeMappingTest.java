@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import mockit.*;
 
 /**
  * Created by hx312 on 23/11/2015.
@@ -13,13 +14,10 @@ import java.util.ArrayList;
 public class TypeMappingTest {
     ArrayList<SingleVariableDeclaration> formalParams;
 
+
     @Before
     public void setUp() throws Exception {
         this.formalParams = new ArrayList<>();
-
-//        expect(varA.getType()).andReturn(type);
-//
-//        this.formalParams.add(varA);
 
     }
 
@@ -29,7 +27,10 @@ public class TypeMappingTest {
     }
 
     @Test
-    public void testFromJExpr2KExpr() throws Exception {
-//        System.out.println("varA is " + this.formalParams.get(0).getType());
+    public void testFromJExpr2KExpr(@Mocked final SingleVariableDeclaration varA) throws Exception {
+
+        new Expectations(){{
+            varA.toString(); result = "int";
+        }};
     }
 }
