@@ -1,7 +1,8 @@
 For the function that converts a java expression (user's annotations that represent pre/post conditions), there are two approaches.
 
 1) Transform the AST tree
-advant: easy to do the transformation, no need to worry that transformation of one symbol affects others.
+advant: easy to do the transformation, even for the complex operators; 
+no need to worry that transformation of one symbol affects others.
 e.g. from < to <Int 
 and <= to <=Int may interfere one another if we transform via String's replacing method.
 
@@ -12,3 +13,9 @@ need some efforts to create the AST tree for the output structure.
 2) pattern matching and replacing
 advantage: no extra brackets; no need to build AST
 disadvant: see the advant part of the previous approach.
+
+//////////////////////
+perf eval for the method of expr transformation:
+Time complexity: N is the size of input expr, and k is the number of operators.
+transform via AST:  O(N * 1)
+transform via String replaceAll : O(k * N)
