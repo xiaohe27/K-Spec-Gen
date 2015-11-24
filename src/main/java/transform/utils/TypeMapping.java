@@ -220,6 +220,13 @@ public class TypeMapping {
         for (int i = 0; i < literals.length; i++) {
             String literal = literals[i];
             int typeId = ExpressionParser.getTypeIdOfTheExpr(literal, formalParams);
+
+            //transform the vars in the expression to the k vars.
+            for (int j = 0; j < formalParams.size(); j++) {
+                String varJ = formalParams.get(j).getName().toString();
+                boolean isVarJPrim = formalParams.get(j).getType().isPrimitiveType();
+                literal = literal.replaceAll(varJ, TypeMapping.freshVar(varJ, isVarJPrim));
+            }
             String subResult = fromLiteral2KExpr(literal, typeId);
             sb.append(subResult + (i == literals.length - 1 ? " " : " orBool "));
         }
