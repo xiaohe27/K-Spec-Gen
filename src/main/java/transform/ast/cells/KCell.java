@@ -49,6 +49,10 @@ public class KCell extends Cell {
             String retTypeInJavaSemantics = retType.isPrimitiveType() ? retType.toString() :
                     MethodInfo.className2ID(retType.toString());
 
+            if (retTypeInJavaSemantics.equals("boolean"))
+                retTypeInJavaSemantics = "bool";
+
+            String retKType = TypeMapping.getKBuiltInType4SimpleJType(retType.toString());
             String retVal = this.methodInfo.getRetVal();
             if (retVal.startsWith("?")) {
 
@@ -57,7 +61,7 @@ public class KCell extends Cell {
                 retVal = ExpressionParser.printExprWithKVars(ExpressionParser.parseExprStr
                         (this.methodInfo.getRetVal()), this.methArgs);
             }
-            sb.append(retVal + "::" + retTypeInJavaSemantics);
+            sb.append(retVal + ":" + retKType + "::" + retTypeInJavaSemantics);
         }
         return super.surroundWithTags(sb.toString());
     }

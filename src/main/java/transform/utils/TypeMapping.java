@@ -65,7 +65,7 @@ public class TypeMapping {
         }
     }
 
-    private static String getKBuiltInType4SimpleJType(String javaType) {
+    public static String getKBuiltInType4SimpleJType(String javaType) {
         if (isIn(intTypes, javaType))
             return "Int";
 
