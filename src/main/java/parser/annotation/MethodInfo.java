@@ -144,6 +144,11 @@ public class MethodInfo {
     }
 
     public String getRetVal() {
+        if (retVal == null) {
+            Character firstCharInType = this.getRetType().toString().charAt(0);
+            return "?" + firstCharInType.toString().toUpperCase();
+        }
+
         return retVal;
     }
 

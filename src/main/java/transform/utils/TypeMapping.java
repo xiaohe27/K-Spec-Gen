@@ -1,12 +1,11 @@
 package transform.utils;
 
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import org.eclipse.jdt.core.dom.Type;
 import parser.ExpressionParser;
 import parser.annotation.MethodInfo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by hx312 on 19/11/2015.
@@ -84,7 +83,7 @@ public class TypeMapping {
     }
 
     /**
-     * Generate a fresh var based on 'baseName'.
+     * Generate the k var name based on 'baseName'.
      * The general strategy is
      * 1) capitalize the baseName to generate word w.
      * 2) if it is a primitive type, then goto 3), otherwise goto 4).
@@ -96,7 +95,7 @@ public class TypeMapping {
      * @param isPrimitive
      * @return
      */
-    public static String freshVar(String baseName, boolean isPrimitive) {
+    public static String convert2KVar(String baseName, boolean isPrimitive) {
         if (baseName == null)
             return "NULL";
 
@@ -124,7 +123,7 @@ public class TypeMapping {
 
         String jTypeInJavaSemantics = isPrimitive ? jType : MethodInfo.className2ID(jType);
 
-        String result = freshVar(varName, isPrimitive);
+        String result = convert2KVar(varName, isPrimitive);
         result += ":" + getKBuiltInType4SimpleJType(jType);
         result = isPrimitive ? result : "(" + result + ")";
         result += "::" + jTypeInJavaSemantics;
@@ -196,9 +195,11 @@ public class TypeMapping {
      * @param formalParams
      * @return
      */
-    public static String fromJExpr2KExprString(String jexpr, ArrayList<SingleVariableDeclaration>
+    public static String fromJExpr2KExprString(Expression jexpr, ArrayList<SingleVariableDeclaration>
             formalParams) {
-        String[] disjuncts = jexpr.split("&&");
+        String jexprStr = ExpressionParser.printExprWithKVars(jexpr, formalParams);
+
+        String[] disjuncts = jexprStr.split("&&");
 
 
         StringBuilder sb = new StringBuilder();
@@ -221,12 +222,6 @@ public class TypeMapping {
             String literal = literals[i];
             int typeId = ExpressionParser.getTypeIdOfTheExpr(literal, formalParams);
 
-            //transform the vars in the expression to the k vars.
-            for (int j = 0; j < formalParams.size(); j++) {
-                String varJ = formalParams.get(j).getName().toString();
-                boolean isVarJPrim = formalParams.get(j).getType().isPrimitiveType();
-                literal = literal.replaceAll(varJ, TypeMapping.freshVar(varJ, isVarJPrim));
-            }
             String subResult = fromLiteral2KExpr(literal, typeId);
             sb.append(subResult + (i == literals.length - 1 ? " " : " orBool "));
         }

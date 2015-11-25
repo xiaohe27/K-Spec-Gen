@@ -12,6 +12,7 @@ import java.util.HashMap;
  */
 public class ExpressionParser extends ASTVisitor {
     private HashMap<String, String> typeEnv = new HashMap<>();
+    private HashMap<String, String> fromJVarName2KVarName = new HashMap<>();
 
     private static final ASTParser expParser = initParser();
 
@@ -24,6 +25,9 @@ public class ExpressionParser extends ASTVisitor {
     public ExpressionParser(ArrayList<SingleVariableDeclaration> formalParams) {
         formalParams.forEach(varDecl -> typeEnv.put(varDecl.getName().toString(), varDecl
                 .getType().toString()));
+
+        formalParams.forEach(varDecl -> fromJVarName2KVarName.put(varDecl.getName().toString(),
+             TypeMapping.convert2KVar(varDecl.getName().toString(), varDecl.getType().isPrimitiveType())));
     }
 
     public ExpressionParser(HashMap<String, String> typeEnv0) {
@@ -40,6 +44,12 @@ public class ExpressionParser extends ASTVisitor {
         expParser.setKind(ASTParser.K_EXPRESSION);
 
         return ((Expression) expParser.createAST(null));
+    }
+
+    public static String printExprWithKVars(Expression expr, ArrayList<SingleVariableDeclaration>
+            params) {
+        expr.accept(new ExpressionParser(params));
+        return expr.toString();
     }
 
 
@@ -84,7 +94,13 @@ public class ExpressionParser extends ASTVisitor {
 
 //        System.out.println("Visit simple name " + name);
 
-        typeIdOfTheOperands = TypeMapping.getTypeId(type);
+        if (typeIdOfTheOperands == TypeMapping.OTHER_OPERAND)
+            typeIdOfTheOperands = TypeMapping.getTypeId(type);
+
+        String kVarName = this.fromJVarName2KVarName.get(name.getIdentifier());
+        if (kVarName != null) {
+            name.setIdentifier(kVarName);
+        }
         return false;
     }
 
