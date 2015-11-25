@@ -83,7 +83,7 @@ public class KRule extends KASTNode {
         //include the default param range conditions
         formalParams.forEach(varDecl -> allPreCond.add(KCondition.genKConditionFromConstraintString(ConstraintGen
                 .genRangeConstraint4Type(varDecl.getType().toString(),
-                        TypeMapping.freshVar(varDecl.getName().toString(), varDecl.getType().isPrimitiveType())))));
+                        TypeMapping.convert2KVar(varDecl.getName().toString(), varDecl.getType().isPrimitiveType())))));
 
         preCondList.forEach(preCondExpr ->
             allPreCond.add(KCondition.genKConditionFromJavaExpr(preCondExpr, formalParams)));

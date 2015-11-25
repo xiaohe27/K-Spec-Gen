@@ -10,4 +10,11 @@ public class min {
         else
             return x;
     }
+
+    /**
+     * @requires a < b;
+     */
+    static boolean isLT(int a, int b) {
+
+    }
 }
