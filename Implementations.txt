@@ -19,3 +19,7 @@ perf eval for the method of expr transformation:
 Time complexity: N is the size of input expr, and k is the number of operators.
 transform via AST:  O(N * 1)
 transform via String replaceAll : O(k * N)
+
+
+//**************************
+Can change simple name's id, i.e. for a java exp, we can rename the its vars to conform to k-vars' convention.
