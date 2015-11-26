@@ -59,7 +59,7 @@ public class KCell extends Cell {
             } else {
                 //transform all the program vars to K vars.
                 retVal = ExpressionParser.printExprWithKVars(ExpressionParser.parseExprStr
-                        (this.methodInfo.getRetVal()), this.methArgs);
+                        (this.methodInfo.getRetVal()), TypeMapping.extractJVar2KVarMapping(this.methArgs));
             }
             sb.append(retVal + ":" + retKType + "::" + retTypeInJavaSemantics);
         }

@@ -81,12 +81,16 @@ public class KRule extends KASTNode {
                                                      ArrayList<SingleVariableDeclaration> formalParams) {
         Collection<KCondition> allPreCond = new ArrayList<>();
         //include the default param range conditions
-        formalParams.forEach(varDecl -> allPreCond.add(KCondition.genKConditionFromConstraintString(ConstraintGen
-                .genRangeConstraint4Type(varDecl.getType().toString(),
-                        TypeMapping.convert2KVar(varDecl.getName().toString(), varDecl.getType().isPrimitiveType())))));
+        formalParams.stream().filter(varDecl -> varDecl.getType().isPrimitiveType())
+                .forEach(primVar ->
+                allPreCond.add(
+                        KCondition.genKConditionFromConstraintString(
+                                ConstraintGen.genRangeConstraint4Type
+                                        (primVar.getType().toString(), TypeMapping.convert2KVar
+                                            (primVar.getName().toString(), true)))));
 
         preCondList.forEach(preCondExpr ->
-            allPreCond.add(KCondition.genKConditionFromJavaExpr(preCondExpr, formalParams)));
+                allPreCond.add(KCondition.genKConditionFromJavaExpr(preCondExpr, formalParams)));
         return allPreCond;
     }
 
@@ -100,8 +104,8 @@ public class KRule extends KASTNode {
             sb.append("requires ");
             this.preConds.forEach(preCond ->
                     sb.append(preCond.toString() +
-                                    ((this.preConds.get(this.preConds.size() - 1).equals
-                                            (preCond)) ? "\n" : " andBool ")
+                            ((this.preConds.get(this.preConds.size() - 1).equals
+                                    (preCond)) ? "\n" : " andBool ")
                     ));
         }
 
@@ -109,8 +113,8 @@ public class KRule extends KASTNode {
             sb.append("ensures ");
             this.postConds.forEach(postCond ->
                     sb.append(postCond.toString() +
-                                    ((this.postConds.get(this.postConds.size() - 1).equals
-                                            (postCond)) ? "\n" : " andBool ")
+                            ((this.postConds.get(this.postConds.size() - 1).equals
+                                    (postCond)) ? "\n" : " andBool ")
                     ));
         }
 

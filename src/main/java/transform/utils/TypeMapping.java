@@ -6,6 +6,7 @@ import parser.ExpressionParser;
 import parser.annotation.MethodInfo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by hx312 on 19/11/2015.
@@ -186,18 +187,41 @@ public class TypeMapping {
         }
     }
 
+
+    public static HashMap<String, String> extractJVar2KVarMapping(ArrayList<SingleVariableDeclaration> formalParams) {
+        //map java var name to k var name
+        HashMap<String, String> fromJVarName2KVarName = new HashMap<>();
+
+        formalParams.forEach(varDecl -> fromJVarName2KVarName.put(varDecl.getName().toString(),
+                TypeMapping.convert2KVar(varDecl.getName().toString(), varDecl.getType().isPrimitiveType())));
+        return fromJVarName2KVarName;
+    }
+
     /**
      * Construct the KExpr from JavaExpression; Decompose the jexpr into conjunctions of
      * disjunctions, and transform each disjunction separately. Then the final result can be a
      * combination of sub-results via 'andBool' K-operator.
      *
-     * @param jexpr
-     * @param formalParams
-     * @return
+     * @param jexpr The input java expression that represents the pre/post condition of the
+     *              annotated method.
+     * @param formalParams  The formal parameters of the annotated method.
+     * @return The corresponding k expression for the input java expression.
      */
     public static String fromJExpr2KExprString(Expression jexpr, ArrayList<SingleVariableDeclaration>
             formalParams) {
-        String jexprStr = ExpressionParser.printExprWithKVars(jexpr, formalParams);
+        //map k-var to java-type
+        HashMap<String, String> typeEnv = new HashMap<>();
+        HashMap<String, String> fromJVarName2KVarName = extractJVar2KVarMapping(formalParams);
+
+        formalParams.forEach(varDecl -> typeEnv.put(fromJVarName2KVarName.get
+                (varDecl.getName().toString()), varDecl.getType().toString()));
+
+        return fromJExpr2KExprString(jexpr, fromJVarName2KVarName, typeEnv);
+    }
+
+    public static String fromJExpr2KExprString(Expression jexpr, HashMap<String, String>
+            fromJVarName2KVarName, HashMap<String, String> typeEnv) {
+        String jexprStr = ExpressionParser.printExprWithKVars(jexpr, fromJVarName2KVarName);
 
         String[] disjuncts = jexprStr.split("&&");
 
@@ -205,22 +229,22 @@ public class TypeMapping {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < disjuncts.length - 1; i++) {
             String disjunction = disjuncts[i];
-            String subResult = fromDisjunct2KExpr(disjunction, formalParams);
+            String subResult = fromDisjunct2KExpr(disjunction, typeEnv);
             sb.append(subResult + " andBool ");
         }
 
-        sb.append(fromDisjunct2KExpr(disjuncts[disjuncts.length - 1], formalParams) + "\n");
+        sb.append(fromDisjunct2KExpr(disjuncts[disjuncts.length - 1], typeEnv) + "\n");
 
         return sb.toString();
     }
 
-    private static String fromDisjunct2KExpr(String disjunction, ArrayList<SingleVariableDeclaration> formalParams) {
+    private static String fromDisjunct2KExpr(String disjunction, HashMap<String, String> typeEnv) {
         String[] literals = disjunction.split("\\|\\|");
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < literals.length; i++) {
             String literal = literals[i];
-            int typeId = ExpressionParser.getTypeIdOfTheExpr(literal, formalParams);
+            int typeId = ExpressionParser.getTypeIdOfTheExpr(literal, typeEnv);
 
             String subResult = fromLiteral2KExpr(literal, typeId);
             sb.append(subResult + (i == literals.length - 1 ? " " : " orBool "));

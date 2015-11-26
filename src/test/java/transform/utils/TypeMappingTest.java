@@ -1,17 +1,17 @@
 package transform.utils;
 
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import parser.ExpressionParser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import static org.junit.Assert.*;
 
 /**
  * Created by hx312 on 23/11/2015.
@@ -22,7 +22,7 @@ public class TypeMappingTest {
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][] {
+        return Arrays.asList(new Object[][]{
                 {"int a, int b", "a < b", "A <Int B"}
         });
     }
@@ -40,7 +40,14 @@ public class TypeMappingTest {
     @Before
     public void setUp() throws Exception {
         this.formalParams = new ArrayList<>();
+        String[] params = this.formalParamsStr.split(",");
+        for (int i = 0; i < params.length; i++) {
+            Expression expression = ExpressionParser.parseExprStr("int a;");
 
+
+//            System.out.println(varDeclExp + " is the param " + i);
+        }
+        System.out.println("The params are " + params.toString());
     }
 
     @After

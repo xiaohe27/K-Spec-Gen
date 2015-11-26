@@ -1,0 +1,7 @@
+1. Test the function which converts a java expr (denoting the pre/post conditions of the
+methods under test) to k expr, given the type mapping
+provided by the formal params of the method under test.
+
+Problem: 
+The method under test takes an argument which is of type "SingleVariableDeclaration",
+which cannot be instantiated by clients; as a result, to make the test easier,

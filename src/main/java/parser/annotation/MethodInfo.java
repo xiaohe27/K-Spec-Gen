@@ -128,15 +128,11 @@ public class MethodInfo {
     }
 
     public ArrayList<Expression> getPreCondList() {
-        ArrayList<Expression> copiedPreCondList = new ArrayList<>();
-        copiedPreCondList.addAll(this.preCondList);
-        return copiedPreCondList;
+        return this.preCondList;
     }
 
     public ArrayList<Expression> getPostCondList() {
-        ArrayList<Expression> copiedPostCondList = new ArrayList<>();
-        copiedPostCondList.addAll(this.postCondList);
-        return copiedPostCondList;
+        return this.postCondList;
     }
 
     public String getClassName() {
