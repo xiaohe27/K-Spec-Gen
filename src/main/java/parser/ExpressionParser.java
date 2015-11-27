@@ -105,6 +105,12 @@ public class ExpressionParser extends ASTVisitor {
         return false;
     }
 
+    public boolean visit(StringLiteral stringLiteral) {
+        typeIdOfTheOperands = TypeMapping.STRING_OPERAND;
+
+        return false;
+    }
+
     public boolean visit(InfixExpression exp) {
 //        System.out.println("Visit exp " + exp);
 //        System.out.println("The operator is " + exp.getOperator());

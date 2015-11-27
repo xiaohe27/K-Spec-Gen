@@ -29,7 +29,7 @@ public class TypeMapping {
             "==", "!="};
 
     private final static String[] intSpecOP = {"<<", ">>", "~", "^", "&", "|"};
-    private final static String[] boolOP = {"&&", "||", "!"};
+    private final static String[] boolOP = {"&&", "||", "!=", "==", "!"};
 
     private final static String[] infixOP = initInfixOPs();
 
@@ -56,14 +56,16 @@ public class TypeMapping {
     }
 
     public static int getTypeId(String type) {
+        if (type == null)
+            return OTHER_OPERAND;
+
         if (isIn(intTypes, type)) {
             return INT_OPERAND;
         } else if (isIn(floatTypes, type)) {
             return FLOAT_OPERAND;
         } else if ("boolean".equals(type)) {
             return BOOL_OPERAND;
-        }
-        else if ("String".equals(type)) {
+        } else if ("String".equals(type)) {
             return STRING_OPERAND;
         } else {
             return OTHER_OPERAND;
@@ -296,8 +298,16 @@ public class TypeMapping {
     public static String fromLiteral2KExpr(String literal, int typeId) {
         String kexp = literal;
         //replace each pattern in the array to its corresponding k-form.
-        String[] transformCandidates = (typeId == TypeMapping.INT_OPERAND ? TypeMapping.infixOP
-                : (typeId == TypeMapping.FLOAT_OPERAND ? TypeMapping.commonInfixOP : null));
+        String[] transformCandidates = null;
+        if (typeId == TypeMapping.INT_OPERAND)
+            transformCandidates = TypeMapping.infixOP;
+        else if (typeId == TypeMapping.FLOAT_OPERAND)
+            transformCandidates = TypeMapping.commonInfixOP;
+        else if (typeId == TypeMapping.BOOL_OPERAND)
+            transformCandidates = TypeMapping.boolOP;
+        else if (typeId == TypeMapping.STRING_OPERAND)
+            transformCandidates = TypeMapping.commonInfixOP;
+        else transformCandidates = null;
 
         if (transformCandidates == null)
             return literal;
