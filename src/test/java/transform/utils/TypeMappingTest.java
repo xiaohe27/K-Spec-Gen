@@ -36,8 +36,17 @@ public class TypeMappingTest {
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
                 {"int a, int b", "a < b", "A <Int B"},
+                {"int c, int d", "c == d", "C ==Int D"},
+                {"int c, int d", "c != d", "C =/=Int D"},
+                {"int alice, int bob", "alice < bob", "ALICE <Int BOB"},
                 {"float c, float d, int e, int f", "e >= f + 7/2-3 && c/2.0 < d",
-                "E >=Int F +Int 7 /Int 2 -Int 3 andBool C /Float 2.0 <Float D"}
+                        "E >=Int F +Int 7 /Int 2 -Int 3 andBool C /Float 2.0 <Float D"},
+                {"boolean a, boolean b", "a || b", " A orBool B"},
+//not passing
+                {"boolean b", "!b", "notBool B"},
+                {"boolean a, boolean b", "a && !b", " A andBool notBool B"},
+                {"boolean a, boolean b", "a != b", " A =/=Bool B"},
+                {"string a, string b", "a != b", "AP =/=String BP"}
         });
     }
 
