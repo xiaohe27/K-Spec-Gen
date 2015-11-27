@@ -219,7 +219,7 @@ public class TypeMapping {
         return fromJExpr2KExprString(jexpr, fromJVarName2KVarName, typeEnv);
     }
 
-    public static String fromJExpr2KExprString(Expression jexpr, HashMap<String, String>
+    private static String fromJExpr2KExprString(Expression jexpr, HashMap<String, String>
             fromJVarName2KVarName, HashMap<String, String> typeEnv) {
         String jexprStr = ExpressionParser.printExprWithKVars(jexpr, fromJVarName2KVarName);
 

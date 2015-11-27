@@ -1,5 +1,6 @@
 package transform.utils;
 
+import junit.framework.Assert;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.junit.After;
@@ -8,10 +9,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import parser.ExpressionParser;
+import parser.ast_visitor.ParamsVisitor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+
+import static org.junit.Assert.*;
 
 /**
  * Created by hx312 on 23/11/2015.
@@ -19,6 +23,7 @@ import java.util.Collection;
 @RunWith(Parameterized.class)
 public class TypeMappingTest {
     ArrayList<SingleVariableDeclaration> formalParams;
+    Expression jExpr;
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
@@ -29,25 +34,21 @@ public class TypeMappingTest {
 
     private String formalParamsStr;
     private String javaExpStr;
-    private String kExpStr;
+    private String expectedKExpStr;
 
-    public TypeMappingTest(String formalParamsStr, String javaExpStr, String kExpStr) {
+    public TypeMappingTest(String formalParamsStr, String javaExpStr, String expectedKExpStr) {
         this.formalParamsStr = formalParamsStr;
         this.javaExpStr = javaExpStr;
-        this.kExpStr = kExpStr;
+        this.expectedKExpStr = expectedKExpStr;
     }
 
     @Before
     public void setUp() throws Exception {
         this.formalParams = new ArrayList<>();
-        String[] params = this.formalParamsStr.split(",");
-        for (int i = 0; i < params.length; i++) {
-            Expression expression = ExpressionParser.parseExprStr("int a;");
+        String code = MyTestHelper.getCodeWithMethodArgs(this.formalParamsStr);
+        this.formalParams.addAll(ParamsVisitor.extractParamsFromStr(code));
 
-
-//            System.out.println(varDeclExp + " is the param " + i);
-        }
-        System.out.println("The params are " + params.toString());
+        this.jExpr = ExpressionParser.parseExprStr(this.javaExpStr);
     }
 
     @After
@@ -57,5 +58,9 @@ public class TypeMappingTest {
 
     @Test
     public void testFromJExpr2KExpr() throws Exception {
+        String actualKExprStr = TypeMapping.fromJExpr2KExprString(this.jExpr, this.formalParams);
+
+        System.out.println("Actual output is " + actualKExprStr);
+        assertEquals(this.expectedKExpStr.trim(), actualKExprStr.trim());
     }
 }
