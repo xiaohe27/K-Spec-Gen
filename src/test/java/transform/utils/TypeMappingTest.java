@@ -35,7 +35,9 @@ public class TypeMappingTest {
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
-                {"int a, int b", "a < b", "A <Int B"}
+                {"int a, int b", "a < b", "A <Int B"},
+                {"float c, float d, int e, int f", "e >= f + 7/2-3 && c/2.0 < d",
+                "E >=Int F +Int 7 /Int 2 -Int 3 andBool C /Float 2.0 <Float D"}
         });
     }
 
@@ -58,6 +60,7 @@ public class TypeMappingTest {
         String actualKExprStr = TypeMapping.fromJExpr2KExprString(this.jExpr, this.formalParams);
 
         System.out.println("Actual output is " + actualKExprStr);
-        assertEquals(this.expectedKExpStr.trim(), actualKExprStr.trim());
+        assertEquals(this.expectedKExpStr.replaceAll("\\p{Blank}","").trim(),
+                actualKExprStr.replaceAll("\\p{Blank}", "").trim());
     }
 }
