@@ -18,7 +18,8 @@ public class TypeMapping {
     public static final int INT_OPERAND = 0;
     public static final int FLOAT_OPERAND = 1;
     public static final int STRING_OPERAND = 2;
-    public static final int OTHER_OPERAND = 3;
+    public static final int BOOL_OPERAND = 3;
+    public static final int OTHER_OPERAND = 4;
 
     private final static String[] intTypes = {"byte", "short", "char", "int", "long"};
     private final static String[] floatTypes = {"float", "double"};
@@ -28,7 +29,7 @@ public class TypeMapping {
             "==", "!="};
 
     private final static String[] intSpecOP = {"<<", ">>", "~", "^", "&", "|"};
-    private final static String[] boolOP = {"&&", "||"};
+    private final static String[] boolOP = {"&&", "||", "!"};
 
     private final static String[] infixOP = initInfixOPs();
 
@@ -59,7 +60,10 @@ public class TypeMapping {
             return INT_OPERAND;
         } else if (isIn(floatTypes, type)) {
             return FLOAT_OPERAND;
-        } else if ("String".equals(type)) {
+        } else if ("boolean".equals(type)) {
+            return BOOL_OPERAND;
+        }
+        else if ("String".equals(type)) {
             return STRING_OPERAND;
         } else {
             return OTHER_OPERAND;
@@ -132,6 +136,7 @@ public class TypeMapping {
     }
 
     public static String convert2KOP(String oldOp, int operandType) {
+        oldOp = oldOp.trim();
         if ("!".equals(oldOp)) {
             return "notBool";
         } else if ("&&".equals(oldOp)) {
@@ -150,9 +155,22 @@ public class TypeMapping {
             case STRING_OPERAND:
                 return covert2KOp_String(oldOp);
 
+            case BOOL_OPERAND:
+                return convert2KOp_Bool(oldOp);
+
             default:
                 return oldOp;
 
+        }
+    }
+
+    private static String convert2KOp_Bool(String oldOp) {
+        if ("==".equals(oldOp)) {
+            return "==Bool";
+        } else if ("!=".equals(oldOp)) {
+            return "=/=Bool";
+        } else {
+            return oldOp;
         }
     }
 
