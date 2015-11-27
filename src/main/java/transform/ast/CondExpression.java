@@ -26,40 +26,6 @@ public class CondExpression {
         this.operands = operands;
     }
 
-    private String addParen(String str) {
-        return "(" + str + ")";
-    }
-
-    public String toString() {
-        if ("()".equals(op)) {
-            //it is an () expr
-            return "(" + operands.get(0) + ")";
-        }
-
-        if (operands == null || operands.size() <= 0) {
-            return op;
-        } else if (!this.isFunctionApp) { //the normal primitive operations.
-            if (operands.size() == 1) {
-                //it is uary op
-                return op + "(" + operands.get(0) + ")";
-            } else if (operands.size() == 2) {
-                //it is bin op
-                return "(" + operands.get(0) + ")" + op + "(" + operands.get(1) + ")";
-            } else {
-                return "No primitive op of size > 2 is supported at present";
-            }
-
-        } else {
-            String ret = op + "(";
-            for (int i = 0; i < operands.size() - 1; i++) {
-                ret += operands.get(i) + ", ";
-            }
-            ret += operands.get(operands.size() - 1);
-            ret += ")";
-            return ret;
-        }
-    }
-
     public static CondExpression transformJExpr2KExpr(Expression operation) {
         ArrayList<String> operands = new ArrayList<>();
 
@@ -96,6 +62,40 @@ public class CondExpression {
         } else {
             throw new UnsupportedOperationException("The expression " + operation + " is not supported at " +
                     "present.");
+        }
+    }
+
+    private String addParen(String str) {
+        return "(" + str + ")";
+    }
+
+    public String toString() {
+        if ("()".equals(op)) {
+            //it is an () expr
+            return "(" + operands.get(0) + ")";
+        }
+
+        if (operands == null || operands.size() <= 0) {
+            return op;
+        } else if (!this.isFunctionApp) { //the normal primitive operations.
+            if (operands.size() == 1) {
+                //it is uary op
+                return op + "(" + operands.get(0) + ")";
+            } else if (operands.size() == 2) {
+                //it is bin op
+                return "(" + operands.get(0) + ")" + op + "(" + operands.get(1) + ")";
+            } else {
+                return "No primitive op of size > 2 is supported at present";
+            }
+
+        } else {
+            String ret = op + "(";
+            for (int i = 0; i < operands.size() - 1; i++) {
+                ret += operands.get(i) + ", ";
+            }
+            ret += operands.get(operands.size() - 1);
+            ret += ")";
+            return ret;
         }
     }
 }

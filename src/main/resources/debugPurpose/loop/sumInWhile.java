@@ -8,22 +8,6 @@ class sum {
     public static void zz(int a) {
     }
 
-    private String ddd() {
-        return "";
-    }
-
-    private int fff() {
-        return 0;
-    }
-
-    private int ggg(String s) {
-        return 0;
-    }
-
-    private int aaa() {
-        return 0;
-    }
-
     public static void main(String[] args) {
         System.out.println("Sum to 5:" + sum_iterative(5));
     }
@@ -100,6 +84,22 @@ class sum {
         }
 
         return s;
+    }
+
+    private String ddd() {
+        return "";
+    }
+
+    private int fff() {
+        return 0;
+    }
+
+    private int ggg(String s) {
+        return 0;
+    }
+
+    private int aaa() {
+        return 0;
     }
 }
 

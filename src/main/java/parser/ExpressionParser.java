@@ -3,26 +3,18 @@ package parser;
 import org.eclipse.jdt.core.dom.*;
 import transform.utils.TypeMapping;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * Created by xiaohe on 10/9/15.
  */
 public class ExpressionParser extends ASTVisitor {
+    private static final ASTParser expParser = initParser();
+    private static int typeIdOfTheOperands = TypeMapping.OTHER_OPERAND;
     //map k-var to java-type
     private HashMap<String, String> typeEnv = new HashMap<>();
     //map java var name to k var name
     private HashMap<String, String> fromJVarName2KVarName = new HashMap<>();
-
-    private static final ASTParser expParser = initParser();
-
-    private static int typeIdOfTheOperands = TypeMapping.OTHER_OPERAND;
-
-    private static void resetTypeId() {
-        typeIdOfTheOperands = TypeMapping.OTHER_OPERAND;
-    }
-
 
     private ExpressionParser(HashMap<String, String> typeEnv0, HashMap<String, String>
             fromJVarName2KVarName0) {
@@ -30,6 +22,10 @@ public class ExpressionParser extends ASTVisitor {
             this.typeEnv.putAll(typeEnv0);
         if (fromJVarName2KVarName0 != null)
             this.fromJVarName2KVarName.putAll(fromJVarName2KVarName0);
+    }
+
+    private static void resetTypeId() {
+        typeIdOfTheOperands = TypeMapping.OTHER_OPERAND;
     }
 
     private static ASTParser initParser() {
@@ -53,6 +49,7 @@ public class ExpressionParser extends ASTVisitor {
 
     /**
      * Return the type id (see the def in TypeMapping class) of the operands of the expression.
+     *
      * @param exprStr
      * @return
      */

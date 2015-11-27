@@ -202,9 +202,9 @@ public class TypeMapping {
      * disjunctions, and transform each disjunction separately. Then the final result can be a
      * combination of sub-results via 'andBool' K-operator.
      *
-     * @param jexpr The input java expression that represents the pre/post condition of the
-     *              annotated method.
-     * @param formalParams  The formal parameters of the annotated method.
+     * @param jexpr        The input java expression that represents the pre/post condition of the
+     *                     annotated method.
+     * @param formalParams The formal parameters of the annotated method.
      * @return The corresponding k expression for the input java expression.
      */
     public static String fromJExpr2KExprString(Expression jexpr, ArrayList<SingleVariableDeclaration>
@@ -265,6 +265,7 @@ public class TypeMapping {
 
         return exp;
     }
+
     /**
      * We can assume that there is neither '&&' nor '||' in the literal, and focus on
      * transforming the literal according to the type of atoms.
@@ -278,14 +279,14 @@ public class TypeMapping {
         String kexp = literal;
         //replace each pattern in the array to its corresponding k-form.
         String[] transformCandidates = (typeId == TypeMapping.INT_OPERAND ? TypeMapping.infixOP
-            : (typeId == TypeMapping.FLOAT_OPERAND ? TypeMapping.commonInfixOP : null));
+                : (typeId == TypeMapping.FLOAT_OPERAND ? TypeMapping.commonInfixOP : null));
 
         if (transformCandidates == null)
             return literal;
 
         for (int i = 0; i < transformCandidates.length; i++) {
             String curOp = transformCandidates[i];
-            if (! literal.contains(curOp))
+            if (!literal.contains(curOp))
                 continue;
 
             kexp = kexp.replaceAll(toRegEx(curOp), TypeMapping.convert2KOP(curOp, typeId));

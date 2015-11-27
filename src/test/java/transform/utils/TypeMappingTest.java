@@ -1,6 +1,5 @@
 package transform.utils;
 
-import junit.framework.Assert;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.junit.After;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by hx312 on 23/11/2015.
@@ -24,22 +23,20 @@ import static org.junit.Assert.*;
 public class TypeMappingTest {
     ArrayList<SingleVariableDeclaration> formalParams;
     Expression jExpr;
+    private String formalParamsStr;
+    private String javaExpStr;
+    private String expectedKExpStr;
+    public TypeMappingTest(String formalParamsStr, String javaExpStr, String expectedKExpStr) {
+        this.formalParamsStr = formalParamsStr;
+        this.javaExpStr = javaExpStr;
+        this.expectedKExpStr = expectedKExpStr;
+    }
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
                 {"int a, int b", "a < b", "A <Int B"}
         });
-    }
-
-    private String formalParamsStr;
-    private String javaExpStr;
-    private String expectedKExpStr;
-
-    public TypeMappingTest(String formalParamsStr, String javaExpStr, String expectedKExpStr) {
-        this.formalParamsStr = formalParamsStr;
-        this.javaExpStr = javaExpStr;
-        this.expectedKExpStr = expectedKExpStr;
     }
 
     @Before

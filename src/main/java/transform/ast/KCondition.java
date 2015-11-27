@@ -36,7 +36,7 @@ public class KCondition extends KASTNode {
     }
 
     public String toString() {
-        if (this.condString == null){
+        if (this.condString == null) {
             this.condString = TypeMapping.fromJExpr2KExprString(this.expression, this.params);
         }
 
