@@ -1,0 +1,11 @@
+1. The == comparasion operator is overloaded in java.
+When its operands are strings, the semantics is testing whether 
+the lhs and rhs refer to the same string obj in the memory, NOT comparing the
+contents.
+
+Therefore, it shouldn't be naively transformed to ==String in k-spec, where the 
+operator ==String compares whether the string contents are equal.
+
+To fully achieve the semantics equivalence is possible but quite complicated,
+considering that it is not frequently used and the implementation time is limited,
+we decide to leave this as future work.

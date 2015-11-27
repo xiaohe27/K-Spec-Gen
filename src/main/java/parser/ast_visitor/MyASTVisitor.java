@@ -12,15 +12,12 @@ import java.util.Set;
  * Created by hx312 on 30/09/2015.
  */
 public class MyASTVisitor extends ASTVisitor {
+    private final CompilationUnit cu;
+    private final AnnotationInfo annotationInfo;
+    Set names;
     private int curMethNodeId = 0;
     private String curPackageName = null;
     private String curClsName = null;
-
-    private final CompilationUnit cu;
-    Set names;
-
-    private final AnnotationInfo annotationInfo;
-
     /**
      * Tmp var for testing purpose.
      */

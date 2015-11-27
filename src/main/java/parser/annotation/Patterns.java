@@ -7,18 +7,15 @@ import java.util.regex.Pattern;
  * Created by xiaohe on 10/7/15.
  */
 public class Patterns {
+    public static final String ClauseStr =
+            "@(requires|ensures|returns)\\p{Blank}+([\\p{Print}\\p{Blank}&&[^;]]*);";
+    public static final Pattern SingleClause = Pattern.compile(ClauseStr);
+    public static final Pattern METHOD_CONTRACT =
+            Pattern.compile("/\\*\\*\\p{Space}+((\\*\\p{Space}*" + ClauseStr + "\\p{Space}*)*)\\*/");
     protected static final String REQUIRES = "requires";
     protected static final String ENSURES = "ensures";
     protected static final String RETURNS = "returns";
     protected static final String LI = "loop_invariant";
-
-    public static final String ClauseStr =
-            "@(requires|ensures|returns)\\p{Blank}+([\\p{Print}\\p{Blank}&&[^;]]*);";
-
-    public static final Pattern SingleClause = Pattern.compile(ClauseStr);
-
-    public static final Pattern METHOD_CONTRACT =
-            Pattern.compile("/\\*\\*\\p{Space}+((\\*\\p{Space}*" + ClauseStr + "\\p{Space}*)*)\\*/");
 
     public static void main(String[] args) {
         String input = "/**" +

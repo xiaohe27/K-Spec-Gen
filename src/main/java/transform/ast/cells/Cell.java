@@ -8,9 +8,6 @@ import java.util.ArrayList;
  * Created by hx312 on 13/10/2015.
  */
 public class Cell extends KASTNode {
-    protected boolean hasLeftOmission = false;
-    protected boolean hasRightOmission = false;
-
     public static final String HOLDS = "holds";
     public static final String CLASSES = "classes";
     public static final String NumOfClassesToUnfold = "NumOfClassesToUnfold";
@@ -18,7 +15,6 @@ public class Cell extends KASTNode {
     public static final String GlobalPhase = "globalPhase";
     public static final String BUSY = "busy";
     public static final String NEXT_LOC = "nextLoc";
-
     //the name of cells which need to be created carefully
     public static final String THREADS = "threads";
     public static final String THREAD = "thread";
@@ -27,8 +23,8 @@ public class Cell extends KASTNode {
     public static final String STORE = "store";
     public static final String STORE_METADATA = "storeMetadata";
     public static final String OBJ_STORE = "objectStore";
-
-
+    protected boolean hasLeftOmission = false;
+    protected boolean hasRightOmission = false;
     protected ArrayList<Cell> childrenCells;
 
     public Cell(String name) {

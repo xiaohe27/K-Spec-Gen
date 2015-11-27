@@ -9,10 +9,16 @@ import java.util.ArrayList;
  * The pos of the loop can be used in the process of gathering loop invariant from the annotation.
  */
 public class LoopInfo {
-    private ArrayList<Expression> loopInvs;
-
     private final int startPos;
     private final int endPos;
+    private ArrayList<Expression> loopInvs;
+
+    public LoopInfo(int start, int len) {
+        this.loopInvs = new ArrayList<>();
+
+        this.startPos = start;
+        this.endPos = start + len;
+    }
 
     public Expression get(int index) {
         return loopInvs.get(index);
@@ -30,13 +36,6 @@ public class LoopInfo {
         System.out.println("The loopInvStr is " + loopInvStr);
         Expression li = ExpressionParser.parseExprStr(loopInvStr);
         return loopInvs.add(li);
-    }
-
-    public LoopInfo(int start, int len) {
-        this.loopInvs = new ArrayList<>();
-
-        this.startPos = start;
-        this.endPos = start + len;
     }
 
     public String toString() {

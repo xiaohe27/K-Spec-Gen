@@ -42,6 +42,31 @@ public class MethodInfo {
         parseMethodContract(preAndPostCond);
     }
 
+    /**
+     * Transform the given string to K's ID.
+     */
+    public static String string2ID(String inputStr) {
+        return "String2Id(\"" + inputStr + "\")";
+    }
+
+    /**
+     * Transform the class name to K's ID.
+     *
+     * @return
+     */
+    public static String className2ID(String clsName) {
+        return "(class " + string2ID("." + clsName) + ")";
+    }
+
+    /**
+     * Transform the method name to K's ID.
+     *
+     * @return
+     */
+    public static String methodName2ID(String methName) {
+        return string2ID(methName);
+    }
+
     public boolean isInsideMethod(int pos) {
         return pos >= this.startPos && pos < this.endPos;
     }
@@ -152,6 +177,8 @@ public class MethodInfo {
         return methodDecl.getReturnType2();
     }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public ArrayList<SingleVariableDeclaration> getFormalParams() {
         ArrayList<SingleVariableDeclaration> methodArgs = new ArrayList<>();
         methodArgs.addAll(methodDecl.parameters());
@@ -164,33 +191,6 @@ public class MethodInfo {
 
     public String getQualifiedName() {
         return this.className + "." + methodDecl.getName().getFullyQualifiedName();
-    }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Transform the given string to K's ID.
-     */
-    public static String string2ID(String inputStr) {
-        return "String2Id(\"" + inputStr + "\")";
-    }
-
-    /**
-     * Transform the class name to K's ID.
-     *
-     * @return
-     */
-    public static String className2ID(String clsName) {
-        return "(class " + string2ID("." + clsName) + ")";
-    }
-
-    /**
-     * Transform the method name to K's ID.
-     *
-     * @return
-     */
-    public static String methodName2ID(String methName) {
-        return string2ID(methName);
     }
 
     public String className2ID() {

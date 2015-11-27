@@ -22,4 +22,5 @@ transform via String replaceAll : O(k * N)
 
 
 //**************************
-Can change simple name's id, i.e. for a java exp, we can rename the its vars to conform to k-vars' convention.
+Can change simple name's id, i.e. for a java exp, we can rename the its vars to 
+conform to k-vars' convention.

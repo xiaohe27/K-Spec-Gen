@@ -41,6 +41,17 @@ public class KRule extends KASTNode {
         this.cells = constructCells(methodInfo, loopInfo);
     }
 
+    /**
+     * Test the KRule's toString().
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+//        KRule kRule = new KRule(new MethodInfo("test", 0, 10, "fakePreAndPostCond"));
+//        System.out.println("KRule looks like:\n");
+//        System.out.println(kRule.toString());
+    }
+
     private void initStackAndHeap(MethodInfo methodInfo, LoopInfo loopInfo) {
         /* TODO */
         throw new NotImplementedException();
@@ -64,7 +75,6 @@ public class KRule extends KASTNode {
         return cells;
     }
 
-
     private Collection<? extends KCondition> extractAllPostCond(ArrayList<Expression> postCondList,
                                                                 ArrayList<SingleVariableDeclaration> formalParams) {
         Collection<KCondition> allPostCond = new ArrayList<>();
@@ -83,11 +93,11 @@ public class KRule extends KASTNode {
         //include the default param range conditions
         formalParams.stream().filter(varDecl -> varDecl.getType().isPrimitiveType())
                 .forEach(primVar ->
-                allPreCond.add(
-                        KCondition.genKConditionFromConstraintString(
-                                ConstraintGen.genRangeConstraint4Type
-                                        (primVar.getType().toString(), TypeMapping.convert2KVar
-                                            (primVar.getName().toString(), true)))));
+                        allPreCond.add(
+                                KCondition.genKConditionFromConstraintString(
+                                        ConstraintGen.genRangeConstraint4Type
+                                                (primVar.getType().toString(), TypeMapping.convert2KVar
+                                                        (primVar.getName().toString(), true)))));
 
         preCondList.forEach(preCondExpr ->
                 allPreCond.add(KCondition.genKConditionFromJavaExpr(preCondExpr, formalParams)));
@@ -119,16 +129,5 @@ public class KRule extends KASTNode {
         }
 
         return sb.toString();
-    }
-
-    /**
-     * Test the KRule's toString().
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-//        KRule kRule = new KRule(new MethodInfo("test", 0, 10, "fakePreAndPostCond"));
-//        System.out.println("KRule looks like:\n");
-//        System.out.println(kRule.toString());
     }
 }

@@ -16,12 +16,13 @@ public class MyTestHelper {
 
     public static final String codeTemp = "class " + _className + "  {" +
             _retType + " " + _methName +
-            "(" + _methodArgs + ")" + "{}" +"}";
+            "(" + _methodArgs + ")" + "{}" + "}";
 
     public static final String allButArgsDefaultCode = codeTemp.
             replaceAll(_className, defaultClsName).
             replaceAll(_methName, defaultMethodName).
             replaceAll(_retType, defaultRetType);
+
     /**
      * Generate a java class from code template codeTemp, all holes use default but method args
      * with the given string.

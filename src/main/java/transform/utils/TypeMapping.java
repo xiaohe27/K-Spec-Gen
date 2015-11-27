@@ -18,7 +18,8 @@ public class TypeMapping {
     public static final int INT_OPERAND = 0;
     public static final int FLOAT_OPERAND = 1;
     public static final int STRING_OPERAND = 2;
-    public static final int OTHER_OPERAND = 3;
+    public static final int BOOL_OPERAND = 3;
+    public static final int OTHER_OPERAND = 4;
 
     private final static String[] intTypes = {"byte", "short", "char", "int", "long"};
     private final static String[] floatTypes = {"float", "double"};
@@ -28,7 +29,7 @@ public class TypeMapping {
             "==", "!="};
 
     private final static String[] intSpecOP = {"<<", ">>", "~", "^", "&", "|"};
-    private final static String[] boolOP = {"&&", "||"};
+    private final static String[] boolOP = {"&&", "||", "!=", "==", "!"};
 
     private final static String[] infixOP = initInfixOPs();
 
@@ -55,10 +56,15 @@ public class TypeMapping {
     }
 
     public static int getTypeId(String type) {
+        if (type == null)
+            return OTHER_OPERAND;
+
         if (isIn(intTypes, type)) {
             return INT_OPERAND;
         } else if (isIn(floatTypes, type)) {
             return FLOAT_OPERAND;
+        } else if ("boolean".equals(type)) {
+            return BOOL_OPERAND;
         } else if ("String".equals(type)) {
             return STRING_OPERAND;
         } else {
@@ -132,6 +138,7 @@ public class TypeMapping {
     }
 
     public static String convert2KOP(String oldOp, int operandType) {
+        oldOp = oldOp.trim();
         if ("!".equals(oldOp)) {
             return "notBool";
         } else if ("&&".equals(oldOp)) {
@@ -150,9 +157,22 @@ public class TypeMapping {
             case STRING_OPERAND:
                 return covert2KOp_String(oldOp);
 
+            case BOOL_OPERAND:
+                return convert2KOp_Bool(oldOp);
+
             default:
                 return oldOp;
 
+        }
+    }
+
+    private static String convert2KOp_Bool(String oldOp) {
+        if ("==".equals(oldOp)) {
+            return "==Bool";
+        } else if ("!=".equals(oldOp)) {
+            return "=/=Bool";
+        } else {
+            return oldOp;
         }
     }
 
@@ -202,9 +222,9 @@ public class TypeMapping {
      * disjunctions, and transform each disjunction separately. Then the final result can be a
      * combination of sub-results via 'andBool' K-operator.
      *
-     * @param jexpr The input java expression that represents the pre/post condition of the
-     *              annotated method.
-     * @param formalParams  The formal parameters of the annotated method.
+     * @param jexpr        The input java expression that represents the pre/post condition of the
+     *                     annotated method.
+     * @param formalParams The formal parameters of the annotated method.
      * @return The corresponding k expression for the input java expression.
      */
     public static String fromJExpr2KExprString(Expression jexpr, ArrayList<SingleVariableDeclaration>
@@ -265,6 +285,7 @@ public class TypeMapping {
 
         return exp;
     }
+
     /**
      * We can assume that there is neither '&&' nor '||' in the literal, and focus on
      * transforming the literal according to the type of atoms.
@@ -277,15 +298,23 @@ public class TypeMapping {
     public static String fromLiteral2KExpr(String literal, int typeId) {
         String kexp = literal;
         //replace each pattern in the array to its corresponding k-form.
-        String[] transformCandidates = (typeId == TypeMapping.INT_OPERAND ? TypeMapping.infixOP
-            : (typeId == TypeMapping.FLOAT_OPERAND ? TypeMapping.commonInfixOP : null));
+        String[] transformCandidates = null;
+        if (typeId == TypeMapping.INT_OPERAND)
+            transformCandidates = TypeMapping.infixOP;
+        else if (typeId == TypeMapping.FLOAT_OPERAND)
+            transformCandidates = TypeMapping.commonInfixOP;
+        else if (typeId == TypeMapping.BOOL_OPERAND)
+            transformCandidates = TypeMapping.boolOP;
+        else if (typeId == TypeMapping.STRING_OPERAND)
+            transformCandidates = TypeMapping.commonInfixOP;
+        else transformCandidates = null;
 
         if (transformCandidates == null)
             return literal;
 
         for (int i = 0; i < transformCandidates.length; i++) {
             String curOp = transformCandidates[i];
-            if (! literal.contains(curOp))
+            if (!literal.contains(curOp))
                 continue;
 
             kexp = kexp.replaceAll(toRegEx(curOp), TypeMapping.convert2KOP(curOp, typeId));

@@ -1,7 +1,6 @@
 package parser.ast_visitor;
 
 import org.eclipse.jdt.core.dom.*;
-import parser.ExpressionParser;
 
 import java.util.List;
 
@@ -10,15 +9,6 @@ import java.util.List;
  */
 public class ParamsVisitor extends ASTVisitor {
     private List<SingleVariableDeclaration> params;
-
-    public boolean visit(MethodDeclaration method) {
-        System.out.println("Method " + method.getName() + " is visited!");
-
-        if (this.params == null || this.params.isEmpty())
-            this.params = method.parameters();
-
-        return false;
-    }
 
     public static CompilationUnit parseCUStr(String code) {
         ASTParser parser = ASTParser.newParser(AST.JLS8);
@@ -33,5 +23,14 @@ public class ParamsVisitor extends ASTVisitor {
         ParamsVisitor visitor = new ParamsVisitor();
         cu.accept(visitor);
         return visitor.params;
+    }
+
+    public boolean visit(MethodDeclaration method) {
+        System.out.println("Method " + method.getName() + " is visited!");
+
+        if (this.params == null || this.params.isEmpty())
+            this.params = method.parameters();
+
+        return false;
     }
 }
