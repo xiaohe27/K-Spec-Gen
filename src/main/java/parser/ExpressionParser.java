@@ -1,7 +1,6 @@
 package parser;
 
 import org.eclipse.jdt.core.dom.*;
-import transform.ast.CondExpression;
 import transform.utils.TypeMapping;
 
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.HashMap;
 public class ExpressionParser extends ASTVisitor {
     //map k-var to java-type
     private HashMap<String, String> typeEnv = new HashMap<>();
+    //map java var name to k var name
     private HashMap<String, String> fromJVarName2KVarName = new HashMap<>();
 
     private static final ASTParser expParser = initParser();
@@ -23,16 +23,13 @@ public class ExpressionParser extends ASTVisitor {
         typeIdOfTheOperands = TypeMapping.OTHER_OPERAND;
     }
 
-    public ExpressionParser(ArrayList<SingleVariableDeclaration> formalParams) {
-        formalParams.forEach(varDecl -> fromJVarName2KVarName.put(varDecl.getName().toString(),
-             TypeMapping.convert2KVar(varDecl.getName().toString(), varDecl.getType().isPrimitiveType())));
 
-        formalParams.forEach(varDecl -> typeEnv.put(fromJVarName2KVarName.get
-                (varDecl.getName().toString()), varDecl.getType().toString()));
-    }
-
-    public ExpressionParser(HashMap<String, String> typeEnv0) {
-        this.typeEnv.putAll(typeEnv0);
+    private ExpressionParser(HashMap<String, String> typeEnv0, HashMap<String, String>
+            fromJVarName2KVarName0) {
+        if (typeEnv0 != null)
+            this.typeEnv.putAll(typeEnv0);
+        if (fromJVarName2KVarName0 != null)
+            this.fromJVarName2KVarName.putAll(fromJVarName2KVarName0);
     }
 
     private static ASTParser initParser() {
@@ -47,35 +44,15 @@ public class ExpressionParser extends ASTVisitor {
         return ((Expression) expParser.createAST(null));
     }
 
-    public static String printExprWithKVars(Expression expr, ArrayList<SingleVariableDeclaration>
-            params) {
-        expr.accept(new ExpressionParser(params));
+    public static String printExprWithKVars(Expression expr, HashMap<String, String>
+            jvar2kvarMapping) {
+        expr.accept(new ExpressionParser(null, jvar2kvarMapping));
         return expr.toString();
     }
 
 
-
     /**
      * Return the type id (see the def in TypeMapping class) of the operands of the expression.
-     *
-     * @param exprStr
-     * @return
-     */
-    public static int getTypeIdOfTheExpr(String exprStr,
-                                         ArrayList<SingleVariableDeclaration> formalParams) {
-        System.out.println("The expr str is " + exprStr);
-        Expression expr = parseExprStr(exprStr);
-
-        resetTypeId();
-
-        expr.accept(new ExpressionParser(formalParams));
-
-        return typeIdOfTheOperands;
-    }
-
-    /**
-     * Return the type id (see the def in TypeMapping class) of the operands of the expression.
-     *
      * @param exprStr
      * @return
      */
@@ -85,7 +62,7 @@ public class ExpressionParser extends ASTVisitor {
 
         resetTypeId();
 
-        expr.accept(new ExpressionParser(typeEnv0));
+        expr.accept(new ExpressionParser(typeEnv0, null));
 
         return typeIdOfTheOperands;
     }
@@ -134,39 +111,39 @@ public class ExpressionParser extends ASTVisitor {
     }
 
 
-    public static void main(String[] args) {
-        HashMap<String, String> myTyEnv = new HashMap<>();
-        myTyEnv.put("a", "int");
-        myTyEnv.put("bb", "int");
-        myTyEnv.put("c", "float");
-        myTyEnv.put("ccc", "int");
-        myTyEnv.put("d", "String");
-
-        ExpressionParser myExpVisitor = new ExpressionParser(myTyEnv);
-        String test1 = "a >         (bb + ccc)* d - 2";
-
-        Expression exp1 = parseExprStr(test1);
-        System.out.println(exp1);
-
-        exp1.accept(myExpVisitor);
-
-        String test2 = "a > bb + c * d - 2.2";
-        Expression exp2 = parseExprStr(test2);
-        System.out.println(exp2);
-
-        exp2.accept(myExpVisitor);
-
-        System.out.println("The corresponding k op for exp1 is: ");
-        System.out.println(CondExpression.transformJExpr2KExpr(exp1));
-
-        System.out.println("The corresponding k op for exp2 is: ");
-        System.out.println(CondExpression.transformJExpr2KExpr(exp2));
-
-        System.out.println("The type of exp1 is " + getTypeIdOfTheExpr(test1, myTyEnv));
-        System.out.println("The type of exp2 is " + getTypeIdOfTheExpr(test2, myTyEnv));
-
-        Expression exp3 = parseExprStr("1 < 2 <= 3");
-        System.out.println(exp3 + " is also ok.");
-
-    }
+//    public static void main(String[] args) {
+//        HashMap<String, String> myTyEnv = new HashMap<>();
+//        myTyEnv.put("a", "int");
+//        myTyEnv.put("bb", "int");
+//        myTyEnv.put("c", "float");
+//        myTyEnv.put("ccc", "int");
+//        myTyEnv.put("d", "String");
+//
+//        ExpressionParser myExpVisitor = new ExpressionParser(myTyEnv);
+//        String test1 = "a >         (bb + ccc)* d - 2";
+//
+//        Expression exp1 = parseExprStr(test1);
+//        System.out.println(exp1);
+//
+//        exp1.accept(myExpVisitor);
+//
+//        String test2 = "a > bb + c * d - 2.2";
+//        Expression exp2 = parseExprStr(test2);
+//        System.out.println(exp2);
+//
+//        exp2.accept(myExpVisitor);
+//
+//        System.out.println("The corresponding k op for exp1 is: ");
+//        System.out.println(CondExpression.transformJExpr2KExpr(exp1));
+//
+//        System.out.println("The corresponding k op for exp2 is: ");
+//        System.out.println(CondExpression.transformJExpr2KExpr(exp2));
+//
+//        System.out.println("The type of exp1 is " + getTypeIdOfTheExpr(test1, myTyEnv));
+//        System.out.println("The type of exp2 is " + getTypeIdOfTheExpr(test2, myTyEnv));
+//
+//        Expression exp3 = parseExprStr("1 < 2 <= 3");
+//        System.out.println(exp3 + " is also ok.");
+//
+//    }
 }
