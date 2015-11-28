@@ -42,7 +42,6 @@ public class TypeMappingTest {
                 {"float c, float d, int e, int f", "e >= f + 7/2-3 && c/2.0 < d",
                         "E >=Int F +Int 7 /Int 2 -Int 3 andBool C /Float 2.0 <Float D"},
                 {"boolean a, boolean b", "a || b", " A orBool B"},
-//not passing
                 {"boolean b", "!b", "notBool B"},
                 {"boolean a, boolean b", "a && !b", " A andBool notBool B"},
                 {"boolean a, boolean b", "a != b", " A =/=Bool B"},
