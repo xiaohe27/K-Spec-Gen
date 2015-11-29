@@ -51,36 +51,13 @@ public class MyASTVisitor extends ASTVisitor {
         return true;
     }
 
-//    public boolean visit(VariableDeclarationFragment node) {
-//		SimpleName name = node.getName();
-//		this.names.add(name.getIdentifier());
-//		System.out.println("Declaration of '" + name + "' at line"
-//				+ cu.getLineNumber(name.getStartPosition()));
-//		return false; // do not continue
-//	}
-//
-//    public boolean visit(SimpleName node) {
-//		if (this.names.contains(node.getIdentifier())) {
-//			System.out.println("Usage of '" + node + "' at line "
-//					+ cu.getLineNumber(node.getStartPosition()));
-//		}
-//		return true;
-//	}
 
     public boolean visit(WhileStatement whileNode) {
-//        System.out.println("While loop from ast:\n" + whileNode.toString());
-//
-//        System.out.println("Construct the loop from start and len: ");
-//        System.out.println(this.srcCode.substring(whileNode.getStartPosition(),
-//                whileNode.getStartPosition() + whileNode.getLength()));
-
-//        System.out.println("its condition: " + whileNode.getExpression().toString() + "\n");
-
         if (this.curMethNodeId > 0) {
             MethodInfo curMethod = this.annotationInfo.getMethodInfo(this.curMethNodeId - 1);
             if (curMethod != null) {
                 curMethod.addLoopInfo(new LoopInfo(whileNode.getStartPosition(),
-                        whileNode.getLength()));
+                        whileNode.getLength(), whileNode));
             }
         }
 

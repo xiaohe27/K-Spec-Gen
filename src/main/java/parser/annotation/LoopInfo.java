@@ -1,6 +1,7 @@
 package parser.annotation;
 
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.WhileStatement;
 import parser.ExpressionParser;
 
 import java.util.ArrayList;
@@ -12,12 +13,14 @@ public class LoopInfo {
     private final int startPos;
     private final int endPos;
     private ArrayList<Expression> loopInvs;
+    private WhileStatement loopNode;
 
-    public LoopInfo(int start, int len) {
+    public LoopInfo(int start, int len, WhileStatement lpNd) {
         this.loopInvs = new ArrayList<>();
 
         this.startPos = start;
         this.endPos = start + len;
+        this.loopNode = lpNd;
     }
 
     public Expression get(int index) {
@@ -36,6 +39,10 @@ public class LoopInfo {
         System.out.println("The loopInvStr is " + loopInvStr);
         Expression li = ExpressionParser.parseExprStr(loopInvStr);
         return loopInvs.add(li);
+    }
+
+    public WhileStatement getLoopNode() {
+        return this.loopNode;
     }
 
     public String toString() {

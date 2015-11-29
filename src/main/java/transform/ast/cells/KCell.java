@@ -6,6 +6,7 @@ import org.eclipse.jdt.core.dom.Type;
 import parser.ExpressionParser;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
+import parser.ast_visitor.LoopVisitor;
 import transform.utils.TypeMapping;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class KCell extends Cell {
 
     private final ArrayList<SingleVariableDeclaration> methArgs = new ArrayList<>();
 
+    private final LoopVisitor loopVisitor = new LoopVisitor();
+
     public KCell(MethodInfo methodInfo, LoopInfo loopInfo) {
         super(Cell.K);
         this.hasRightOmission = true;
@@ -27,6 +30,10 @@ public class KCell extends Cell {
         this.loopInfo = loopInfo;
 
         this.methArgs.addAll(this.methodInfo.getFormalParams());
+
+        if (this.loopInfo != null) {
+            this.loopInfo.getLoopNode().accept(this.loopVisitor);
+        }
     }
 
     @Override
