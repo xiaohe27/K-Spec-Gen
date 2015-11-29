@@ -36,7 +36,6 @@ public class LoopInfo {
     }
 
     public boolean addLI(String loopInvStr) {
-        System.out.println("The loopInvStr is " + loopInvStr);
         Expression li = ExpressionParser.parseExprStr(loopInvStr);
         return loopInvs.add(li);
     }

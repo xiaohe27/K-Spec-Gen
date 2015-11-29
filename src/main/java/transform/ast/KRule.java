@@ -37,7 +37,7 @@ public class KRule extends KASTNode {
 
         this.preConds.addAll(extractAllPreCond(methodInfo.getPreCondList(), methodInfo.getFormalParams()));
         this.postConds.addAll(extractAllPostCond(methodInfo.getPostCondList(), methodInfo.getFormalParams()));
-        this.retVal = methodInfo.getRetVal();
+        this.retVal = methodInfo.getExpectedRetVal();
         this.cells = constructCells(methodInfo, loopInfo);
     }
 

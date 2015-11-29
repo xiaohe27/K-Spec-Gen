@@ -6,6 +6,7 @@ import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.Comment;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.annotation.AnnotationInfo;
+import parser.annotation.Patterns;
 import parser.ast_visitor.MyASTVisitor;
 import transform.ast.KSpec;
 
@@ -63,8 +64,7 @@ public class JavaParser {
                     //the comment with regex: //@LI some expression here
                     //is considered a LI.
                     String lpInvStr = pgmTxt.substring(commentStartPos, commentStartPos + comment.getLength());
-                    Pattern pattern = Pattern.compile("//@LI\\p{Blank}+([\\p{Print}\\p{Blank}&&[^;]]+);");
-                    Matcher matcher = pattern.matcher(lpInvStr);
+                    Matcher matcher = Patterns.LI.matcher(lpInvStr);
                     if (matcher.find())
                         myASTVisitor.getAnnotationInfo().addPotentialLI(matcher.group(1), commentStartPos);
                 }
@@ -76,8 +76,9 @@ public class JavaParser {
 
         AnnotationInfo annotationInfo = myASTVisitor.getAnnotationInfo();
 
-//        System.out.println("Method with pre and post conditions:");
-//        annotationInfo.printInfo();
+        System.out.println("Method with pre and post conditions:");
+        annotationInfo.printInfo();
+
         KSpec kSpec = new KSpec("MY-K-Spec", annotationInfo);
 
         System.out.println(kSpec.toString());

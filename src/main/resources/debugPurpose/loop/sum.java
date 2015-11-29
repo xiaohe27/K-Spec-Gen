@@ -15,8 +15,9 @@ class sum {
         int s;
 
         s = 0;
-        //@ inv s = ((old(n) - n) * (old(n) + n + 1)) / 2 /\ n >= 0
-        while (n > 0) {
+        while (n > 0)
+        //@LI sum_iterative(old(n)) = s + sum_iterative(n);
+        {
             s = s + n;
             n = n - 1;
         }

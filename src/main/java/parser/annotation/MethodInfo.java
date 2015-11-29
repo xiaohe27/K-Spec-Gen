@@ -22,7 +22,8 @@ public class MethodInfo {
     private ArrayList<Expression> preCondList = new ArrayList<>();
     private ArrayList<Expression> postCondList = new ArrayList<>();
     //the expected return value according to the method contract.
-    private String retVal;
+    private String expectedRetVal;
+    //the return var
 
     /**
      * The index is the pos of the loop:
@@ -109,7 +110,7 @@ public class MethodInfo {
 
                 case Patterns.RETURNS:
 //                    System.out.println("@ret : " + matcher.group(2));
-                    this.retVal = matcher.group(2);
+                    this.expectedRetVal = matcher.group(2);
                     break;
 
                 default:
@@ -164,13 +165,13 @@ public class MethodInfo {
         return className;
     }
 
-    public String getRetVal() {
-        if (retVal == null) {
+    public String getExpectedRetVal() {
+        if (expectedRetVal == null) {
             Character firstCharInType = this.getRetType().toString().charAt(0);
             return "?" + firstCharInType.toString().toUpperCase();
         }
 
-        return retVal;
+        return expectedRetVal;
     }
 
     public Type getRetType() {
@@ -227,7 +228,7 @@ public class MethodInfo {
             sb.append("@post: " + postCondStr + ";\n");
         });
 
-        sb.append("@ret: " + this.retVal + ";\n");
+        sb.append("@ret: " + this.expectedRetVal + ";\n");
         sb.append("\nLoop info is :\n");
 
         for (int index = 0; index < this.loopsInfo.size(); index++) {

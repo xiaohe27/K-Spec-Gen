@@ -61,7 +61,7 @@ public class KCell extends Cell {
                 retTypeInJavaSemantics = "bool";
 
             String retKType = TypeMapping.getKBuiltInType4SimpleJType(retType.toString());
-            String retVal = this.methodInfo.getRetVal();
+            String retVal = this.methodInfo.getExpectedRetVal();
             if (retVal.startsWith("?")) {
 
             } else {

@@ -15,7 +15,8 @@ public class Patterns {
     protected static final String REQUIRES = "requires";
     protected static final String ENSURES = "ensures";
     protected static final String RETURNS = "returns";
-    protected static final String LI = "loop_invariant";
+    public static final Pattern LI = Pattern.compile("//@LI\\p{Blank}+" +
+            "([\\p{Print}\\p{Blank}&&[^;]]+);");
 
     public static void main(String[] args) {
         String input = "/**" +
