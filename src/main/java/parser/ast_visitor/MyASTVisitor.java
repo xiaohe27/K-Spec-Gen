@@ -78,6 +78,12 @@ public class MyASTVisitor extends ASTVisitor {
         return true;
     }
 
+    public boolean visit(ReturnStatement retStmt) {
+        Expression retExpr = retStmt.getExpression();
+        this.annotationInfo.getMethodInfo(this.curMethNodeId).setRetExpr(retExpr);
+        return false;
+    }
+
     public AnnotationInfo getAnnotationInfo() {
         return annotationInfo;
     }

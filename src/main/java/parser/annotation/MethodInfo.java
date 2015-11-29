@@ -20,8 +20,8 @@ public class MethodInfo {
     private ArrayList<Expression> postCondList = new ArrayList<>();
     //the expected return value according to the method contract.
     private String expectedRetVal;
-    //the return var
-    private SimpleName retVar;
+    //the return expression
+    private Expression retExpr;
 
     /**
      * The index is the pos of the loop:
@@ -41,8 +41,8 @@ public class MethodInfo {
         parseMethodContract(preAndPostCond);
     }
 
-    public void setRetVar(final SimpleName retVar0) {
-        this.retVar = retVar0;
+    public void setRetExpr(final Expression retExpr0) {
+        this.retExpr = retExpr0;
     }
 
     /**
@@ -221,7 +221,9 @@ public class MethodInfo {
                 sb.append(param.getName().toString() + " of type " + param.getType().toString
                         () + "\n"));
 
-
+        if (this.retExpr != null) {
+            sb.append("The method returns `" + this.retExpr + "`.\n");
+        }
 
         sb.append("Method " + this.getQualifiedName() + " 's contract is \n");
 

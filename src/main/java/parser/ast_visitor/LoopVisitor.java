@@ -9,6 +9,7 @@ public class LoopVisitor extends ASTVisitor {
     private StringBuilder kAST = new StringBuilder();
 
     public boolean visit(SimpleName name) {
+        //TODO
         IBinding binding = name.resolveTypeBinding();
 
         if (binding != null)
