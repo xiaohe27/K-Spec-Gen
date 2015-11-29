@@ -41,16 +41,6 @@ public class KRule extends KASTNode {
         this.cells = constructCells(methodInfo, loopInfo);
     }
 
-    /**
-     * Test the KRule's toString().
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-//        KRule kRule = new KRule(new MethodInfo("test", 0, 10, "fakePreAndPostCond"));
-//        System.out.println("KRule looks like:\n");
-//        System.out.println(kRule.toString());
-    }
 
     private ArrayList<Cell> constructCells(MethodInfo methodInfo, LoopInfo loopInfo) {
         ArrayList<Cell> cells = new ArrayList<>();
@@ -66,11 +56,11 @@ public class KRule extends KASTNode {
 
         cells.add(Cell.getFixedCellWithName(Cell.BUSY));
         cells.add(Cell.getFixedCellWithName(Cell.NEXT_LOC));
-        cells.add(new ObjectStoreCell(this.objectStore));
+        cells.add(new ObjectStoreCell());
         return cells;
     }
 
-    private Collection<? extends KCondition> extractAllPostCond(ArrayList<Expression> postCondList,
+    private Collection<KCondition> extractAllPostCond(ArrayList<Expression> postCondList,
                                                                 ArrayList<SingleVariableDeclaration> formalParams) {
         Collection<KCondition> allPostCond = new ArrayList<>();
 
@@ -78,7 +68,7 @@ public class KRule extends KASTNode {
                 allPostCond.add(KCondition.genKConditionFromJavaExpr(postCondExpr, formalParams)));
 
         //also include the constraint related to the return expression.
-
+        //TODO
         return allPostCond;
     }
 

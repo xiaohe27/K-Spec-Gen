@@ -8,8 +8,8 @@ import java.util.HashMap;
 public class ObjectStoreCell extends Cell {
     private final HashMap<String, String> heap;
 
-    public ObjectStoreCell(HashMap<String, String> heap) {
+    public ObjectStoreCell() {
         super(Cell.OBJ_STORE);
-        this.heap = heap;
+        this.heap = new HashMap<>();
     }
 }

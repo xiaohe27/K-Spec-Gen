@@ -8,8 +8,8 @@ import java.util.HashMap;
 public class EnvCell extends Cell {
     private HashMap<String, String> env; // var to val mapping
 
-    public EnvCell(HashMap<String, String> env) {
+    public EnvCell() {
         super(Cell.ENV);
-        this.env = env;
+        this.env = new HashMap<>();
     }
 }
