@@ -7,9 +7,9 @@ import java.util.HashMap;
  */
 public class StoreCell extends Cell {
 
-    private HashMap<String, String> store = new HashMap<>();
+    private HashMap<Integer, String> store = new HashMap<>();
 
-    public StoreCell(HashMap<String, String> store) {
+    public StoreCell(HashMap<Integer, String> store) {
         super(Cell.STORE);
         this.hasLeftOmission = true;
         this.hasRightOmission = true;

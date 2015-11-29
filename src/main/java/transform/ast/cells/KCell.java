@@ -40,8 +40,14 @@ public class KCell extends Cell {
     /**
      * After traversing the loop node, the loopVisitor is able to construct the environment and
      * store as well.
+     * @param env
+     * @param heap
      */
-    public void updateEnvAndStore(HashMap<String, String> env, HashMap<String, String> heap) {
+    public void updateEnvAndStore(HashMap<String, Integer> env, HashMap<Integer, String> heap) {
+        if (this.loopInfo != null) {
+            int numOfVars = 0;
+
+        }
         //TODO
     }
 

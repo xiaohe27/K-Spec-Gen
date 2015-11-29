@@ -11,5 +11,7 @@ public class EnvCell extends Cell {
     public EnvCell() {
         super(Cell.ENV);
         this.env = new HashMap<>();
+        super.hasLeftOmission = true;
+        super.hasRightOmission = true;
     }
 }

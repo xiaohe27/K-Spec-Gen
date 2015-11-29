@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class ThreadCell extends Cell {
     protected KCell kCell;
 
-    public ThreadCell(MethodInfo methodInfo, LoopInfo loopInfo, HashMap<String, String> env) {
+    public ThreadCell(MethodInfo methodInfo, LoopInfo loopInfo, HashMap<String, Integer> env) {
         super(Cell.THREAD);
         this.kCell = new KCell(methodInfo, loopInfo);
         Cell envCell = new EnvCell();
