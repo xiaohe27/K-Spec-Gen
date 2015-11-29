@@ -26,6 +26,7 @@ public class TypeMappingTest {
     private String formalParamsStr;
     private String javaExpStr;
     private String expectedKExpStr;
+
     public TypeMappingTest(String formalParamsStr, String javaExpStr, String expectedKExpStr) {
         this.formalParamsStr = formalParamsStr;
         this.javaExpStr = javaExpStr;
@@ -68,7 +69,7 @@ public class TypeMappingTest {
         String actualKExprStr = TypeMapping.fromJExpr2KExprString(this.jExpr, this.formalParams);
 
         System.out.println("Actual output is " + actualKExprStr);
-        assertEquals(this.expectedKExpStr.replaceAll("\\p{Blank}","").trim(),
+        assertEquals(this.expectedKExpStr.replaceAll("\\p{Blank}", "").trim(),
                 actualKExprStr.replaceAll("\\p{Blank}", "").trim());
     }
 }

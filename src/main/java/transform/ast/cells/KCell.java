@@ -1,5 +1,6 @@
 package transform.ast.cells;
 
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Type;
 import parser.ExpressionParser;
@@ -58,8 +59,8 @@ public class KCell extends Cell {
 
             } else {
                 //transform all the program vars to K vars.
-                retVal = ExpressionParser.printExprWithKVars(ExpressionParser.parseExprStr
-                        (this.methodInfo.getRetVal()), TypeMapping.extractJVar2KVarMapping(this.methArgs));
+                Expression retExpr = ExpressionParser.parseExprStr(retVal);
+                retVal = "(" + TypeMapping.fromJExpr2KExprString(retExpr, this.methArgs).trim() + ")";
             }
             sb.append(retVal + ":" + retKType + "::" + retTypeInJavaSemantics);
         }

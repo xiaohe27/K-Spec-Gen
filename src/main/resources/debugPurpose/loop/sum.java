@@ -7,10 +7,11 @@ class sum {
         System.out.println("Sum to 5:" + sum_iterative(5));
     }
 
-    static int sum_iterative (int n)
-/*@ rule <k> $ => return (n * (n + 1)) / 2; ...</k>
-    if n >= 0 */
-    {
+    /**
+     * @requires n >= 0;
+     * @returns (n * (n + 1)) / 2;
+     */
+    static int sum_iterative(int n) {
         int s;
 
         s = 0;
