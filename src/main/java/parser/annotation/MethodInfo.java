@@ -1,9 +1,6 @@
 package parser.annotation;
 
-import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import org.eclipse.jdt.core.dom.Type;
+import org.eclipse.jdt.core.dom.*;
 import parser.ExpressionParser;
 
 import java.util.ArrayList;
@@ -24,6 +21,7 @@ public class MethodInfo {
     //the expected return value according to the method contract.
     private String expectedRetVal;
     //the return var
+    private SimpleName retVar;
 
     /**
      * The index is the pos of the loop:
@@ -41,6 +39,10 @@ public class MethodInfo {
         this.endPos = startPos + len;
 
         parseMethodContract(preAndPostCond);
+    }
+
+    public void setRetVar(final SimpleName retVar0) {
+        this.retVar = retVar0;
     }
 
     /**
@@ -218,6 +220,8 @@ public class MethodInfo {
         this.getFormalParams().forEach(param ->
                 sb.append(param.getName().toString() + " of type " + param.getType().toString
                         () + "\n"));
+
+
 
         sb.append("Method " + this.getQualifiedName() + " 's contract is \n");
 

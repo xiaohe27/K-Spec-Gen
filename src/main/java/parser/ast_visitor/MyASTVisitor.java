@@ -14,8 +14,7 @@ import java.util.Set;
 public class MyASTVisitor extends ASTVisitor {
     private final CompilationUnit cu;
     private final AnnotationInfo annotationInfo;
-    Set names;
-    private int curMethNodeId = 0;
+    private int curMethNodeId = -1;
     private String curPackageName = null;
     private String curClsName = null;
     /**
@@ -25,17 +24,12 @@ public class MyASTVisitor extends ASTVisitor {
 
     private MyASTVisitor(CompilationUnit cu) {
         this.cu = cu;
-        names = new HashSet();
-
         this.annotationInfo = new AnnotationInfo();
     }
 
     public MyASTVisitor(CompilationUnit cu, String srcCode) {
         this.cu = cu;
         this.srcCode = srcCode;
-
-        this.names = new HashSet();
-
         this.annotationInfo = new AnnotationInfo();
     }
 
@@ -53,8 +47,8 @@ public class MyASTVisitor extends ASTVisitor {
 
 
     public boolean visit(WhileStatement whileNode) {
-        if (this.curMethNodeId > 0) {
-            MethodInfo curMethod = this.annotationInfo.getMethodInfo(this.curMethNodeId - 1);
+        if (this.curMethNodeId >= 0) {
+            MethodInfo curMethod = this.annotationInfo.getMethodInfo(this.curMethNodeId);
             if (curMethod != null) {
                 curMethod.addLoopInfo(new LoopInfo(whileNode.getStartPosition(),
                         whileNode.getLength(), whileNode));
@@ -65,6 +59,8 @@ public class MyASTVisitor extends ASTVisitor {
     }
 
     public boolean visit(MethodDeclaration methodNode) {
+        this.curMethNodeId++;
+
         System.out.println("Method " + this.curClsName + "." + methodNode.getName()
                 .getFullyQualifiedName() + " is visited!");
 
@@ -79,7 +75,6 @@ public class MyASTVisitor extends ASTVisitor {
             this.annotationInfo.addMethod(this.curMethNodeId, methodInfo);
         }
 
-        this.curMethNodeId++;
         return true;
     }
 
