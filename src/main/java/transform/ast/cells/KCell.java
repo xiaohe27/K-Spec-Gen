@@ -10,6 +10,7 @@ import parser.ast_visitor.LoopVisitor;
 import transform.utils.TypeMapping;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by hx312 on 31/10/2015.
@@ -34,6 +35,14 @@ public class KCell extends Cell {
         if (this.loopInfo != null) {
             this.loopInfo.getLoopNode().accept(this.loopVisitor);
         }
+    }
+
+    /**
+     * After traversing the loop node, the loopVisitor is able to construct the environment and
+     * store as well.
+     */
+    public void updateEnvAndStore(HashMap<String, String> env, HashMap<String, String> heap) {
+        //TODO
     }
 
     @Override
