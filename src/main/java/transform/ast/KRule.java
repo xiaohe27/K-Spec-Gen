@@ -52,11 +52,6 @@ public class KRule extends KASTNode {
 //        System.out.println(kRule.toString());
     }
 
-    private void initStackAndHeap(MethodInfo methodInfo, LoopInfo loopInfo) {
-        /* TODO */
-        throw new NotImplementedException();
-    }
-
     private ArrayList<Cell> constructCells(MethodInfo methodInfo, LoopInfo loopInfo) {
         ArrayList<Cell> cells = new ArrayList<>();
         cells.add(new ThreadsCell(methodInfo, loopInfo, this.env));
