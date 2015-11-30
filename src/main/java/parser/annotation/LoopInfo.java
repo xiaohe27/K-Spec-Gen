@@ -5,6 +5,7 @@ import org.eclipse.jdt.core.dom.WhileStatement;
 import parser.ExpressionParser;
 
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 /**
  * The pos of the loop can be used in the process of gathering loop invariant from the annotation.
@@ -42,6 +43,10 @@ public class LoopInfo {
 
     public WhileStatement getLoopNode() {
         return this.loopNode;
+    }
+
+    public Stream<Expression> getLIStream() {
+        return this.loopInvs.stream();
     }
 
     public String toString() {

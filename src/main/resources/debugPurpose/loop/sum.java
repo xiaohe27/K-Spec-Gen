@@ -17,6 +17,7 @@ class sum {
         s = 0;
         while (n > 0)
         //@LI sum_iterative(old(n)) = s + sum_iterative(n);
+        //@LI s >= 0;
         {
             s = s + n;
             n = n - 1;

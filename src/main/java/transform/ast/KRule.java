@@ -5,6 +5,7 @@ import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
+import parser.ast_visitor.LIVisitor;
 import transform.ast.cells.*;
 import transform.utils.ConstraintGen;
 import transform.utils.TypeMapping;
@@ -32,13 +33,25 @@ public class KRule extends KASTNode {
 
     public KRule(MethodInfo methodInfo, LoopInfo loopInfo) {
         super("'KRule");
-
-//        initStackAndHeap(methodInfo, loopInfo);
-
         this.preConds.addAll(extractAllPreCond(methodInfo.getPreCondList(), methodInfo.getFormalParams()));
         this.postConds.addAll(extractAllPostCond(methodInfo.getPostCondList(), methodInfo.getFormalParams()));
         this.retVal = methodInfo.getExpectedRetVal();
         this.cells = constructCells(methodInfo, loopInfo);
+
+        if (loopInfo != null) {
+            rewrite(loopInfo);
+        }
+    }
+
+    private void rewrite(LoopInfo loopInfo) {
+        loopInfo.getLIStream().forEach(
+                liExp -> {
+                    LIVisitor liVisitor = new LIVisitor();
+                    liExp.accept(liVisitor);
+                }
+        );
+
+        //TODO
     }
 
 

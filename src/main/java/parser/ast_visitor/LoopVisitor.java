@@ -26,8 +26,6 @@ public class LoopVisitor extends ASTVisitor {
     }
 
     public boolean visit(Assignment assignmentNode) {
-        System.out.println("Visit assignment stmt: " + assignmentNode.toString());
-        System.out.println("KAST is \n");
 
         Expression lhs = assignmentNode.getLeftHandSide();
         Expression rhs = assignmentNode.getRightHandSide();
