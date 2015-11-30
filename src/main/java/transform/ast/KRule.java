@@ -24,7 +24,7 @@ public class KRule extends KASTNode {
     private ArrayList<Cell> cells = new ArrayList<>();
 
     private HashMap<SimpleName, Integer> env = new HashMap<>(); //env maps vars to locations
-    private HashMap<Integer, SimpleName> store = new HashMap<>();  //store maps addr to primitive vals?
+    private HashMap<Integer, Expression> store = new HashMap<>();  //store maps addr to primitive vals?
     private HashMap<String, String> objectStore = new HashMap<>(); //obj store maps addr to obj?
 
     public KRule(MethodInfo methodInfo) {

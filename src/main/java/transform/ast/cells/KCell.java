@@ -42,11 +42,10 @@ public class KCell extends Cell {
     /**
      * After traversing the loop node, the loopVisitor is able to construct the environment and
      * store as well.
-     *
-     * @param env
+     *  @param env
      * @param heap
      */
-    public void updateEnvAndStore(HashMap<SimpleName, Integer> env, HashMap<Integer, SimpleName> heap) {
+    public void updateEnvAndStore(HashMap<SimpleName, Integer> env, HashMap<Integer, Expression> heap) {
         if (this.loopInfo != null) {
             final int[] numOfVars = {0};
             this.loopVisitor.getStreamOfVarNames()
