@@ -16,7 +16,9 @@ class sum {
 
         s = 0;
         while (n > 0)
-        //@LI sum_iterative(old(n)) = s + sum_iterative(n);
+        //@env {n |-> 1, s |-> 2}
+        //@store {1 |-> n => 0,
+        // 2 |-> s => s + ((n + 1) * n / 2)}
         //@LI s >= 0;
         {
             s = s + n;
