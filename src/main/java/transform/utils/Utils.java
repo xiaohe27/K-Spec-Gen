@@ -1,5 +1,6 @@
 package transform.utils;
 
+import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jdt.core.dom.SimpleName;
 
 import java.util.HashMap;
@@ -40,5 +41,16 @@ public class Utils {
      */
     public static String methodName2ID(String methName) {
         return string2ID(methName);
+    }
+
+    public static boolean isInt(NumberLiteral numberLiteral) {
+        boolean isInt = false;
+        try {
+            Long.parseLong(numberLiteral + "");
+            isInt = true;
+        } catch (NumberFormatException e) {
+        } catch (NullPointerException e) {
+        }
+        return isInt;
     }
 }

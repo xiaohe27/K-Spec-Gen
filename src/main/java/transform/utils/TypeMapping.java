@@ -46,7 +46,7 @@ public class TypeMapping {
     }
 
 
-    private static boolean isIn(String[] strArr, String tarStr) {
+    public static boolean isIn(String[] strArr, String tarStr) {
         for (int i = 0; i < strArr.length; i++) {
             if (strArr[i].equals(tarStr))
                 return true;
