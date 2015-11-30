@@ -1,6 +1,5 @@
 package transform.ast.cells;
 
-import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.SimpleName;
 
 import java.util.HashMap;

@@ -50,17 +50,17 @@ public class KCell extends Cell {
         if (this.loopInfo != null) {
             final int[] numOfVars = {0};
             this.loopVisitor.getStreamOfVarNames()
-            //this filter is not one time, it will be invoked every time a var is traversed.
-                .filter(var -> Utils.contains(env, var) == false)
-                .forEach(var ->
-                    {
-                        env.put(var, ++numOfVars[0]);
-                        heap.put(numOfVars[0], var);
-                        //the key of the env and val of the heap use the same simpleName variable
-                        //but in the printed env/heap maps, different views of the same simpleName
-                        //variable will be presented.
-                    }
-            );
+                    //this filter is not one time, it will be invoked every time a var is traversed.
+                    .filter(var -> Utils.contains(env, var) == false)
+                    .forEach(var ->
+                            {
+                                env.put(var, ++numOfVars[0]);
+                                heap.put(numOfVars[0], var);
+                                //the key of the env and val of the heap use the same simpleName variable
+                                //but in the printed env/heap maps, different views of the same simpleName
+                                //variable will be presented.
+                            }
+                    );
         }
     }
 

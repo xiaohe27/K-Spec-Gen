@@ -9,7 +9,7 @@ import java.util.HashMap;
  */
 public class Utils {
     public static boolean contains(HashMap<SimpleName, Integer> map, SimpleName var) {
-        for (SimpleName curVar: map.keySet()) {
+        for (SimpleName curVar : map.keySet()) {
             if (curVar.getIdentifier().equals(var.getIdentifier()))
                 return true;
         }
