@@ -1,6 +1,8 @@
 package transform.ast.cells;
 
 import org.eclipse.jdt.core.dom.SimpleName;
+import transform.utils.TypeMapping;
+import transform.utils.Utils;
 
 import java.util.HashMap;
 
@@ -19,9 +21,12 @@ public class EnvCell extends Cell {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("\n");
+        sb.append(" (.Map => ?_:Map)\n");
         this.env.forEach((var, loc) -> {
-            sb.append(var + " |-> " + loc + "\n");
+            String varID = Utils.string2ID(var.getIdentifier());
+            String locStr = "P" + loc + ":" + TypeMapping.getKBuiltInType4SimpleJType(var
+                    .resolveTypeBinding().getName());
+            sb.append(varID + " |-> " + locStr + "\n");
         });
         sb.deleteCharAt(sb.lastIndexOf("\n"));
         return super.surroundWithTags(sb.toString());

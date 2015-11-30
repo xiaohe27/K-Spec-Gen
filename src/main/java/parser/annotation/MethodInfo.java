@@ -5,6 +5,7 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Type;
 import parser.ExpressionParser;
+import transform.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -42,31 +43,6 @@ public class MethodInfo {
         this.endPos = startPos + len;
 
         parseMethodContract(preAndPostCond);
-    }
-
-    /**
-     * Transform the given string to K's ID.
-     */
-    public static String string2ID(String inputStr) {
-        return "String2Id(\"" + inputStr + "\")";
-    }
-
-    /**
-     * Transform the class name to K's ID.
-     *
-     * @return
-     */
-    public static String className2ID(String clsName) {
-        return "(class " + string2ID("." + clsName) + ")";
-    }
-
-    /**
-     * Transform the method name to K's ID.
-     *
-     * @return
-     */
-    public static String methodName2ID(String methName) {
-        return string2ID(methName);
     }
 
     public void setRetExpr(final Expression retExpr0) {
@@ -200,11 +176,11 @@ public class MethodInfo {
     }
 
     public String className2ID() {
-        return className2ID(this.getClassName());
+        return Utils.className2ID(this.getClassName());
     }
 
     public String methodName2ID() {
-        return methodName2ID(this.getMethodName());
+        return Utils.methodName2ID(this.getMethodName());
     }
 
     public String getKModuleName() {

@@ -83,7 +83,7 @@ public class KCell extends Cell {
 
             Type retType = this.methodInfo.getRetType();
             String retTypeInJavaSemantics = retType.isPrimitiveType() ? retType.toString() :
-                    MethodInfo.className2ID(retType.toString());
+                    Utils.className2ID(retType.toString());
 
             if (retTypeInJavaSemantics.equals("boolean"))
                 retTypeInJavaSemantics = "bool";

@@ -16,4 +16,29 @@ public class Utils {
 
         return false;
     }
+
+    /**
+     * Transform the given string to K's ID.
+     */
+    public static String string2ID(String inputStr) {
+        return "String2Id(\"" + inputStr + "\")";
+    }
+
+    /**
+     * Transform the class name to K's ID.
+     *
+     * @return
+     */
+    public static String className2ID(String clsName) {
+        return "(class " + string2ID("." + clsName) + ")";
+    }
+
+    /**
+     * Transform the method name to K's ID.
+     *
+     * @return
+     */
+    public static String methodName2ID(String methName) {
+        return string2ID(methName);
+    }
 }

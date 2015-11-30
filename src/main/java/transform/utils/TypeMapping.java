@@ -3,7 +3,6 @@ package transform.utils;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import parser.ExpressionParser;
-import parser.annotation.MethodInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -128,7 +127,7 @@ public class TypeMapping {
         String varName = v.getName().toString();
         boolean isPrimitive = v.getType().isPrimitiveType();
 
-        String jTypeInJavaSemantics = isPrimitive ? jType : MethodInfo.className2ID(jType);
+        String jTypeInJavaSemantics = isPrimitive ? jType : Utils.className2ID(jType);
 
         String result = convert2KVar(varName, isPrimitive);
         result += ":" + getKBuiltInType4SimpleJType(jType);
