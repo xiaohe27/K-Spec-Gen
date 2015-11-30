@@ -98,6 +98,9 @@ public class KCell extends Cell {
                 retVal = "(" + TypeMapping.fromJExpr2KExprString(retExpr, this.methArgs).trim() + ")";
             }
             sb.append(retVal + ":" + retKType + "::" + retTypeInJavaSemantics);
+        } else {
+            sb.append(this.loopVisitor.getLoopASTString());
+            sb.append("=> .K ");
         }
         return super.surroundWithTags(sb.toString());
     }
