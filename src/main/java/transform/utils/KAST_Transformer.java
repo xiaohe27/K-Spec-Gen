@@ -20,15 +20,16 @@ public class KAST_Transformer {
         return "'ExprName(" + id + ")";
     }
 
-    private static String cast2Type(String expr, String type) {
+    public static String cast2Type(String expr, String type) {
         return "cast ( " + type + ", " + expr + ")";
     }
 
-    private static String convertSimpleName2KASTString(SimpleName var) {
+    private static String convertSimpleName2KASTString(SimpleName var, boolean needCast) {
         String id = var.getIdentifier();
         ITypeBinding iTypeBinding = var.resolveTypeBinding();
         String type = iTypeBinding == null ? "Object" : iTypeBinding.toString();
-        return cast2Type(_KExpr(Utils.string2ID(var.getIdentifier())),type);
+        String kExpr = _KExpr(Utils.string2ID(var.getIdentifier()));
+        return needCast ? cast2Type(kExpr, type) : kExpr;
     }
 
     /**
@@ -37,7 +38,7 @@ public class KAST_Transformer {
      * @param jexp
      * @return
      */
-    public static String convert2KAST(Expression jexp) throws Exception {
+    public static String convert2KAST(Expression jexp, boolean needCast) throws Exception {
         switch (jexp.getNodeType()) {
             case Expression.INFIX_EXPRESSION:
                 InfixExpression infixExp = (InfixExpression) jexp;
@@ -48,14 +49,25 @@ public class KAST_Transformer {
                     throw new Exception("Type " + lhsTy + " and " + rhsTy + " cannot be operated " +
                             "by the operator " + infixExp.getOperator() + " in K");
 
-                String exprStr = convert2KAST(infixExp.getLeftOperand()) + infixExp.getOperator()
-                        + convert2KAST(infixExp.getRightOperand());
+                String infixOP = infixExp.getOperator().toString();
+
+                boolean lhsCast = needCast;
+                if (infixOP.equals("=")) {
+                    lhsCast = false;
+                }
+
+                String exprStr = convert2KAST(infixExp.getLeftOperand(), lhsCast) + infixOP
+                        + convert2KAST(infixExp.getRightOperand(), needCast);
 
                 String combinedType = "";
-                if (isBoolOp(infixExp.getOperator().toString())) {
+                if (isBoolOp(infixOP)) {
                     combinedType = "bool";
                 } else {
                     combinedType = lhsTy;
+                }
+
+                if (infixOP.equals("=")) {
+                    exprStr = "(" + exprStr + ")::AssignExp";
                 }
 
                 return cast2Type(exprStr, combinedType);
@@ -64,15 +76,15 @@ public class KAST_Transformer {
                 PrefixExpression prefixExpression = (PrefixExpression) jexp;
                 String type = prefixExpression.getOperator().toString();
                 if (type.equals("!")) {
-                    String operand = convert2KAST(prefixExpression.getOperand());
-                    return cast2Type( "! " + operand, "bool");
+                    String operand = convert2KAST(prefixExpression.getOperand(), needCast);
+                    return cast2Type("! " + operand, "bool");
                 }
                 break;
 
             //The var name expr
             case Expression.SIMPLE_NAME:
                 SimpleName simpleName = (SimpleName) jexp;
-                return convertSimpleName2KASTString(simpleName);
+                return convertSimpleName2KASTString(simpleName, needCast);
 
             //The constants
             case Expression.NUMBER_LITERAL:
