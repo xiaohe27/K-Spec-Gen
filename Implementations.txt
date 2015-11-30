@@ -34,3 +34,7 @@ where sum_iterative(n) to the expected return expression.
 Should provide an annotation
 e.g. @CellName {Content of the cell}
 where the content will be placed as is in the final generated spec.
+
+OR preferrably, the user provided cell contents do not need to 
+have strict type decl, i.e. leave the job of inferring types of expressions
+to our tool.
