@@ -21,7 +21,7 @@ public class MethodInfo {
 
     //The pre and post condition list are extracted from the method contract.
     private ArrayList<Expression> preCondList = new ArrayList<>();
-    private ArrayList<Expression> postCondList = new ArrayList<>();
+    private ArrayList<String> postCondList = new ArrayList<>();
     //the expected return value according to the method contract.
     private String expectedRetVal;
     //the return expression
@@ -86,7 +86,7 @@ public class MethodInfo {
                 case Patterns.ENSURES:
 //                    System.out.println("@post : " + matcher.group(2));
                     String postCondStr = matcher.group(2);
-                    this.postCondList.add(ExpressionParser.parseExprStr(postCondStr));
+                    this.postCondList.add(postCondStr);
                     break;
 
                 case Patterns.RETURNS:
@@ -138,7 +138,7 @@ public class MethodInfo {
         return this.preCondList;
     }
 
-    public ArrayList<Expression> getPostCondList() {
+    public ArrayList<String> getPostCondList() {
         return this.postCondList;
     }
 

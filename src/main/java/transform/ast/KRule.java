@@ -3,8 +3,10 @@ package transform.ast;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import parser.ExpressionParser;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
+import parser.annotation.Patterns;
 import parser.ast_visitor.LIVisitor;
 import transform.ast.cells.*;
 import transform.utils.ConstraintGen;
@@ -13,6 +15,7 @@ import transform.utils.TypeMapping;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.regex.Matcher;
 
 /**
  * Created by hx312 on 13/10/2015.
@@ -77,16 +80,26 @@ public class KRule extends KASTNode {
         return cells;
     }
 
-    private Collection<KCondition> extractAllPostCond(ArrayList<Expression> postCondList,
+    private Collection<KCondition> extractAllPostCond(ArrayList<String> postCondList,
                                                       ArrayList<SingleVariableDeclaration> formalParams) {
         Collection<KCondition> allPostCond = new ArrayList<>();
 
-        postCondList.forEach(postCondExpr ->
-                allPostCond.add(KCondition.genKConditionFromJavaExpr(postCondExpr, formalParams)));
+        postCondList.forEach(postCondExprStr ->
+        {
+            Matcher matcher = Patterns.RAW_CELL.matcher(postCondExprStr);
+            if (matcher.find()) {
+                String cellName = matcher.group(1);
+                String cellContent = matcher.group(2);
+                //TODO
+            } else {
+                Expression postCondExp = ExpressionParser.parseExprStr(postCondExprStr);
+                allPostCond.add(KCondition.genKConditionFromJavaExpr(postCondExp, formalParams));
+            }
+        });
 
         //also include the constraint related to the return expression.
         //the cell can be encoded in the ensures clause
-        
+
         //TODO
         return allPostCond;
     }
