@@ -1,10 +1,11 @@
 package transform.ast;
 
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import parser.ast_visitor.LIVisitor;
 import transform.ast.cells.*;
 import transform.utils.ConstraintGen;
 import transform.utils.TypeMapping;
@@ -22,8 +23,8 @@ public class KRule extends KASTNode {
     private String retVal;
     private ArrayList<Cell> cells = new ArrayList<>();
 
-    private HashMap<String, String> env = new HashMap<>(); //env maps vars to vals
-    private HashMap<String, String> store = new HashMap<>();  //store maps addr to primitive vals?
+    private HashMap<SimpleName, Integer> env = new HashMap<>(); //env maps vars to locations
+    private HashMap<Integer, SimpleName> store = new HashMap<>();  //store maps addr to primitive vals?
     private HashMap<String, String> objectStore = new HashMap<>(); //obj store maps addr to obj?
 
     public KRule(MethodInfo methodInfo) {
@@ -32,34 +33,35 @@ public class KRule extends KASTNode {
 
     public KRule(MethodInfo methodInfo, LoopInfo loopInfo) {
         super("'KRule");
-
-//        initStackAndHeap(methodInfo, loopInfo);
-
         this.preConds.addAll(extractAllPreCond(methodInfo.getPreCondList(), methodInfo.getFormalParams()));
         this.postConds.addAll(extractAllPostCond(methodInfo.getPostCondList(), methodInfo.getFormalParams()));
-        this.retVal = methodInfo.getRetVal();
+        this.retVal = methodInfo.getExpectedRetVal();
         this.cells = constructCells(methodInfo, loopInfo);
+
+        if (loopInfo != null) {
+            rewrite(loopInfo);
+        }
     }
 
-    /**
-     * Test the KRule's toString().
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-//        KRule kRule = new KRule(new MethodInfo("test", 0, 10, "fakePreAndPostCond"));
-//        System.out.println("KRule looks like:\n");
-//        System.out.println(kRule.toString());
+    private void rewrite(LoopInfo loopInfo) {
+        loopInfo.getLIStream().forEach(
+                liExp -> {
+                    LIVisitor liVisitor = new LIVisitor();
+                    liExp.accept(liVisitor);
+                }
+        );
+
+        //TODO
     }
 
-    private void initStackAndHeap(MethodInfo methodInfo, LoopInfo loopInfo) {
-        /* TODO */
-        throw new NotImplementedException();
-    }
 
     private ArrayList<Cell> constructCells(MethodInfo methodInfo, LoopInfo loopInfo) {
         ArrayList<Cell> cells = new ArrayList<>();
-        cells.add(new ThreadsCell(methodInfo, loopInfo, this.env));
+        ThreadsCell threadsCell = new ThreadsCell(methodInfo, loopInfo, this.env);
+        cells.add(threadsCell);
+
+        //Update the env and store
+        threadsCell.getSingleKCell().updateEnvAndStore(this.env, this.store);
 
         cells.add(Cell.getFixedCellWithName(Cell.CLASSES));
         cells.add(Cell.getFixedCellWithName(Cell.NumOfClassesToUnfold));
@@ -71,19 +73,19 @@ public class KRule extends KASTNode {
 
         cells.add(Cell.getFixedCellWithName(Cell.BUSY));
         cells.add(Cell.getFixedCellWithName(Cell.NEXT_LOC));
-        cells.add(new ObjectStoreCell(this.objectStore));
+        cells.add(new ObjectStoreCell());
         return cells;
     }
 
-    private Collection<? extends KCondition> extractAllPostCond(ArrayList<Expression> postCondList,
-                                                                ArrayList<SingleVariableDeclaration> formalParams) {
+    private Collection<KCondition> extractAllPostCond(ArrayList<Expression> postCondList,
+                                                      ArrayList<SingleVariableDeclaration> formalParams) {
         Collection<KCondition> allPostCond = new ArrayList<>();
 
         postCondList.forEach(postCondExpr ->
                 allPostCond.add(KCondition.genKConditionFromJavaExpr(postCondExpr, formalParams)));
 
         //also include the constraint related to the return expression.
-
+        //TODO
         return allPostCond;
     }
 

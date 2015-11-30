@@ -26,6 +26,7 @@ public class TypeMappingTest {
     private String formalParamsStr;
     private String javaExpStr;
     private String expectedKExpStr;
+
     public TypeMappingTest(String formalParamsStr, String javaExpStr, String expectedKExpStr) {
         this.formalParamsStr = formalParamsStr;
         this.javaExpStr = javaExpStr;
@@ -42,7 +43,6 @@ public class TypeMappingTest {
                 {"float c, float d, int e, int f", "e >= f + 7/2-3 && c/2.0 < d",
                         "E >=Int F +Int 7 /Int 2 -Int 3 andBool C /Float 2.0 <Float D"},
                 {"boolean a, boolean b", "a || b", " A orBool B"},
-//not passing
                 {"boolean b", "!b", "notBool B"},
                 {"boolean a, boolean b", "a && !b", " A andBool notBool B"},
                 {"boolean a, boolean b", "a != b", " A =/=Bool B"},
@@ -69,7 +69,7 @@ public class TypeMappingTest {
         String actualKExprStr = TypeMapping.fromJExpr2KExprString(this.jExpr, this.formalParams);
 
         System.out.println("Actual output is " + actualKExprStr);
-        assertEquals(this.expectedKExpStr.replaceAll("\\p{Blank}","").trim(),
+        assertEquals(this.expectedKExpStr.replaceAll("\\p{Blank}", "").trim(),
                 actualKExprStr.replaceAll("\\p{Blank}", "").trim());
     }
 }

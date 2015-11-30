@@ -1,5 +1,7 @@
 package transform.ast.cells;
 
+import org.eclipse.jdt.core.dom.SimpleName;
+
 import java.util.HashMap;
 
 /**
@@ -7,9 +9,9 @@ import java.util.HashMap;
  */
 public class StoreCell extends Cell {
 
-    private HashMap<String, String> store = new HashMap<>();
+    private HashMap<Integer, SimpleName> store;
 
-    public StoreCell(HashMap<String, String> store) {
+    public StoreCell(HashMap<Integer, SimpleName> store) {
         super(Cell.STORE);
         this.hasLeftOmission = true;
         this.hasRightOmission = true;
@@ -18,13 +20,17 @@ public class StoreCell extends Cell {
 
     @Override
     public String toString() {
-        String ret = "";
-        if (store.isEmpty()) {
-            ret = super.surroundWithTags(".Map => ?_:Map");
-        } else {
-            //TODO
-        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(".Map => ?_:Map");
 
-        return ret;
+        sb.append("\n");
+
+        this.store.forEach((loc, val) -> {
+            sb.append(loc + " |-> " + val + "\n");
+        });
+
+        sb.deleteCharAt(sb.lastIndexOf("\n"));
+
+        return super.surroundWithTags(sb.toString());
     }
 }

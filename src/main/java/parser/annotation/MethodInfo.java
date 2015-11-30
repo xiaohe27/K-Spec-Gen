@@ -5,6 +5,7 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Type;
 import parser.ExpressionParser;
+import transform.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -22,7 +23,9 @@ public class MethodInfo {
     private ArrayList<Expression> preCondList = new ArrayList<>();
     private ArrayList<Expression> postCondList = new ArrayList<>();
     //the expected return value according to the method contract.
-    private String retVal;
+    private String expectedRetVal;
+    //the return expression
+    private Expression retExpr;
 
     /**
      * The index is the pos of the loop:
@@ -42,29 +45,8 @@ public class MethodInfo {
         parseMethodContract(preAndPostCond);
     }
 
-    /**
-     * Transform the given string to K's ID.
-     */
-    public static String string2ID(String inputStr) {
-        return "String2Id(\"" + inputStr + "\")";
-    }
-
-    /**
-     * Transform the class name to K's ID.
-     *
-     * @return
-     */
-    public static String className2ID(String clsName) {
-        return "(class " + string2ID("." + clsName) + ")";
-    }
-
-    /**
-     * Transform the method name to K's ID.
-     *
-     * @return
-     */
-    public static String methodName2ID(String methName) {
-        return string2ID(methName);
+    public void setRetExpr(final Expression retExpr0) {
+        this.retExpr = retExpr0;
     }
 
     public boolean isInsideMethod(int pos) {
@@ -109,7 +91,7 @@ public class MethodInfo {
 
                 case Patterns.RETURNS:
 //                    System.out.println("@ret : " + matcher.group(2));
-                    this.retVal = matcher.group(2);
+                    this.expectedRetVal = matcher.group(2);
                     break;
 
                 default:
@@ -164,13 +146,13 @@ public class MethodInfo {
         return className;
     }
 
-    public String getRetVal() {
-        if (retVal == null) {
+    public String getExpectedRetVal() {
+        if (expectedRetVal == null) {
             Character firstCharInType = this.getRetType().toString().charAt(0);
             return "?" + firstCharInType.toString().toUpperCase();
         }
 
-        return retVal;
+        return expectedRetVal;
     }
 
     public Type getRetType() {
@@ -194,11 +176,11 @@ public class MethodInfo {
     }
 
     public String className2ID() {
-        return className2ID(this.getClassName());
+        return Utils.className2ID(this.getClassName());
     }
 
     public String methodName2ID() {
-        return methodName2ID(this.getMethodName());
+        return Utils.methodName2ID(this.getMethodName());
     }
 
     public String getKModuleName() {
@@ -218,6 +200,10 @@ public class MethodInfo {
                 sb.append(param.getName().toString() + " of type " + param.getType().toString
                         () + "\n"));
 
+        if (this.retExpr != null) {
+            sb.append("The method returns `" + this.retExpr + "`.\n");
+        }
+
         sb.append("Method " + this.getQualifiedName() + " 's contract is \n");
 
         this.preCondList.forEach(preCondStr -> {
@@ -227,7 +213,7 @@ public class MethodInfo {
             sb.append("@post: " + postCondStr + ";\n");
         });
 
-        sb.append("@ret: " + this.retVal + ";\n");
+        sb.append("@ret: " + this.expectedRetVal + ";\n");
         sb.append("\nLoop info is :\n");
 
         for (int index = 0; index < this.loopsInfo.size(); index++) {

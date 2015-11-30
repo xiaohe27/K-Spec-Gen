@@ -2,6 +2,7 @@ package parser;
 
 import org.eclipse.jdt.core.dom.*;
 import transform.utils.TypeMapping;
+import transform.utils.Utils;
 
 import java.util.HashMap;
 
@@ -83,13 +84,7 @@ public class ExpressionParser extends ASTVisitor {
     public boolean visit(NumberLiteral numberLiteral) {
 //        System.out.println("Visit number literal " + numberLiteral);
 
-        boolean isInt = false;
-        try {
-            long num = Long.parseLong(numberLiteral + "");
-            isInt = true;
-        } catch (NumberFormatException e) {
-        } catch (NullPointerException e) {
-        }
+        boolean isInt = Utils.isInt(numberLiteral);
 
         if (isInt)
             typeIdOfTheOperands = TypeMapping.INT_OPERAND;
@@ -120,6 +115,14 @@ public class ExpressionParser extends ASTVisitor {
     }
 
 
+    public static void main(String[] args) {
+        ASTParser parser = ASTParser.newParser(AST.JLS8);
+        parser.setSource("n |-> 2, s |-> 3".toCharArray());
+        parser.setKind(ASTParser.K_COMPILATION_UNIT);
+        CompilationUnit cu = (CompilationUnit) parser.createAST(null);
+
+        System.out.println(cu.toString());
+    }
 //    public static void main(String[] args) {
 //        HashMap<String, String> myTyEnv = new HashMap<>();
 //        myTyEnv.put("a", "int");

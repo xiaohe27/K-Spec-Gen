@@ -1,6 +1,6 @@
 package transform.ast.cells;
 
-import java.util.Collection;
+import java.util.Set;
 
 /**
  * Created by xiaohe on 11/1/15.
@@ -9,11 +9,11 @@ import java.util.Collection;
 public class StoreMetaDataCell extends Cell {
     private static final String fixed1 = "... (.Map => ?_:Map)\n";
     private static final String fixed2 = "... ";
-    private Collection<String> addresses;
+    private Set<Integer> addresses;
 
     //input: a set of addresses
     //the values
-    public StoreMetaDataCell(Collection<String> addresses) {
+    public StoreMetaDataCell(Set<Integer> addresses) {
         super(Cell.STORE_METADATA);
         this.addresses = addresses;
     }
