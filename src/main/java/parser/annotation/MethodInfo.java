@@ -1,6 +1,9 @@
 package parser.annotation;
 
-import org.eclipse.jdt.core.dom.*;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.Type;
 import parser.ExpressionParser;
 
 import java.util.ArrayList;
@@ -41,10 +44,6 @@ public class MethodInfo {
         parseMethodContract(preAndPostCond);
     }
 
-    public void setRetExpr(final Expression retExpr0) {
-        this.retExpr = retExpr0;
-    }
-
     /**
      * Transform the given string to K's ID.
      */
@@ -68,6 +67,10 @@ public class MethodInfo {
      */
     public static String methodName2ID(String methName) {
         return string2ID(methName);
+    }
+
+    public void setRetExpr(final Expression retExpr0) {
+        this.retExpr = retExpr0;
     }
 
     public boolean isInsideMethod(int pos) {

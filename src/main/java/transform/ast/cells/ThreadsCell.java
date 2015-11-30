@@ -1,5 +1,6 @@
 package transform.ast.cells;
 
+import org.eclipse.jdt.core.dom.SimpleName;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
 
@@ -11,7 +12,7 @@ import java.util.HashMap;
 public class ThreadsCell extends Cell {
     private KCell singleKCell;
 
-    public ThreadsCell(MethodInfo methodInfo, LoopInfo loopInfo, HashMap<String, Integer> env) {
+    public ThreadsCell(MethodInfo methodInfo, LoopInfo loopInfo, HashMap<SimpleName, Integer> env) {
         super(Cell.THREADS);
         ThreadCell singleThreadCell = new ThreadCell(methodInfo, loopInfo, env);
         this.childrenCells.add(singleThreadCell);

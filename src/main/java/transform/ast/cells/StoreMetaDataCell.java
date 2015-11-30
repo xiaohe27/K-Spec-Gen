@@ -1,6 +1,5 @@
 package transform.ast.cells;
 
-import java.util.Collection;
 import java.util.Set;
 
 /**

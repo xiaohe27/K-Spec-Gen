@@ -5,9 +5,6 @@ import parser.annotation.AnnotationInfo;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Created by hx312 on 30/09/2015.
  */

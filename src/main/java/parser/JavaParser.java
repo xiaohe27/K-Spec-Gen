@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class JavaParser {
 
@@ -38,7 +37,7 @@ public class JavaParser {
         parser.setUnitName(unitName);
         String[] sources = new String[]{file.getParentFile().getAbsolutePath()};
         String[] classpath = getClassPaths();
-        parser.setEnvironment(classpath, sources, new String[] { "UTF-8"}, true);
+        parser.setEnvironment(classpath, sources, new String[]{"UTF-8"}, true);
         /////////////////////////////////////////
 
 

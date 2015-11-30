@@ -1,10 +1,10 @@
 package transform.ast;
 
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import transform.ast.cells.*;
 import transform.utils.ConstraintGen;
 import transform.utils.TypeMapping;
@@ -22,8 +22,8 @@ public class KRule extends KASTNode {
     private String retVal;
     private ArrayList<Cell> cells = new ArrayList<>();
 
-    private HashMap<String, Integer> env = new HashMap<>(); //env maps vars to locations
-    private HashMap<Integer, String> store = new HashMap<>();  //store maps addr to primitive vals?
+    private HashMap<SimpleName, Integer> env = new HashMap<>(); //env maps vars to locations
+    private HashMap<Integer, Expression> store = new HashMap<>();  //store maps addr to primitive vals?
     private HashMap<String, String> objectStore = new HashMap<>(); //obj store maps addr to obj?
 
     public KRule(MethodInfo methodInfo) {
@@ -65,7 +65,7 @@ public class KRule extends KASTNode {
     }
 
     private Collection<KCondition> extractAllPostCond(ArrayList<Expression> postCondList,
-                                                                ArrayList<SingleVariableDeclaration> formalParams) {
+                                                      ArrayList<SingleVariableDeclaration> formalParams) {
         Collection<KCondition> allPostCond = new ArrayList<>();
 
         postCondList.forEach(postCondExpr ->

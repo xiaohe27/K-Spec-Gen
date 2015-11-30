@@ -1,74 +1,71 @@
 // Copyright (c) 2014 K Team. All Rights Reserved.
 public class listNode {
-  int val;
-  listNode next;
+    int val;
+    listNode next;
 
-    listNode (int val)
-    {
+    listNode(int val) {
         this.val = val;
         this.next = null;
     }
 
     public static void main(String[] args) {
-        listNode node1 = new listNode (1);
-        listNode node2 = new listNode (2);
-        listNode node3 = new listNode (3);
+        listNode node1 = new listNode(1);
+        listNode node2 = new listNode(2);
+        listNode node3 = new listNode(3);
         node1.next = node2;
         insertion_sort(node1);
 //        bubble_sort(node1);
 //        reverse(node1);
 //        append(node1, node3);
     }
-    
-static listNode append(listNode x, listNode y)
-/*@ rule <k> $ => return ?x; ...</k>
-         <heap>... list(x)(A), list(y)(B) => list(?x)(A @ B) ...</heap> */
-{
-  listNode p;
-  if (x == null)
-    return y;
 
-  p = x;
+    static listNode append(listNode x, listNode y)
+/*@ rule <k> $ => return ?x; ...</k>
+         <heap>... list(x)(A), list(y)(B) => list(?x)(A @ B) ...</heap> */ {
+        listNode p;
+        if (x == null)
+            return y;
+
+        p = x;
   /*@ inv <heap>... lseg(x, p)(?A1), list(p)(?A2) ...</heap>
           /\ A = ?A1 @ ?A2 /\ ~(p = 0) */
-  while (p.next != null) {
-    p = p.next;
-  }
-  p.next = y;
+        while (p.next != null) {
+            p = p.next;
+        }
+        p.next = y;
 
-  return x;
-}
+        return x;
+    }
 
-static listNode reverse(listNode x)
+    static listNode reverse(listNode x)
 /*@ rule <k> $ => return ?p; ...</k>
-         <heap>... list(x)(A) => list(?p)(rev(A)) ...</heap> */
-{
-  listNode p;
+         <heap>... list(x)(A) => list(?p)(rev(A)) ...</heap> */ {
+        listNode p;
 
-  p = null;
-  //@ inv <heap>... list(p)(?B), list(x)(?C) ...</heap> /\ A = rev(?B) @ ?C
-  while(x != null) {
-    listNode y;
+        p = null;
+        //@ inv <heap>... list(p)(?B), list(x)(?C) ...</heap> /\ A = rev(?B) @ ?C
+        while (x != null) {
+            listNode y;
 
-    y = x.next;
-    x.next = p;
-    p = x;
-    x = y;
-  }
+            y = x.next;
+            x.next = p;
+            p = x;
+            x = y;
+        }
 
-  return p;
-}
+        return p;
+    }
+
     static listNode bubble_sort(listNode x)
 /*@ rule <k> $ => return ?x; ...</k>
          <heap>... list(x)(A) => list(?x)(?A) ...</heap>
-    if isSorted(?A) /\ seq2mset(A) = seq2mset(?A) */
-    {
+    if isSorted(?A) /\ seq2mset(A) = seq2mset(?A) */ {
         boolean change;
 
         if (x == null || x.next == null)
             return x;
 
-        change = true ;
+        change = true;
   /*@ inv <heap>... list(x)(?A) ...</heap>
           /\ ~(x = 0) /\ seq2mset(A) = seq2mset(?A)
           /\ (isSorted(?A) \/ ~(change = 0)) */
@@ -100,8 +97,7 @@ static listNode reverse(listNode x)
     static listNode insertion_sort(listNode x)
 /*@ rule <k> $ => return ?x; ...</k>
          <heap>... list(x)(A) => list(?x)(?A) ...</heap>
-    if isSorted(?A) /\ seq2mset(A) = seq2mset(?A) */
-    {
+    if isSorted(?A) /\ seq2mset(A) = seq2mset(?A) */ {
         listNode y;
 
         y = null;
@@ -127,13 +123,11 @@ static listNode reverse(listNode x)
 
                     n.next = z.next;
                     z.next = n;
-                }
-                else {
+                } else {
                     n.next = y;
                     y = n;
                 }
-            }
-            else {
+            } else {
                 y = n;
             }
         }
@@ -142,12 +136,10 @@ static listNode reverse(listNode x)
     }
 
 
-
     static listNode merge_sort(listNode x)
 /*@ rule <k> $ => return ?x; ...</k>
          <heap>... list(x)(A) => list(?x)(?A) ...</heap>
-    if isSorted(?A) /\ seq2mset(A) = seq2mset(?A) */
-    {
+    if isSorted(?A) /\ seq2mset(A) = seq2mset(?A) */ {
         listNode p;
         listNode y;
         listNode z;
@@ -183,8 +175,7 @@ static listNode reverse(listNode x)
             x = y;
             p = y;
             y = y.next;
-        }
-        else {
+        } else {
             x = z;
             p = z;
             z = z.next;
@@ -198,8 +189,7 @@ static listNode reverse(listNode x)
             if (y.val < z.val) {
                 p.next = y;
                 y = y.next;
-            }
-            else {
+            } else {
                 p.next = z;
                 z = z.next;
             }
@@ -219,8 +209,7 @@ static listNode reverse(listNode x)
     static listNode quicksort(listNode x)
 /*@ rule <k> $ => return ?x; ...</k>
          <heap>... list(x)(A) => list(?x)(?A) ...</heap>
-    if isSorted(?A) /\ seq2mset(A) = seq2mset(?A) */
-    {
+    if isSorted(?A) /\ seq2mset(A) = seq2mset(?A) */ {
         listNode p;
         listNode y;
         listNode z;
@@ -236,7 +225,7 @@ static listNode reverse(listNode x)
   /*@ inv <heap>... p|.[v,0], list(x)(?A), list(y)(?B), list(z)(?C) ...</heap>
           /\ seq2mset(A) = {v} U seq2mset(?A) U seq2mset(?B) U seq2mset(?C)
           /\ leq(seq2mset(?B), {v}) /\ leq({v}, seq2mset(?C)) */
-        while(x != null) {
+        while (x != null) {
             listNode t;
 
             t = x;
@@ -244,8 +233,7 @@ static listNode reverse(listNode x)
             if (t.val < p.val) {
                 t.next = y;
                 y = t;
-            }
-            else {
+            } else {
                 t.next = z;
                 z = t;
             }

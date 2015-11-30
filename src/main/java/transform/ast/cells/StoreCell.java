@@ -1,5 +1,7 @@
 package transform.ast.cells;
 
+import org.eclipse.jdt.core.dom.Expression;
+
 import java.util.HashMap;
 
 /**
@@ -7,9 +9,9 @@ import java.util.HashMap;
  */
 public class StoreCell extends Cell {
 
-    private HashMap<Integer, String> store = new HashMap<>();
+    private HashMap<Integer, Expression> store = new HashMap<>();
 
-    public StoreCell(HashMap<Integer, String> store) {
+    public StoreCell(HashMap<Integer, Expression> store) {
         super(Cell.STORE);
         this.hasLeftOmission = true;
         this.hasRightOmission = true;
