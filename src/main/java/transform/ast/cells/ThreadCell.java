@@ -15,7 +15,7 @@ public class ThreadCell extends Cell {
     public ThreadCell(MethodInfo methodInfo, LoopInfo loopInfo, HashMap<SimpleName, Integer> env) {
         super(Cell.THREAD);
         this.kCell = new KCell(methodInfo, loopInfo);
-        Cell envCell = new EnvCell();
+        Cell envCell = new EnvCell(env);
         Cell holdsCell = Cell.getFixedCellWithName(Cell.HOLDS);
 
         this.childrenCells.add(this.kCell);

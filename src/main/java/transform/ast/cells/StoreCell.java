@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 public class StoreCell extends Cell {
 
-    private HashMap<Integer, SimpleName> store = new HashMap<>();
+    private HashMap<Integer, SimpleName> store;
 
     public StoreCell(HashMap<Integer, SimpleName> store) {
         super(Cell.STORE);
@@ -21,13 +21,17 @@ public class StoreCell extends Cell {
 
     @Override
     public String toString() {
-        String ret = "";
-        if (store.isEmpty()) {
-            ret = super.surroundWithTags(".Map => ?_:Map");
-        } else {
-            //TODO
-        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(".Map => ?_:Map");
 
-        return ret;
+        sb.append("\n");
+
+        this.store.forEach((loc, val) -> {
+            sb.append(loc + " |-> " + val + "\n");
+        });
+
+        sb.deleteCharAt(sb.lastIndexOf("\n"));
+
+        return super.surroundWithTags(sb.toString());
     }
 }

@@ -9,6 +9,7 @@ import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
 import parser.ast_visitor.LoopVisitor;
 import transform.utils.TypeMapping;
+import transform.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +49,10 @@ public class KCell extends Cell {
     public void updateEnvAndStore(HashMap<SimpleName, Integer> env, HashMap<Integer, SimpleName> heap) {
         if (this.loopInfo != null) {
             final int[] numOfVars = {0};
-            this.loopVisitor.getStreamOfVarNames().forEach(var ->
+            this.loopVisitor.getStreamOfVarNames()
+            //this filter is not one time, it will be invoked every time a var is traversed.
+                .filter(var -> Utils.contains(env, var) == false)
+                .forEach(var ->
                     {
                         env.put(var, ++numOfVars[0]);
                         heap.put(numOfVars[0], var);
