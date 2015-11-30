@@ -85,6 +85,8 @@ public class KRule extends KASTNode {
                 allPostCond.add(KCondition.genKConditionFromJavaExpr(postCondExpr, formalParams)));
 
         //also include the constraint related to the return expression.
+        //the cell can be encoded in the ensures clause
+        
         //TODO
         return allPostCond;
     }

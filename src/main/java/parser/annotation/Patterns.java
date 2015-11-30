@@ -15,8 +15,13 @@ public class Patterns {
     public static final Pattern LI =
             Pattern.compile("//@LI\\p{Blank}+([\\p{Print}\\p{Blank}&&[^;]]+);");
 
-    public static final Pattern RAW_CELL =
-            Pattern.compile("/\\*@\\p{Space}*(env|store)\\p{Space}*\\{([\\p{Print}\\p{Space}&&[^{}]]*)\\}\\p{Space}*@\\*/");
+    //"/\\*@\\p{Space}*(env|store)\\p{Space}*\\{([\\p{Print}\\p{Space}&&[^{}]]*)\\}\\p{Space}*@\\*/"
+    private static final String rawCell = "(env|store)\\p{Space}*\\{([\\p{Print}\\p{Space}&&[^{}]]*)\\}";
+
+    public static final Pattern CellInComment =
+            Pattern.compile("/\\*@\\p{Space}*" + rawCell + "\\p{Space}*@\\*/");
+
+    public static final Pattern RAW_CELL = Pattern.compile(rawCell);
 
     protected static final String REQUIRES = "requires";
     protected static final String ENSURES = "ensures";
