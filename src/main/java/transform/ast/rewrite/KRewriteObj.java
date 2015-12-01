@@ -1,5 +1,6 @@
 package transform.ast.rewrite;
 
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import transform.utils.TypeMapping;
 import transform.utils.Utils;
 
@@ -11,20 +12,25 @@ import transform.utils.Utils;
  * N.B. when rhs is null, it represents a special form of value where no rewrite occurs.
  */
 public class KRewriteObj {
-    private String javaType;
+    private String javaTypeStr;
     private String lhs;
     private String rhs;
 
     private String kBuiltInType;
     private String javaTypeInK;
 
-    public KRewriteObj(String javaType, String lhs, String rhs) {
-        this.javaType = javaType;
+    public KRewriteObj(ITypeBinding javaType, String lhs, String rhs) {
+        this.javaTypeStr = javaType.getName();
         this.lhs = lhs;
         this.rhs = rhs;
 
-        this.kBuiltInType = TypeMapping.getKBuiltInType4SimpleJType(this.javaType);
-        this.javaTypeInK = Utils.className2ID(this.javaType, false);
+        this.kBuiltInType = TypeMapping.getKBuiltInType4SimpleJType(this.javaTypeStr);
+
+        this.javaTypeInK = javaType.isPrimitive() ? this.javaTypeStr
+                : Utils.className2ID(this.javaTypeStr, false);
+
+        if (javaTypeInK.equals("boolean"))
+            javaTypeInK = "bool";
     }
 
     public String toString() {

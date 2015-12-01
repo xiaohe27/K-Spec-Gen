@@ -130,6 +130,8 @@ public class TypeMapping {
         boolean isPrimitive = v.getType().isPrimitiveType();
 
         String jTypeInJavaSemantics = isPrimitive ? jType : Utils.className2ID(jType);
+        if (jTypeInJavaSemantics.equals("boolean"))
+            jTypeInJavaSemantics = "bool";
 
         String result = convert2KVar(varName, isPrimitive);
         result += ":" + getKBuiltInType4SimpleJType(jType);

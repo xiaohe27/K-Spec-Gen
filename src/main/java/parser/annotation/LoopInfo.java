@@ -85,7 +85,8 @@ public class LoopInfo {
 
     /**
      * Update the env map and store map.
-     * @param envMap The environment map being updated.
+     *
+     * @param envMap   The environment map being updated.
      * @param storeMap The store map being updated.
      */
     public void updateEnvAndStore(HashMap<SimpleName, Integer> envMap,
@@ -125,8 +126,8 @@ public class LoopInfo {
                         elements[i] = TypeMapping.fromJExpr2KExprString(expI, localVars);
                     }
 
-                    String javaType = name.resolveTypeBinding().getName();
-                    KRewriteObj kRewriteObj = new KRewriteObj(javaType, elements[0],
+                    KRewriteObj kRewriteObj = new KRewriteObj(name.resolveTypeBinding(),
+                            elements[0],
                             elements.length == 2 ? elements[1] : null);
                     storeMap.put(loc, kRewriteObj);
                 });
