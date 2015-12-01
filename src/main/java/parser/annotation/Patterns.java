@@ -23,6 +23,14 @@ public class Patterns {
 
     public static final Pattern RAW_CELL = Pattern.compile(rawCell);
 
+    public static final Pattern EnvEntry =
+            Pattern.compile("([_\\p{Alpha}][_\\p{Alnum}]*)\\p{Space}*\\|->\\p{Space}*" +
+                    "([\\p{Digit}]+)");
+
+    public static final Pattern StoreEntry =
+       Pattern.compile("([\\p{Digit}]+)\\p{Space}*\\|->\\p{Space}*([\\p{Print}&&[^,]]+)");
+
+
     protected static final String REQUIRES = "requires";
     protected static final String ENSURES = "ensures";
     protected static final String RETURNS = "returns";

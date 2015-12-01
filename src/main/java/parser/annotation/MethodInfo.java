@@ -101,25 +101,12 @@ public class MethodInfo {
     }
 
     public void addPotentialLI(String loopInv, int commentStartPos) {
-        for (int i = 0; i < this.loopsInfo.size() - 1; i++) {
-            LoopInfo curLoop = this.loopsInfo.get(i);
-            LoopInfo nxtLoop = this.loopsInfo.get(i + 1);
-            //if the LI is inside the current loop but not the next loop,
-            //then it must be belong to the current loop.
-            //this is true for both sequential and nested cases.
-            if (curLoop.isPosInside(commentStartPos) &&
-                    !nxtLoop.isPosInside(commentStartPos)) {
-                curLoop.addLI(loopInv);
-                return;
-            }
-        }
-
-        if (this.loopsInfo.size() > 0) {
-            LoopInfo lastLoop = this.loopsInfo.get(this.loopsInfo.size() - 1);
-            if (lastLoop.isPosInside(commentStartPos)) {
-                lastLoop.addLI(loopInv);
-            }
-        }
+        this.loopsInfo.stream()
+                .filter(loopInfo -> loopInfo.isPosInside(commentStartPos))
+                .min((loopInfo1, loopInfo2) -> (loopInfo1.srcCodeSize() - loopInfo2.srcCodeSize()))
+                .ifPresent(tarLoopInfo -> {
+                    tarLoopInfo.addLI(loopInv);
+                });
     }
 
     public void addLoopInfo(LoopInfo loopInfo) {
@@ -222,5 +209,23 @@ public class MethodInfo {
         }
 
         return sb.toString();
+    }
+
+    public void addEnvMap(String envCellInfo, int commentStartPos) {
+        this.loopsInfo.stream()
+                .filter(loopInfo -> loopInfo.isPosInside(commentStartPos))
+                .min((loopInfo1, loopInfo2) -> (loopInfo1.srcCodeSize() - loopInfo2.srcCodeSize()))
+                .ifPresent(tarLoopInfo -> {
+                    tarLoopInfo.addEnvInfo(envCellInfo);
+                });
+    }
+
+    public void addStoreMap(String storeCellInfo, int commentStartPos) {
+        this.loopsInfo.stream()
+                .filter(loopInfo -> loopInfo.isPosInside(commentStartPos))
+                .min((loopInfo1, loopInfo2) -> (loopInfo1.srcCodeSize() - loopInfo2.srcCodeSize()))
+                .ifPresent(tarLoopInfo -> {
+                    tarLoopInfo.addStoreInfo(storeCellInfo);
+                });
     }
 }

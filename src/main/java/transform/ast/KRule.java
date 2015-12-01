@@ -42,8 +42,14 @@ public class KRule extends KASTNode {
         this.cells = constructCells(methodInfo, loopInfo);
 
         if (loopInfo != null) {
+            updateMaps(loopInfo);
             rewrite(loopInfo);
         }
+    }
+
+    private void updateMaps(LoopInfo loopInfo) {
+
+        //TODO
     }
 
     private void rewrite(LoopInfo loopInfo) {
@@ -62,9 +68,6 @@ public class KRule extends KASTNode {
         ArrayList<Cell> cells = new ArrayList<>();
         ThreadsCell threadsCell = new ThreadsCell(methodInfo, loopInfo, this.env);
         cells.add(threadsCell);
-
-        //Update the env and store
-        threadsCell.getSingleKCell().updateEnvAndStore(this.env, this.store);
 
         cells.add(Cell.getFixedCellWithName(Cell.CLASSES));
         cells.add(Cell.getFixedCellWithName(Cell.NumOfClassesToUnfold));

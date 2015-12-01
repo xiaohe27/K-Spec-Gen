@@ -9,6 +9,7 @@ import parser.annotation.AnnotationInfo;
 import parser.annotation.Patterns;
 import parser.ast_visitor.MyASTVisitor;
 import transform.ast.KSpec;
+import transform.ast.cells.Cell;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,8 +74,17 @@ public class JavaParser {
                     // "/\\*@\\p{Space}*(env|store)\\p{Space}*\\{([\\p{Print}\\p{Space}&&[^{}]]*)\\}@\\*/"
                     Matcher Cell_Matcher = Patterns.RAW_CELL.matcher(commentStr);
                     if (Cell_Matcher.find()) {
-                        System.out.println("cell name is " + Cell_Matcher.group(1));
-                        System.out.println("cell content is " + Cell_Matcher.group(2));
+                        switch (Cell_Matcher.group(1)) {
+                            case Cell.ENV:
+                                myASTVisitor.getAnnotationInfo()
+                                        .addEnvCellInfo(Cell_Matcher.group(2), commentStartPos);
+                                break;
+
+                            case Cell.STORE:
+                                myASTVisitor.getAnnotationInfo()
+                                        .addStoreCellInfo(Cell_Matcher.group(2), commentStartPos);
+                                break;
+                        }
                     }
                 }
             }
