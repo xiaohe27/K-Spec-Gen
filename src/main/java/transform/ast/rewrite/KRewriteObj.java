@@ -1,6 +1,8 @@
 package transform.ast.rewrite;
 
 import org.eclipse.jdt.core.dom.ITypeBinding;
+import transform.ast.KCondition;
+import transform.utils.ConstraintGen;
 import transform.utils.TypeMapping;
 import transform.utils.Utils;
 
@@ -12,11 +14,11 @@ import transform.utils.Utils;
  * N.B. when rhs is null, it represents a special form of value where no rewrite occurs.
  */
 public class KRewriteObj {
-    private String javaTypeStr;
-    private String lhs;
-    private String rhs;
+    private final String javaTypeStr;
+    private final String lhs;
+    private final String rhs;
 
-    private String kBuiltInType;
+    private final String kBuiltInType;
     private String javaTypeInK;
 
     public KRewriteObj(ITypeBinding javaType, String lhs, String rhs) {
@@ -31,6 +33,11 @@ public class KRewriteObj {
 
         if (javaTypeInK.equals("boolean"))
             javaTypeInK = "bool";
+    }
+
+    public KCondition genConstraint() {
+        return KCondition.genKConditionFromConstraintString
+                (ConstraintGen.genRangeConstraint4Type(this.javaTypeStr, this.rhs));
     }
 
     public String toString() {

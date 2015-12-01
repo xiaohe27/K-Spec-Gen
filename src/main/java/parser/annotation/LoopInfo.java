@@ -5,11 +5,13 @@ import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.WhileStatement;
 import parser.ExpressionParser;
 import parser.ast_visitor.LoopVisitor;
+import transform.ast.KCondition;
 import transform.ast.rewrite.KRewriteObj;
 import transform.utils.TypeMapping;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.stream.Stream;

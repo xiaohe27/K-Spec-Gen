@@ -32,38 +32,38 @@ public class ConstraintGen {
      * Generate the range constraint for the var of the given type.
      *
      * @param type    The type of the variable.
-     * @param varName The name of the variable.
+     * @param expr The name of the expression.
      * @return The constraint expression describing the range of the values that the var can take.
      */
-    public static String genRangeConstraint4Type(String type, String varName) {
+    public static String genRangeConstraint4Type(String type, String expr) {
         switch (type) {
             case "byte":
-                return genIntRangeConstraint(varName, Byte.MIN_VALUE, Byte.MAX_VALUE);
+                return genIntRangeConstraint(expr, Byte.MIN_VALUE, Byte.MAX_VALUE);
 
             case "short":
-                return genIntRangeConstraint(varName, Short.MIN_VALUE, Short.MAX_VALUE);
+                return genIntRangeConstraint(expr, Short.MIN_VALUE, Short.MAX_VALUE);
 
             case "int":
-                return genIntRangeConstraint(varName, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                return genIntRangeConstraint(expr, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
             case "long":
-                return genIntRangeConstraint(varName, Long.MIN_VALUE, Long.MAX_VALUE);
+                return genIntRangeConstraint(expr, Long.MIN_VALUE, Long.MAX_VALUE);
 
             case "char":
-                return genIntRangeConstraint(varName, Character.MIN_VALUE, Character.MAX_VALUE);
+                return genIntRangeConstraint(expr, Character.MIN_VALUE, Character.MAX_VALUE);
 
             case "float":
-                return genFloatRangeConstraint(varName, Float.MIN_VALUE, Float.MAX_VALUE);
+                return genFloatRangeConstraint(expr, Float.MIN_VALUE, Float.MAX_VALUE);
 
             case "double":
-                return genFloatRangeConstraint(varName, Double.MIN_VALUE, Double.MAX_VALUE);
+                return genFloatRangeConstraint(expr, Double.MIN_VALUE, Double.MAX_VALUE);
 
             default:
                 return "";
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println(genRangeConstraint4Type("int", "X"));
-    }
+//    public static void main(String[] args) {
+//        System.out.println(genRangeConstraint4Type("int", "XYX"));
+//    }
 }
