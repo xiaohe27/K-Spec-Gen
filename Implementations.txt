@@ -27,8 +27,6 @@ conform to k-vars' convention.
 
 
 //Nov30
-Defines a map that maps the sum_iterative(old(n)) to final return var
-where sum_iterative(n) to the expected return expression.
 
 //
 Should provide an annotation
@@ -41,3 +39,8 @@ to our tool.
 
 Still use the jdt's type info inside the env/store map, the user provided data in the cell
 will be incorporated into the map.
+
+//Dec 1.
+TODO:
+ensure the return expr matches the thing that actually computed by the method
+for the rule corresponds to the method.
