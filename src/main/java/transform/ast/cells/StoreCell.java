@@ -1,6 +1,6 @@
 package transform.ast.cells;
 
-import org.eclipse.jdt.core.dom.SimpleName;
+import transform.ast.rewrite.KRewriteObj;
 
 import java.util.HashMap;
 
@@ -9,9 +9,9 @@ import java.util.HashMap;
  */
 public class StoreCell extends Cell {
 
-    private HashMap<Integer, SimpleName> store;
+    private HashMap<Integer, KRewriteObj> store;
 
-    public StoreCell(HashMap<Integer, SimpleName> store) {
+    public StoreCell(HashMap<Integer, KRewriteObj> store) {
         super(Cell.STORE);
         this.hasLeftOmission = true;
         this.hasRightOmission = true;
@@ -26,7 +26,7 @@ public class StoreCell extends Cell {
         sb.append("\n");
 
         this.store.forEach((loc, val) -> {
-            sb.append(loc + " |-> " + val + "\n");
+            sb.append("P" + loc + " |-> " + val + "\n");
         });
 
         sb.deleteCharAt(sb.lastIndexOf("\n"));

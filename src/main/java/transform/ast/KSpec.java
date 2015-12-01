@@ -14,7 +14,7 @@ public class KSpec extends KASTNode {
     public KSpec(String name, AnnotationInfo annotationInfo) {
         super(name);
         reqClauses.add(new KReqClause());
-        annotationInfo.getAllMethodsInfo().forEach(
+        annotationInfo.getMethodsInfoStream().forEach(
                 methodInfo -> {
                     KModule kModule = new KModule(methodInfo);
                     modules.add(kModule);

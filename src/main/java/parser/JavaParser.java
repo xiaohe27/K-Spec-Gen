@@ -9,6 +9,7 @@ import parser.annotation.AnnotationInfo;
 import parser.annotation.Patterns;
 import parser.ast_visitor.MyASTVisitor;
 import transform.ast.KSpec;
+import transform.ast.cells.Cell;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,14 +59,33 @@ public class JavaParser {
         {
             if (commentObj instanceof Comment) {
                 Comment comment = (Comment) commentObj;
+                int commentStartPos = comment.getStartPosition();
+                String commentStr = pgmTxt.substring(commentStartPos,
+                        commentStartPos + comment.getLength()).trim();
+
                 if (comment.isLineComment()) {
-                    int commentStartPos = comment.getStartPosition();
                     //the comment with regex: //@LI some expression here
                     //is considered a LI.
-                    String lpInvStr = pgmTxt.substring(commentStartPos, commentStartPos + comment.getLength());
-                    Matcher matcher = Patterns.LI.matcher(lpInvStr);
-                    if (matcher.find())
-                        myASTVisitor.getAnnotationInfo().addPotentialLI(matcher.group(1), commentStartPos);
+                    Matcher LI_Matcher = Patterns.LI.matcher(commentStr);
+                    if (LI_Matcher.find())
+                        myASTVisitor.getAnnotationInfo().addPotentialLI(LI_Matcher.group(1), commentStartPos);
+                } else if (comment.isBlockComment()) {
+                    //the comment with regex:
+                    // "/\\*@\\p{Space}*(env|store)\\p{Space}*\\{([\\p{Print}\\p{Space}&&[^{}]]*)\\}@\\*/"
+                    Matcher Cell_Matcher = Patterns.RAW_CELL.matcher(commentStr);
+                    if (Cell_Matcher.find()) {
+                        switch (Cell_Matcher.group(1)) {
+                            case Cell.ENV:
+                                myASTVisitor.getAnnotationInfo()
+                                        .addEnvCellInfo(Cell_Matcher.group(2), commentStartPos);
+                                break;
+
+                            case Cell.STORE:
+                                myASTVisitor.getAnnotationInfo()
+                                        .addStoreCellInfo(Cell_Matcher.group(2), commentStartPos);
+                                break;
+                        }
+                    }
                 }
             }
         });

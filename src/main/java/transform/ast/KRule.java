@@ -3,16 +3,19 @@ package transform.ast;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import parser.ExpressionParser;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
-import parser.ast_visitor.LIVisitor;
+import parser.annotation.Patterns;
 import transform.ast.cells.*;
+import transform.ast.rewrite.KRewriteObj;
 import transform.utils.ConstraintGen;
 import transform.utils.TypeMapping;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.regex.Matcher;
 
 /**
  * Created by hx312 on 13/10/2015.
@@ -24,7 +27,7 @@ public class KRule extends KASTNode {
     private ArrayList<Cell> cells = new ArrayList<>();
 
     private HashMap<SimpleName, Integer> env = new HashMap<>(); //env maps vars to locations
-    private HashMap<Integer, SimpleName> store = new HashMap<>();  //store maps addr to primitive vals?
+    private HashMap<Integer, KRewriteObj> store = new HashMap<>();  //store maps addr to primitive vals?
     private HashMap<String, String> objectStore = new HashMap<>(); //obj store maps addr to obj?
 
     public KRule(MethodInfo methodInfo) {
@@ -33,25 +36,28 @@ public class KRule extends KASTNode {
 
     public KRule(MethodInfo methodInfo, LoopInfo loopInfo) {
         super("'KRule");
+        if (loopInfo != null) {
+            loopInfo.updateEnvAndStore(this.env, this.store);
+            rewriteLI(loopInfo);
+        }
         this.preConds.addAll(extractAllPreCond(methodInfo.getPreCondList(), methodInfo.getFormalParams()));
         this.postConds.addAll(extractAllPostCond(methodInfo.getPostCondList(), methodInfo.getFormalParams()));
         this.retVal = methodInfo.getExpectedRetVal();
         this.cells = constructCells(methodInfo, loopInfo);
-
-        if (loopInfo != null) {
-            rewrite(loopInfo);
-        }
     }
 
-    private void rewrite(LoopInfo loopInfo) {
+    /**
+     * Rewrite the LI java-expr to k-expr.
+     *
+     * @param loopInfo
+     */
+    private void rewriteLI(LoopInfo loopInfo) {
         loopInfo.getLIStream().forEach(
                 liExp -> {
-                    LIVisitor liVisitor = new LIVisitor();
-                    liExp.accept(liVisitor);
+                    this.preConds.add(KCondition.genKConditionFromJavaExpr(liExp,
+                            loopInfo.getSetOfVarNames()));
                 }
         );
-
-        //TODO
     }
 
 
@@ -59,9 +65,6 @@ public class KRule extends KASTNode {
         ArrayList<Cell> cells = new ArrayList<>();
         ThreadsCell threadsCell = new ThreadsCell(methodInfo, loopInfo, this.env);
         cells.add(threadsCell);
-
-        //Update the env and store
-        threadsCell.getSingleKCell().updateEnvAndStore(this.env, this.store);
 
         cells.add(Cell.getFixedCellWithName(Cell.CLASSES));
         cells.add(Cell.getFixedCellWithName(Cell.NumOfClassesToUnfold));
@@ -77,14 +80,26 @@ public class KRule extends KASTNode {
         return cells;
     }
 
-    private Collection<KCondition> extractAllPostCond(ArrayList<Expression> postCondList,
+    private Collection<KCondition> extractAllPostCond(ArrayList<String> postCondList,
                                                       ArrayList<SingleVariableDeclaration> formalParams) {
         Collection<KCondition> allPostCond = new ArrayList<>();
 
-        postCondList.forEach(postCondExpr ->
-                allPostCond.add(KCondition.genKConditionFromJavaExpr(postCondExpr, formalParams)));
+        postCondList.forEach(postCondExprStr ->
+        {
+            Matcher matcher = Patterns.RAW_CELL.matcher(postCondExprStr);
+            if (matcher.find()) {
+                String cellName = matcher.group(1);
+                String cellContent = matcher.group(2);
+                //TODO
+            } else {
+                Expression postCondExp = ExpressionParser.parseExprStr(postCondExprStr);
+                allPostCond.add(KCondition.genKConditionFromJavaExpr(postCondExp, formalParams));
+            }
+        });
 
         //also include the constraint related to the return expression.
+        //the cell can be encoded in the ensures clause
+
         //TODO
         return allPostCond;
     }
@@ -103,6 +118,10 @@ public class KRule extends KASTNode {
 
         preCondList.forEach(preCondExpr ->
                 allPreCond.add(KCondition.genKConditionFromJavaExpr(preCondExpr, formalParams)));
+
+        this.store.values().forEach(kRewriteObj -> {
+            allPreCond.add(kRewriteObj.genConstraint());
+        });
         return allPreCond;
     }
 

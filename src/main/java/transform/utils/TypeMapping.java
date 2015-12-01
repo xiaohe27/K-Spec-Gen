@@ -1,11 +1,14 @@
 package transform.utils;
 
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import parser.ExpressionParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Created by hx312 on 19/11/2015.
@@ -128,6 +131,8 @@ public class TypeMapping {
         boolean isPrimitive = v.getType().isPrimitiveType();
 
         String jTypeInJavaSemantics = isPrimitive ? jType : Utils.className2ID(jType);
+        if (jTypeInJavaSemantics.equals("boolean"))
+            jTypeInJavaSemantics = "bool";
 
         String result = convert2KVar(varName, isPrimitive);
         result += ":" + getKBuiltInType4SimpleJType(jType);
@@ -207,12 +212,26 @@ public class TypeMapping {
     }
 
 
-    public static HashMap<String, String> extractJVar2KVarMapping(ArrayList<SingleVariableDeclaration> formalParams) {
+    private static HashMap<String, String> extractJVar2KVarMapping
+            (ArrayList<SingleVariableDeclaration> formalParams) {
         //map java var name to k var name
         HashMap<String, String> fromJVarName2KVarName = new HashMap<>();
 
         formalParams.forEach(varDecl -> fromJVarName2KVarName.put(varDecl.getName().toString(),
                 TypeMapping.convert2KVar(varDecl.getName().toString(), varDecl.getType().isPrimitiveType())));
+        return fromJVarName2KVarName;
+    }
+
+    private static HashMap<String, String> extractJVar2KVarMapping
+            (Stream<SimpleName> names) {
+        //map java var name to k var name
+        HashMap<String, String> fromJVarName2KVarName = new HashMap<>();
+
+        names.forEach(name -> {
+            String varId = name.getIdentifier();
+            fromJVarName2KVarName.put(varId,
+                    TypeMapping.convert2KVar(varId, name.resolveTypeBinding().isPrimitive()));
+        });
         return fromJVarName2KVarName;
     }
 
@@ -238,6 +257,18 @@ public class TypeMapping {
         return fromJExpr2KExprString(jexpr, fromJVarName2KVarName, typeEnv);
     }
 
+    public static String fromJExpr2KExprString(Expression jexpr, Set<SimpleName> names) {
+        HashMap<String, String> typeEnv = new HashMap<>();
+        HashMap<String, String> fromJVarName2KVarName = extractJVar2KVarMapping(names.stream());
+
+        names.forEach(name -> {
+            typeEnv.put(fromJVarName2KVarName.get(name.getIdentifier()),
+                    name.resolveTypeBinding().getName());
+        });
+
+        return fromJExpr2KExprString(jexpr, fromJVarName2KVarName, typeEnv);
+    }
+
     private static String fromJExpr2KExprString(Expression jexpr, HashMap<String, String>
             fromJVarName2KVarName, HashMap<String, String> typeEnv) {
         String jexprStr = ExpressionParser.printExprWithKVars(jexpr, fromJVarName2KVarName);
@@ -252,7 +283,7 @@ public class TypeMapping {
             sb.append(subResult + " andBool ");
         }
 
-        sb.append(fromDisjunct2KExpr(disjuncts[disjuncts.length - 1], typeEnv) + "\n");
+        sb.append(fromDisjunct2KExpr(disjuncts[disjuncts.length - 1], typeEnv));
 
         return sb.toString();
     }

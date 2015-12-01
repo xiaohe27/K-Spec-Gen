@@ -77,7 +77,9 @@ public class MyASTVisitor extends ASTVisitor {
 
     public boolean visit(ReturnStatement retStmt) {
         Expression retExpr = retStmt.getExpression();
-        this.annotationInfo.getMethodInfo(this.curMethNodeId).setRetExpr(retExpr);
+        MethodInfo methodInfo = this.annotationInfo.getMethodInfo(this.curMethNodeId);
+        if (methodInfo != null)
+            methodInfo.setRetExpr(retExpr);
         return false;
     }
 

@@ -1,7 +1,7 @@
 package parser.annotation;
 
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.stream.Stream;
 
 /**
  * Created by xiaohe on 10/6/15.
@@ -30,12 +30,31 @@ public class AnnotationInfo {
 
     }
 
+    //The line comment may be a LI if its pos is inside some loop.
+    public void addEnvCellInfo(String envCellInfo, int commentStartPos) {
+        methodsInfo.values().stream()
+                .filter(curMethod -> curMethod.isInsideMethod(commentStartPos))
+                .forEach(targetMethod -> {
+                    targetMethod.addEnvMap(envCellInfo, commentStartPos);
+                    return;
+                });
+    }
+
+    public void addStoreCellInfo(String storeCellInfo, int commentStartPos) {
+        methodsInfo.values().stream()
+                .filter(curMethod -> curMethod.isInsideMethod(commentStartPos))
+                .forEach(targetMethod -> {
+                    targetMethod.addStoreMap(storeCellInfo, commentStartPos);
+                    return;
+                });
+    }
+
     public MethodInfo getMethodInfo(int index) {
         return methodsInfo.get(index);
     }
 
-    public Collection<MethodInfo> getAllMethodsInfo() {
-        return methodsInfo.values();
+    public Stream<MethodInfo> getMethodsInfoStream() {
+        return methodsInfo.values().stream();
     }
 
     public void printInfo() {

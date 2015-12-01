@@ -32,14 +32,13 @@ public class Cell extends KASTNode {
         this.childrenCells = new ArrayList<>();
     }
 
-
     public static Cell getFixedCellWithName(String cellName) {
         return new Cell(cellName);
     }
 
     protected String surroundWithTags(String content) {
-        return "<" + this.name + ">\n"
-                + (this.hasLeftOmission ? " ... " : "")
+        return "<" + this.name + ">"
+                + (this.hasLeftOmission ? " ... " : "\n")
                 + content + "\n"
                 + (this.hasRightOmission ? " ... " : "")
                 + "</" + this.name + ">\n";

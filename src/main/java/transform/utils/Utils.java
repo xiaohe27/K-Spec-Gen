@@ -34,6 +34,15 @@ public class Utils {
         return "(class " + string2ID("." + clsName) + ")";
     }
 
+    public static String addBrackets(String s) {
+        return "(" + s + ")";
+    }
+
+    public static String className2ID(String clsName, boolean outermostBrace) {
+        String ret = "class " + string2ID("." + clsName);
+        return outermostBrace ? addBrackets(ret) : ret;
+    }
+
     /**
      * Transform the method name to K's ID.
      *

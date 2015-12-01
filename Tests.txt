@@ -2,6 +2,10 @@
 methods under test) to k expr, given the type mapping
 provided by the formal params of the method under test.
 
+2. Test the function which converts java ast to k ast
+
+3. Test regex
+
 Problem: 
 The method under test takes an argument which is of type "SingleVariableDeclaration",
 which cannot be instantiated by clients; as a result, to make the test easier,

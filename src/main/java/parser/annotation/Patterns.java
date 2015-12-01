@@ -12,11 +12,23 @@ public class Patterns {
     public static final Pattern SingleClause = Pattern.compile(ClauseStr);
     public static final Pattern METHOD_CONTRACT =
             Pattern.compile("/\\*\\*\\p{Space}+((\\*\\p{Space}*" + ClauseStr + "\\p{Space}*)*)\\*/");
-    public static final Pattern LI = Pattern.compile("//@LI\\p{Blank}+" +
-            "([\\p{Print}\\p{Blank}&&[^;]]+);");
+    public static final Pattern LI =
+            Pattern.compile("//@LI\\p{Blank}+([\\p{Print}\\p{Blank}&&[^;]]+);");
+    public static final Pattern EnvEntry =
+            Pattern.compile("([_\\p{Alpha}][_\\p{Alnum}]*)\\p{Space}*\\|->\\p{Space}*" +
+                    "([\\p{Digit}]+)");
     protected static final String REQUIRES = "requires";
     protected static final String ENSURES = "ensures";
     protected static final String RETURNS = "returns";
+    //"/\\*@\\p{Space}*(env|store)\\p{Space}*\\{([\\p{Print}\\p{Space}&&[^{}]]*)\\}\\p{Space}*@\\*/"
+    private static final String rawCell = "(env|store)\\p{Space}*\\{([\\p{Print}\\p{Space}&&[^{}]]*)\\}";
+    public static final Pattern CellInComment =
+            Pattern.compile("/\\*@\\p{Space}*" + rawCell + "\\p{Space}*@\\*/");
+    public static final Pattern RAW_CELL = Pattern.compile(rawCell);
+    private static final String printableCharsNoCommas = "[\\p{Print}&&[^,]]*";
+    public static final Pattern StoreEntry =
+            Pattern.compile("([\\p{Digit}]+)\\p{Space}*\\|->\\p{Space}*(" + printableCharsNoCommas
+                    + "[\\p{Graph}&&[^,]]" + printableCharsNoCommas + ")");
 
     public static void main(String[] args) {
         String input = "/**" +
