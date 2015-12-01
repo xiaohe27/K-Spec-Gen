@@ -9,6 +9,7 @@ import parser.annotation.MethodInfo;
 import parser.annotation.Patterns;
 import parser.ast_visitor.LIVisitor;
 import transform.ast.cells.*;
+import transform.ast.rewrite.KRewriteObj;
 import transform.utils.ConstraintGen;
 import transform.utils.TypeMapping;
 
@@ -27,7 +28,7 @@ public class KRule extends KASTNode {
     private ArrayList<Cell> cells = new ArrayList<>();
 
     private HashMap<SimpleName, Integer> env = new HashMap<>(); //env maps vars to locations
-    private HashMap<Integer, Expression> store = new HashMap<>();  //store maps addr to primitive vals?
+    private HashMap<Integer, KRewriteObj> store = new HashMap<>();  //store maps addr to primitive vals?
     private HashMap<String, String> objectStore = new HashMap<>(); //obj store maps addr to obj?
 
     public KRule(MethodInfo methodInfo) {
@@ -52,6 +53,10 @@ public class KRule extends KASTNode {
         //TODO
     }
 
+    /**
+     * Rewrite the LI java-expr to k-expr.
+     * @param loopInfo
+     */
     private void rewrite(LoopInfo loopInfo) {
         loopInfo.getLIStream().forEach(
                 liExp -> {

@@ -34,6 +34,8 @@ public class KCell extends Cell {
 
         if (this.loopInfo != null) {
             this.loopInfo.getLoopNode().accept(this.loopVisitor);
+            //after the loop visitor collects info from the while loop, the vars used in the loop
+            // will be known, and then we can construct the real env.
         }
     }
 
@@ -77,6 +79,5 @@ public class KCell extends Cell {
         }
         return super.surroundWithTags(sb.toString());
     }
-
 
 }

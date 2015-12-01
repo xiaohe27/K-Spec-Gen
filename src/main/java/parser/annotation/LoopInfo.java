@@ -1,11 +1,16 @@
 package parser.annotation;
 
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.WhileStatement;
 import parser.ExpressionParser;
+import transform.ast.rewrite.KRewriteObj;
+import transform.utils.TypeMapping;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.stream.Stream;
 
@@ -73,6 +78,30 @@ public class LoopInfo {
         }
     }
 
+    public void updateEnvMap(Set<SimpleName> namesInLoop, HashMap<SimpleName, Integer> envMap) {
+        namesInLoop.stream().filter(var -> this.rawEnvMap.keySet().contains(var.getIdentifier()))
+                .forEach(var -> {
+                    envMap.put(var, Integer.valueOf(this.rawEnvMap.get(var.getIdentifier())));
+                });
+    }
+
+    public void updateStoreMap(HashMap<SimpleName, Integer> envMap) {
+        Set<SimpleName> localVars = envMap.keySet();
+
+        this.rawStoreMap.keySet().stream()
+                .filter(loc -> envMap.values().contains(Integer.valueOf(loc)))
+                .forEach(locStr -> {
+                    Integer loc = Integer.valueOf(locStr);
+                    String valStr = this.rawStoreMap.get(locStr);
+                    final String[] elements = valStr.split("=>");
+                    for (int i = 0; i < elements.length; i++) {
+                        Expression expI = ExpressionParser.parseExprStr(elements[i]);
+                        //transform to k expr where every op has been transformed
+                        elements[i] = TypeMapping.fromJExpr2KExprString(expI, localVars);
+                    }
+                    KRewriteObj kRewriteObj = new KRewriteObj()
+        });
+    }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
