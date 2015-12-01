@@ -282,7 +282,7 @@ public class TypeMapping {
             sb.append(subResult + " andBool ");
         }
 
-        sb.append(fromDisjunct2KExpr(disjuncts[disjuncts.length - 1], typeEnv) + "\n");
+        sb.append(fromDisjunct2KExpr(disjuncts[disjuncts.length - 1], typeEnv));
 
         return sb.toString();
     }

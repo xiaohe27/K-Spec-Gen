@@ -1,6 +1,5 @@
 package transform.ast.cells;
 
-import org.eclipse.jdt.core.dom.Expression;
 import transform.ast.rewrite.KRewriteObj;
 
 import java.util.HashMap;
@@ -27,7 +26,7 @@ public class StoreCell extends Cell {
         sb.append("\n");
 
         this.store.forEach((loc, val) -> {
-            sb.append(loc + " |-> " + val + "\n");
+            sb.append("P" + loc + " |-> " + val + "\n");
         });
 
         sb.deleteCharAt(sb.lastIndexOf("\n"));
