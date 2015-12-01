@@ -28,7 +28,7 @@ public class Patterns {
                     "([\\p{Digit}]+)");
 
     public static final Pattern StoreEntry =
-       Pattern.compile("([\\p{Digit}]+)\\p{Space}*\\|->\\p{Space}*([\\p{Print}&&[^,]]+)");
+       Pattern.compile("([\\p{Digit}]+)\\p{Space}*\\|->\\p{Space}*([\\p{Print}&&[^,]]*[\\p{Graph}&&[^,]][\\p{Print}&&[^,]]*)");
 
 
     protected static final String REQUIRES = "requires";
