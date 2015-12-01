@@ -22,7 +22,6 @@ public class KCell extends Cell {
 
     private final ArrayList<SingleVariableDeclaration> methArgs = new ArrayList<>();
 
-    private final LoopVisitor loopVisitor = new LoopVisitor();
 
     public KCell(MethodInfo methodInfo, LoopInfo loopInfo) {
         super(Cell.K);
@@ -31,12 +30,6 @@ public class KCell extends Cell {
         this.loopInfo = loopInfo;
 
         this.methArgs.addAll(this.methodInfo.getFormalParams());
-
-        if (this.loopInfo != null) {
-            this.loopInfo.getLoopNode().accept(this.loopVisitor);
-            //after the loop visitor collects info from the while loop, the vars used in the loop
-            // will be known, and then we can construct the real env.
-        }
     }
 
     @Override
@@ -74,7 +67,7 @@ public class KCell extends Cell {
             }
             sb.append(retVal + ":" + retKType + "::" + retTypeInJavaSemantics);
         } else {
-            sb.append(this.loopVisitor.getLoopASTString());
+            sb.append(this.loopInfo.getLoopASTString());
             sb.append("=> .K ");
         }
         return super.surroundWithTags(sb.toString());

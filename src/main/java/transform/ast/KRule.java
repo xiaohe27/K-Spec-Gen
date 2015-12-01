@@ -37,27 +37,21 @@ public class KRule extends KASTNode {
 
     public KRule(MethodInfo methodInfo, LoopInfo loopInfo) {
         super("'KRule");
+        if (loopInfo != null) {
+            loopInfo.updateEnvAndStore(this.env, this.store);
+            rewriteLI(loopInfo);
+        }
         this.preConds.addAll(extractAllPreCond(methodInfo.getPreCondList(), methodInfo.getFormalParams()));
         this.postConds.addAll(extractAllPostCond(methodInfo.getPostCondList(), methodInfo.getFormalParams()));
         this.retVal = methodInfo.getExpectedRetVal();
         this.cells = constructCells(methodInfo, loopInfo);
-
-        if (loopInfo != null) {
-            updateMaps(loopInfo);
-            rewrite(loopInfo);
-        }
-    }
-
-    private void updateMaps(LoopInfo loopInfo) {
-
-        //TODO
     }
 
     /**
      * Rewrite the LI java-expr to k-expr.
      * @param loopInfo
      */
-    private void rewrite(LoopInfo loopInfo) {
+    private void rewriteLI(LoopInfo loopInfo) {
         loopInfo.getLIStream().forEach(
                 liExp -> {
                     LIVisitor liVisitor = new LIVisitor();

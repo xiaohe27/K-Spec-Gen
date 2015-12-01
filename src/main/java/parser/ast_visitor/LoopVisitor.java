@@ -15,6 +15,18 @@ public class LoopVisitor extends ASTVisitor {
     private StringBuilder whileBodyAST = new StringBuilder();
     private Set<SimpleName> varsInLoop = new HashSet<>();
 
+    public boolean visit(SimpleName name) {
+        for (SimpleName curName :
+                varsInLoop) {
+            if (curName.getIdentifier().equals(name.getIdentifier())) {
+                return false;
+            }
+        }
+
+        this.varsInLoop.add(name);
+        return false;
+    }
+
     public boolean visit(WhileStatement whileNode) {
         Expression guard = whileNode.getExpression();
         try {
