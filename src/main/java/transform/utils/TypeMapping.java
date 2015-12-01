@@ -8,6 +8,7 @@ import parser.ExpressionParser;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Created by hx312 on 19/11/2015.
@@ -222,7 +223,7 @@ public class TypeMapping {
     }
 
     private static HashMap<String, String> extractJVar2KVarMapping
-            (Set<SimpleName> names) {
+            (Stream<SimpleName> names) {
         //map java var name to k var name
         HashMap<String, String> fromJVarName2KVarName = new HashMap<>();
 
@@ -258,7 +259,7 @@ public class TypeMapping {
 
     public static String fromJExpr2KExprString(Expression jexpr, Set<SimpleName> names) {
         HashMap<String, String> typeEnv = new HashMap<>();
-        HashMap<String, String> fromJVarName2KVarName = extractJVar2KVarMapping(names);
+        HashMap<String, String> fromJVarName2KVarName = extractJVar2KVarMapping(names.stream());
 
         names.forEach(name -> {
             typeEnv.put(fromJVarName2KVarName.get(name.getIdentifier()),

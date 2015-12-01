@@ -5,13 +5,11 @@ import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.WhileStatement;
 import parser.ExpressionParser;
 import parser.ast_visitor.LoopVisitor;
-import transform.ast.KCondition;
 import transform.ast.rewrite.KRewriteObj;
 import transform.utils.TypeMapping;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.stream.Stream;
@@ -85,6 +83,10 @@ public class LoopInfo {
         }
     }
 
+    public Set<SimpleName> getSetOfVarNames() {
+        return loopVisitor.getSetOfVarNames();
+    }
+
     /**
      * Update the env map and store map.
      *
@@ -97,12 +99,12 @@ public class LoopInfo {
             throw new RuntimeException("env/store maps haven't been initialized before updating");
         }
 
-        updateEnvMap(this.loopVisitor.getStreamOfVarNames(), envMap);
+        updateEnvMap(this.loopVisitor.getSetOfVarNames(), envMap);
         updateStoreMap(envMap, storeMap);
     }
 
-    private void updateEnvMap(Stream<SimpleName> namesInLoop, HashMap<SimpleName, Integer> envMap) {
-        namesInLoop.filter(var -> this.rawEnvMap.keySet().contains(var.getIdentifier()))
+    private void updateEnvMap(Set<SimpleName> namesInLoop, HashMap<SimpleName, Integer> envMap) {
+        namesInLoop.stream().filter(var -> this.rawEnvMap.keySet().contains(var.getIdentifier()))
                 .forEach(var -> {
                     envMap.put(var, Integer.valueOf(this.rawEnvMap.get(var.getIdentifier())));
                 });

@@ -58,8 +58,8 @@ public class LoopVisitor extends ASTVisitor {
         return true;
     }
 
-    public Stream<SimpleName> getStreamOfVarNames() {
-        return this.varsInLoop.stream();
+    public Set<SimpleName> getSetOfVarNames() {
+        return this.varsInLoop;
     }
 
     public String getLoopASTString() {

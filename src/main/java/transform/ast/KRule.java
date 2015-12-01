@@ -7,7 +7,6 @@ import parser.ExpressionParser;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
 import parser.annotation.Patterns;
-import parser.ast_visitor.LIVisitor;
 import transform.ast.cells.*;
 import transform.ast.rewrite.KRewriteObj;
 import transform.utils.ConstraintGen;
@@ -49,17 +48,16 @@ public class KRule extends KASTNode {
 
     /**
      * Rewrite the LI java-expr to k-expr.
+     *
      * @param loopInfo
      */
     private void rewriteLI(LoopInfo loopInfo) {
         loopInfo.getLIStream().forEach(
                 liExp -> {
-                    LIVisitor liVisitor = new LIVisitor();
-                    liExp.accept(liVisitor);
+                    this.preConds.add(KCondition.genKConditionFromJavaExpr(liExp,
+                            loopInfo.getSetOfVarNames()));
                 }
         );
-
-        //TODO
     }
 
 
