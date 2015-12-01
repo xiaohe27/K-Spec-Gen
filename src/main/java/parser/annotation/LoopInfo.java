@@ -62,14 +62,14 @@ public class LoopInfo {
     public void addEnvInfo(String envCellInfo) {
         Matcher matcher = Patterns.EnvEntry.matcher(envCellInfo);
         while (matcher.find()) {
-            this.rawEnvMap.put(matcher.group(1), matcher.group(2));
+            this.rawEnvMap.put(matcher.group(1).trim(), matcher.group(2).trim());
         }
     }
 
     public void addStoreInfo(String storeCellInfo) {
         Matcher matcher = Patterns.StoreEntry.matcher(storeCellInfo);
         while (matcher.find()) {
-            this.rawStoreMap.put(matcher.group(1), matcher.group(2));
+            this.rawStoreMap.put(matcher.group(1).trim(), matcher.group(2).trim());
         }
     }
 
@@ -82,8 +82,8 @@ public class LoopInfo {
 
         sb.append("Env of the loop is\n");
         this.rawEnvMap.forEach((k, v) -> {
-            sb.append(k + " |-> " + v + "\n");
-        }
+                    sb.append(k + " |-> " + v + "\n");
+                }
         );
 
         sb.append("Store of the loop is\n");

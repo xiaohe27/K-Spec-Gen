@@ -1,7 +1,6 @@
 package transform.ast.cells;
 
 import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Type;
 import parser.ExpressionParser;
@@ -12,7 +11,6 @@ import transform.utils.TypeMapping;
 import transform.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by hx312 on 31/10/2015.

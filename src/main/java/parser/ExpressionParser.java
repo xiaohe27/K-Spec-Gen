@@ -65,6 +65,15 @@ public class ExpressionParser extends ASTVisitor {
         return typeIdOfTheOperands;
     }
 
+    public static void main(String[] args) {
+        ASTParser parser = ASTParser.newParser(AST.JLS8);
+        parser.setSource("n |-> 2, s |-> 3".toCharArray());
+        parser.setKind(ASTParser.K_COMPILATION_UNIT);
+        CompilationUnit cu = (CompilationUnit) parser.createAST(null);
+
+        System.out.println(cu.toString());
+    }
+
     public boolean visit(SimpleName name) {
         String type = this.typeEnv.get(name.toString());
 
@@ -112,16 +121,6 @@ public class ExpressionParser extends ASTVisitor {
 //        System.out.println("Left operand is " + exp.getLeftOperand());
 //        System.out.println("Right operand is " + exp.getRightOperand());
         return true;
-    }
-
-
-    public static void main(String[] args) {
-        ASTParser parser = ASTParser.newParser(AST.JLS8);
-        parser.setSource("n |-> 2, s |-> 3".toCharArray());
-        parser.setKind(ASTParser.K_COMPILATION_UNIT);
-        CompilationUnit cu = (CompilationUnit) parser.createAST(null);
-
-        System.out.println(cu.toString());
     }
 //    public static void main(String[] args) {
 //        HashMap<String, String> myTyEnv = new HashMap<>();
