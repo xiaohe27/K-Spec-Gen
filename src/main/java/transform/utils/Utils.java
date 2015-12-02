@@ -70,7 +70,8 @@ public class Utils {
         if (jType.isPrimitiveType()) {
             type = type.equals("boolean") ? "bool" : type;
         } else {
-            type = "class ." + type;
+//            type = "class ." + type;
+            type = className2ID(type, false);
         }
         return type;
     }
@@ -80,7 +81,8 @@ public class Utils {
         if (jType.isPrimitive()) {
             type = type.equals("boolean") ? "bool" : type;
         } else {
-            type = "class ." + type;
+//            type = "class ." + type;
+            type = className2ID(type, false);
         }
         return type;
     }

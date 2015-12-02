@@ -47,7 +47,7 @@ public class KAST_Transformer {
      */
     public static String convert2KAST(Expression jexp, boolean needCast) throws Exception {
         switch (jexp.getNodeType()) {
-            case Expression.INFIX_EXPRESSION:
+            case Expression.INFIX_EXPRESSION: {
                 InfixExpression infixExp = (InfixExpression) jexp;
                 String lhsTy = infixExp.getLeftOperand().resolveTypeBinding().getName();
                 String rhsTy = infixExp.getRightOperand().resolveTypeBinding().getName();
@@ -78,8 +78,9 @@ public class KAST_Transformer {
                 }
 
                 return cast2Type(exprStr, combinedType);
+            }
 
-            case Expression.PREFIX_EXPRESSION:
+            case Expression.PREFIX_EXPRESSION: {
                 PrefixExpression prefixExpression = (PrefixExpression) jexp;
                 String type = prefixExpression.getOperator().toString();
                 if (type.equals("!")) {
@@ -87,6 +88,7 @@ public class KAST_Transformer {
                     return cast2Type("! " + operand, "bool");
                 }
                 break;
+            }
 
             //The var name expr
             case Expression.SIMPLE_NAME:
@@ -114,15 +116,28 @@ public class KAST_Transformer {
                 //TODO
                 break;
 
-            case Expression.FIELD_ACCESS:
+            case Expression.FIELD_ACCESS: {
                 FieldAccess fa = (FieldAccess) jexp;
                 Expression receiver = fa.getExpression();
                 SimpleName field = fa.getName();
 
                 ITypeBinding fieldType = field.resolveTypeBinding();
                 String receiverStr = convert2KAST(receiver, needCast);
-                String faStr = receiverStr + " . " + field.getIdentifier();
+                String fieldStr = Utils.string2ID(field.getIdentifier());
+                String faStr = receiverStr + " . " + fieldStr;
                 return cast2Type(faStr, fieldType);
+            }
+            case Expression.QUALIFIED_NAME: {
+                QualifiedName qualifiedName = (QualifiedName) jexp;
+                Name nameBeforeDot = qualifiedName.getQualifier();
+                SimpleName fieldName = qualifiedName.getName();
+
+                ITypeBinding fieldType = fieldName.resolveTypeBinding();
+                String qualifierStr = convert2KAST(nameBeforeDot, needCast);
+                String fieldNameStr = Utils.string2ID(fieldName.getIdentifier());
+                String qualStr = qualifierStr + " . " + fieldNameStr;
+                return cast2Type(qualStr, fieldType);
+            }
         }
 
         return jexp.toString();
