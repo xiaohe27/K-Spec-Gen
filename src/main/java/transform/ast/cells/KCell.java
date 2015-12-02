@@ -6,7 +6,6 @@ import org.eclipse.jdt.core.dom.Type;
 import parser.ExpressionParser;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
-import parser.ast_visitor.LoopVisitor;
 import transform.utils.TypeMapping;
 import transform.utils.Utils;
 

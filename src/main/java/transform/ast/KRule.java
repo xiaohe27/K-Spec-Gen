@@ -135,8 +135,8 @@ public class KRule extends KASTNode {
             sb.append("requires ");
             this.preConds.forEach(preCond ->
                     sb.append(preCond.toString() +
-                            ((this.preConds.get(this.preConds.size() - 1).equals
-                                    (preCond)) ? "\n" : " andBool ")
+                                    ((this.preConds.get(this.preConds.size() - 1).equals
+                                            (preCond)) ? "\n" : " andBool ")
                     ));
         }
 
@@ -144,8 +144,8 @@ public class KRule extends KASTNode {
             sb.append("ensures ");
             this.postConds.forEach(postCond ->
                     sb.append(postCond.toString() +
-                            ((this.postConds.get(this.postConds.size() - 1).equals
-                                    (postCond)) ? "\n" : " andBool ")
+                                    ((this.postConds.get(this.postConds.size() - 1).equals
+                                            (postCond)) ? "\n" : " andBool ")
                     ));
         }
 

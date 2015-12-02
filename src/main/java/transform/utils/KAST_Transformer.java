@@ -134,6 +134,9 @@ public class KAST_Transformer {
 
                 ITypeBinding fieldType = fieldName.resolveTypeBinding();
                 String qualifierStr = convert2KAST(nameBeforeDot, needCast);
+                //ugly trick to add one more layer of cast for lhs of a qualified name
+                qualifierStr = cast2Type(qualifierStr, nameBeforeDot.resolveTypeBinding());
+
                 String fieldNameStr = Utils.string2ID(fieldName.getIdentifier());
                 String qualStr = qualifierStr + " . " + fieldNameStr;
                 return cast2Type(qualStr, fieldType);

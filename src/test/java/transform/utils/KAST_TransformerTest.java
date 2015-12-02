@@ -12,20 +12,19 @@ import java.io.File;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collection;
+
 import static org.junit.Assert.assertEquals;
 
 
 @RunWith(Parameterized.class)
 public class KAST_TransformerTest {
-    private int testId;
     private static final String fileSep = System.getProperty("file.separator");
     private static final String basePath = System.getProperty("user.dir") + fileSep +
             "src" + fileSep + "test" + fileSep + "resources" + fileSep;
-
     private static final String inputFolder = basePath + "in" + fileSep;
     private static final String expectedFolder = basePath + "expected" + fileSep;
     private static final String extension = ".txt";
-
+    private int testId;
     //The while stmt node used in the test
     private WhileStatement whileNd;
 
