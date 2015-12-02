@@ -6,6 +6,8 @@ import org.eclipse.jdt.core.dom.*;
  * Created by hx312 on 29/11/2015.
  */
 public class KAST_Transformer {
+    public static boolean lhsOfCurAssignIsQualifiedName;
+
     public static String[] boolOPs = {"<", "<=", ">", ">=", "==", "!=", "&&", "||", "!"};
 
     private static boolean isBoolOp(String op) {
@@ -136,6 +138,12 @@ public class KAST_Transformer {
                 String qualifierStr = convert2KAST(nameBeforeDot, needCast);
                 //ugly trick to add one more layer of cast for lhs of a qualified name
                 qualifierStr = cast2Type(qualifierStr, nameBeforeDot.resolveTypeBinding());
+
+                //TODO
+                if (lhsOfCurAssignIsQualifiedName)
+                    qualifierStr = Utils.addBrackets(qualifierStr);
+
+                lhsOfCurAssignIsQualifiedName = false;
 
                 String fieldNameStr = Utils.string2ID(fieldName.getIdentifier());
                 String qualStr = qualifierStr + " . " + fieldNameStr;

@@ -64,7 +64,13 @@ public class LoopVisitor extends ASTVisitor {
         Expression rhs = assignmentNode.getRightHandSide();
         String op = assignmentNode.getOperator().toString();
 
+        if (lhs instanceof QualifiedName)
+            KAST_Transformer.lhsOfCurAssignIsQualifiedName = true;
+        else
+            KAST_Transformer.lhsOfCurAssignIsQualifiedName = false;
+
         try {
+
             String exprStr = "(" + KAST_Transformer.convert2KAST(lhs, false) + op + KAST_Transformer
                     .convert2KAST(rhs, true) + ")::AssignExp";
 
