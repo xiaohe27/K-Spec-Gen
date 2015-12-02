@@ -20,16 +20,23 @@ public class KAST_Transformer {
         return "'ExprName(" + id + ")";
     }
 
-    public static String cast2Type(String expr, String type) {
+    public static String cast2Type(String expr, Type type) {
+        return cast2Type(expr, Utils.convert2KAST_Type(type));
+    }
+
+    public static String cast2Type(String expr, ITypeBinding type) {
+        return cast2Type(expr, Utils.convert2KAST_Type(type));
+    }
+
+    private static String cast2Type(String expr, String type) {
         return "cast ( " + type + ", " + expr + ")";
     }
 
     private static String convertSimpleName2KASTString(SimpleName var, boolean needCast) {
         String id = var.getIdentifier();
         ITypeBinding iTypeBinding = var.resolveTypeBinding();
-        String type = iTypeBinding == null ? "Object" : iTypeBinding.toString();
         String kExpr = _KExpr(Utils.string2ID(var.getIdentifier()));
-        return needCast ? cast2Type(kExpr, type) : kExpr;
+        return needCast ? cast2Type(kExpr, iTypeBinding) : kExpr;
     }
 
     /**
@@ -101,6 +108,19 @@ public class KAST_Transformer {
 
             case Expression.NULL_LITERAL:
                 return jexp.toString() + " :: nullType";
+
+            case Expression.METHOD_INVOCATION:
+                MethodInvocation mi = (MethodInvocation) jexp;
+                //TODO
+                break;
+
+            case Expression.FIELD_ACCESS:
+                FieldAccess fa = (FieldAccess) jexp;
+                Expression receiver = fa.getExpression();
+                SimpleName field = fa.getName();
+
+                String
+                return ;
         }
 
         return jexp.toString();

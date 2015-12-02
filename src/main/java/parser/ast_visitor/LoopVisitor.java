@@ -40,13 +40,9 @@ public class LoopVisitor extends ASTVisitor {
 
     public boolean visit(VariableDeclarationStatement vds) {
         StringBuilder sb = new StringBuilder();
-        String type = vds.getType().toString();
+        String type = Utils.convert2KAST_Type(vds.getType());
         String prefix = ".AnnoVarModList ";
-        if (vds.getType().isPrimitiveType()) {
-            type = type.equals("boolean") ? "bool" : type;
-        } else {
-            type = "class ." + type;
-        }
+
 
         sb.append(prefix + type + " ");
         List<VariableDeclarationFragment> ids = vds.fragments();
