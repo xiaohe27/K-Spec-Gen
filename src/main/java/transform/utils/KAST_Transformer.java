@@ -98,6 +98,9 @@ public class KAST_Transformer {
                     const_type = "bool";
 
                 return jexp.toString() + "::" + const_type;
+
+            case Expression.NULL_LITERAL:
+                return jexp.toString() + " :: nullType";
         }
 
         return jexp.toString();
