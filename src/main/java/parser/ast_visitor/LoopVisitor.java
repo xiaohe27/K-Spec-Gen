@@ -2,10 +2,11 @@ package parser.ast_visitor;
 
 import org.eclipse.jdt.core.dom.*;
 import transform.utils.KAST_Transformer;
+import transform.utils.Utils;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import java.util.stream.Stream;
 
 /**
  * Created by hx312 on 28/11/2015.
@@ -35,6 +36,30 @@ public class LoopVisitor extends ASTVisitor {
             e.printStackTrace();
         }
         return true;
+    }
+
+    public boolean visit(VariableDeclarationStatement vds) {
+        StringBuilder sb = new StringBuilder();
+        String type = vds.getType().toString();
+        String prefix = ".AnnoVarModList ";
+        if (vds.getType().isPrimitiveType()) {
+            type = type.equals("boolean") ? "bool" : type;
+        } else {
+            type = "class ." + type;
+        }
+
+        sb.append(prefix + type + " ");
+        List<VariableDeclarationFragment> ids = vds.fragments();
+        for (int i = 0; i < ids.size() - 1; i++) {
+            String nameI = ids.get(i).getName().getIdentifier();
+            sb.append(Utils.string2ID(nameI) + ", ");
+        }
+
+        sb.append(Utils.string2ID(ids.get(ids.size() - 1).getName().getIdentifier()));
+        sb.append(" ;\n");
+        this.whileBodyAST.append(sb.toString());
+
+        return false;
     }
 
     public boolean visit(Assignment assignmentNode) {
