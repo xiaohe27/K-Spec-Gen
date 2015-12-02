@@ -119,8 +119,10 @@ public class KAST_Transformer {
                 Expression receiver = fa.getExpression();
                 SimpleName field = fa.getName();
 
-                String
-                return ;
+                ITypeBinding fieldType = field.resolveTypeBinding();
+                String receiverStr = convert2KAST(receiver, needCast);
+                String faStr = receiverStr + " . " + field.getIdentifier();
+                return cast2Type(faStr, fieldType);
         }
 
         return jexp.toString();

@@ -68,9 +68,7 @@ public class LoopVisitor extends ASTVisitor {
             String exprStr = "(" + KAST_Transformer.convert2KAST(lhs, false) + op + KAST_Transformer
                     .convert2KAST(rhs, true) + ")::AssignExp";
 
-            String type = lhs.resolveTypeBinding().toString();
-            type = type.equals("boolean") ? "bool" : type;
-            String output = KAST_Transformer.cast2Type(exprStr, type);
+            String output = KAST_Transformer.cast2Type(exprStr, lhs.resolveTypeBinding());
 
             whileBodyAST.append(output + " ; ");
         } catch (Exception e) {

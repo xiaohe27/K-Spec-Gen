@@ -76,7 +76,7 @@ public class Utils {
     }
 
     public static String convert2KAST_Type(ITypeBinding jType) {
-        String type = jType.toString();
+        String type = jType.getName();
         if (jType.isPrimitive()) {
             type = type.equals("boolean") ? "bool" : type;
         } else {
