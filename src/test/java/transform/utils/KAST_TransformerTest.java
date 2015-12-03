@@ -37,7 +37,7 @@ public class KAST_TransformerTest {
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
-                {1}, {2}, {3}
+                {1}, {2}, {3}, {4}
         });
     }
 
