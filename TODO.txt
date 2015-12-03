@@ -3,4 +3,4 @@ ensure the return expr matches the thing that actually computed by the method
 for the rule corresponds to the method.
 
 Explore the online CI tool which has been hooked to my github
-
+The codeship tool is greate!
