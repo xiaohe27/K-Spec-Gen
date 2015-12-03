@@ -37,7 +37,8 @@ public class KAST_TransformerTest {
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
-                {1}, {2}, {3}
+                {1}
+//               {2}, {3}, {4}
         });
     }
 
@@ -61,6 +62,8 @@ public class KAST_TransformerTest {
         String expected = new String(Files.readAllBytes(this.expectedFile.toPath()));
         LoopVisitor loopVisitor = new LoopVisitor();
         this.whileNd.accept(loopVisitor);
+
+        System.out.println(loopVisitor.getLoopASTString());
 
         assertEquals(expected.trim().replaceAll("\\p{Space}", ""),
                 loopVisitor.getLoopASTString().trim().replaceAll("\\p{Space}", ""));

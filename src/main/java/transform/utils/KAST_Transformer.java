@@ -1,6 +1,9 @@
 package transform.utils;
 
 import org.eclipse.jdt.core.dom.*;
+import parser.ExpressionParser;
+
+import java.util.ArrayList;
 
 /**
  * Created by hx312 on 29/11/2015.
@@ -118,40 +121,57 @@ public class KAST_Transformer {
                 //TODO
                 break;
 
-            case Expression.FIELD_ACCESS: {
-                FieldAccess fa = (FieldAccess) jexp;
-                Expression receiver = fa.getExpression();
-                SimpleName field = fa.getName();
-
-                ITypeBinding fieldType = field.resolveTypeBinding();
-                String receiverStr = convert2KAST(receiver, needCast);
-                String fieldStr = Utils.string2ID(field.getIdentifier());
-                String faStr = receiverStr + " . " + fieldStr;
-                return cast2Type(faStr, fieldType);
-            }
+//            case Expression.FIELD_ACCESS: {
+//                FieldAccess fa = (FieldAccess) jexp;
+//                Expression receiver = fa.getExpression();
+//                SimpleName field = fa.getName();
+//
+//                ITypeBinding fieldType = field.resolveTypeBinding();
+//                String receiverStr = convert2KAST(receiver, needCast);
+//                String fieldStr = Utils.string2ID(field.getIdentifier());
+//                String faStr = receiverStr + " . " + fieldStr;
+//                return cast2Type(faStr, fieldType);
+//            }
             case Expression.QUALIFIED_NAME: {
                 QualifiedName qualifiedName = (QualifiedName) jexp;
                 Name nameBeforeDot = qualifiedName.getQualifier();
                 SimpleName fieldName = qualifiedName.getName();
-
                 ITypeBinding fieldType = fieldName.resolveTypeBinding();
-                String qualifierStr = convert2KAST(nameBeforeDot, needCast);
-                //ugly trick to add one more layer of cast for lhs of a qualified name
-                qualifierStr = cast2Type(qualifierStr, nameBeforeDot.resolveTypeBinding());
+
+                NameVisitor nv = new NameVisitor();
+                nameBeforeDot.accept(nv);
+
+                ArrayList<SimpleName> prefixNames = nv.simpleNames;
+                //TODO
+
+//                qualifierStr = KAST_Transformer.convert2KAST(simpleName, needCast);
+//                //ugly trick to add one more layer of cast for lhs of a qualified name
+//                qualifierStr = KAST_Transformer.cast2Type(qualifierStr, simpleName.resolveTypeBinding());
+
                 String fieldNameStr = Utils.string2ID(fieldName.getIdentifier());
 
-                if (lhsOfCurAssignIsQualifiedName) {
-                    qualifierStr = cast2Type(qualifierStr, nameBeforeDot.resolveTypeBinding());
-                    lhsOfCurAssignIsQualifiedName = false;
-                    return Utils.addBrackets(qualifierStr + " . " + fieldNameStr);
-                } else {
-                    String qualStr = qualifierStr + " . " + fieldNameStr;
-                    String retStr = cast2Type(qualStr, fieldType);
-                    return retStr;
-                }
+//                if (lhsOfCurAssignIsQualifiedName) {
+//                    qualifierStr = cast2Type(qualifierStr, nameBeforeDot.resolveTypeBinding());
+//                    lhsOfCurAssignIsQualifiedName = false;
+//                    return Utils.addBrackets(qualifierStr + " . " + fieldNameStr);
+//                } else {
+//                    String qualStr = qualifierStr + " . " + fieldNameStr;
+//                    String retStr = cast2Type(qualStr, fieldType);
+//                    return retStr;
+//                }
             }
         }
 
         return jexp.toString();
+    }
+}
+
+class NameVisitor extends ASTVisitor {
+    ArrayList<SimpleName> simpleNames = new ArrayList<>();
+
+    public boolean visit(SimpleName simpleName) {
+        simpleNames.add(simpleName);
+
+        return false;
     }
 }
