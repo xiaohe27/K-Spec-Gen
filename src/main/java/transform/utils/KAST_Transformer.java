@@ -1,7 +1,6 @@
 package transform.utils;
 
 import org.eclipse.jdt.core.dom.*;
-import parser.ExpressionParser;
 
 import java.util.ArrayList;
 
@@ -142,23 +141,32 @@ public class KAST_Transformer {
                 nameBeforeDot.accept(nv);
 
                 ArrayList<SimpleName> prefixNames = nv.simpleNames;
-                //TODO
+                SimpleName firstExprName = prefixNames.get(0);
+                String complexName = convertSimpleName2KASTString(firstExprName, needCast);
 
-//                qualifierStr = KAST_Transformer.convert2KAST(simpleName, needCast);
-//                //ugly trick to add one more layer of cast for lhs of a qualified name
-//                qualifierStr = KAST_Transformer.cast2Type(qualifierStr, simpleName.resolveTypeBinding());
+                for (int i = 0; i < prefixNames.size(); i++) {
+                    complexName = cast2Type(complexName, prefixNames.get(i).resolveTypeBinding());
+                    if (i != 0 || lhsOfCurAssignIsQualifiedName)
+                        complexName = cast2Type(complexName, prefixNames.get(i).resolveTypeBinding());
 
+                    if (i != prefixNames.size() - 1) {
+                        complexName += " . " +
+                                Utils.string2ID(prefixNames.get(i + 1).getIdentifier());
+                    }
+                }
+
+                //the rightmost field name
                 String fieldNameStr = Utils.string2ID(fieldName.getIdentifier());
+                complexName = complexName + " . " + fieldNameStr;
 
-//                if (lhsOfCurAssignIsQualifiedName) {
-//                    qualifierStr = cast2Type(qualifierStr, nameBeforeDot.resolveTypeBinding());
-//                    lhsOfCurAssignIsQualifiedName = false;
-//                    return Utils.addBrackets(qualifierStr + " . " + fieldNameStr);
-//                } else {
-//                    String qualStr = qualifierStr + " . " + fieldNameStr;
-//                    String retStr = cast2Type(qualStr, fieldType);
-//                    return retStr;
-//                }
+                if (lhsOfCurAssignIsQualifiedName) {
+                    lhsOfCurAssignIsQualifiedName = false;
+                    complexName = Utils.addBrackets(complexName);
+                } else {
+                    complexName = cast2Type(complexName, fieldType);
+                }
+
+                return complexName;
             }
         }
 
