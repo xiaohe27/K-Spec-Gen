@@ -13,14 +13,19 @@ class multiLoop {
         while (n > 0)
         //@LI out;
         {
+            int t;
+            t = 2;
             while (n > 7)
             //@LI inner1;
             {
+                int z;
+                z = 11;
             }
 
             while (n < 9)
             //@LI inner2;
             {
+                s = t + n;
             }
         }
 

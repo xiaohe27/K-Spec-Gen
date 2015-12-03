@@ -12,8 +12,7 @@ import java.util.Set;
  * Created by hx312 on 28/11/2015.
  */
 public class LoopVisitor extends ASTVisitor {
-    private String whileGuardAST;
-    private StringBuilder whileBodyAST = new StringBuilder();
+    private StringBuilder whileAST = new StringBuilder();
     private Set<SimpleName> varsInLoop = new HashSet<>();
 
     public boolean visit(SimpleName name) {
@@ -31,11 +30,19 @@ public class LoopVisitor extends ASTVisitor {
     public boolean visit(WhileStatement whileNode) {
         Expression guard = whileNode.getExpression();
         try {
-            this.whileGuardAST = KAST_Transformer.convert2KAST(guard, true);
+            this.whileAST.append("while ( ");
+            //while loop's guard
+            this.whileAST.append(KAST_Transformer.convert2KAST(guard, true));
+            this.whileAST.append(" ) {\n");
         } catch (Exception e) {
             e.printStackTrace();
         }
         return true;
+    }
+
+    @Override
+    public void endVisit(WhileStatement whileNode) {
+        this.whileAST.append("\n}\n");
     }
 
     public boolean visit(VariableDeclarationStatement vds) {
@@ -53,7 +60,7 @@ public class LoopVisitor extends ASTVisitor {
 
         sb.append(Utils.string2ID(ids.get(ids.size() - 1).getName().getIdentifier()));
         sb.append(" ;\n");
-        this.whileBodyAST.append(sb.toString());
+        this.whileAST.append(sb.toString());
 
         return false;
     }
@@ -76,7 +83,7 @@ public class LoopVisitor extends ASTVisitor {
 
             String output = KAST_Transformer.cast2Type(exprStr, lhs.resolveTypeBinding());
 
-            whileBodyAST.append(output + " ; ");
+            whileAST.append(output + " ; ");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,13 +95,6 @@ public class LoopVisitor extends ASTVisitor {
     }
 
     public String getLoopASTString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("while ( ");
-        sb.append(this.whileGuardAST);
-        sb.append(" ) {\n");
-        sb.append(this.whileBodyAST);
-        sb.append("}\n");
-
-        return sb.toString();
+        return this.whileAST.toString();
     }
 }
