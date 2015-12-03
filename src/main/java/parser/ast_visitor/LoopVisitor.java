@@ -54,8 +54,7 @@ public class LoopVisitor extends ASTVisitor {
 
             thenStmt.accept(this);
 
-            if (elseStmt != null)
-            {
+            if (elseStmt != null) {
                 this.whileAST.append("\nelse ");
                 elseStmt.accept(this);
             }
