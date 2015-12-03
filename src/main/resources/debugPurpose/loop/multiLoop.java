@@ -25,7 +25,12 @@ class multiLoop {
             while (n < 9)
             //@LI inner2;
             {
-                s = t + n;
+                if (n > 5) {
+                    s = t + n;
+                    t = n * 2;
+                } else
+                    s = s - 1;
+
             }
         }
 

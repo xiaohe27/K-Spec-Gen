@@ -15,6 +15,7 @@ public class LoopVisitor extends ASTVisitor {
     private StringBuilder whileAST = new StringBuilder();
     private Set<SimpleName> varsInLoop = new HashSet<>();
 
+    @Override
     public boolean visit(SimpleName name) {
         for (SimpleName curName :
                 varsInLoop) {
@@ -27,13 +28,14 @@ public class LoopVisitor extends ASTVisitor {
         return false;
     }
 
+    @Override
     public boolean visit(WhileStatement whileNode) {
         Expression guard = whileNode.getExpression();
         try {
             this.whileAST.append("while ( ");
             //while loop's guard
             this.whileAST.append(KAST_Transformer.convert2KAST(guard, true));
-            this.whileAST.append(" ) {\n");
+            this.whileAST.append(" ) ");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -41,10 +43,42 @@ public class LoopVisitor extends ASTVisitor {
     }
 
     @Override
-    public void endVisit(WhileStatement whileNode) {
-        this.whileAST.append("\n}\n");
+    public boolean visit(IfStatement ifStatement) {
+        try {
+            this.whileAST.append("if ( ");
+            this.whileAST.append(KAST_Transformer.convert2KAST(ifStatement.getExpression(), true));
+            this.whileAST.append(" ) ");
+
+            Statement thenStmt = ifStatement.getThenStatement();
+            Statement elseStmt = ifStatement.getElseStatement();
+
+            thenStmt.accept(this);
+
+            if (elseStmt != null)
+            {
+                this.whileAST.append("\nelse ");
+                elseStmt.accept(this);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
+    @Override
+    public boolean visit(Block block) {
+        this.whileAST.append("{\n");
+
+        return true;
+    }
+
+    @Override
+    public void endVisit(Block block) {
+        this.whileAST.append("\n} ");
+    }
+
+    @Override
     public boolean visit(VariableDeclarationStatement vds) {
         StringBuilder sb = new StringBuilder();
         String type = Utils.convert2KAST_Type(vds.getType());
@@ -65,6 +99,7 @@ public class LoopVisitor extends ASTVisitor {
         return false;
     }
 
+    @Override
     public boolean visit(Assignment assignmentNode) {
 
         Expression lhs = assignmentNode.getLeftHandSide();
