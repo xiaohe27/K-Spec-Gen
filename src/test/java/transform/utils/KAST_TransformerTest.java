@@ -59,9 +59,9 @@ public class KAST_TransformerTest {
     @Test
     public void testConvert2KAST() throws Exception {
         String expected = new String(Files.readAllBytes(this.expectedFile.toPath()));
-//        System.out.println(expected);
         LoopVisitor loopVisitor = new LoopVisitor();
         this.whileNd.accept(loopVisitor);
+
         assertEquals(expected.trim().replaceAll("\\p{Space}", ""),
                 loopVisitor.getLoopASTString().trim().replaceAll("\\p{Space}", ""));
     }

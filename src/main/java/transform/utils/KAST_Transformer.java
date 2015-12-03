@@ -138,16 +138,17 @@ public class KAST_Transformer {
                 String qualifierStr = convert2KAST(nameBeforeDot, needCast);
                 //ugly trick to add one more layer of cast for lhs of a qualified name
                 qualifierStr = cast2Type(qualifierStr, nameBeforeDot.resolveTypeBinding());
-
-                //TODO
-                if (lhsOfCurAssignIsQualifiedName)
-                    qualifierStr = Utils.addBrackets(qualifierStr);
-
-                lhsOfCurAssignIsQualifiedName = false;
-
                 String fieldNameStr = Utils.string2ID(fieldName.getIdentifier());
-                String qualStr = qualifierStr + " . " + fieldNameStr;
-                return cast2Type(qualStr, fieldType);
+
+                if (lhsOfCurAssignIsQualifiedName) {
+                    qualifierStr = cast2Type(qualifierStr, nameBeforeDot.resolveTypeBinding());
+                    lhsOfCurAssignIsQualifiedName = false;
+                    return Utils.addBrackets(qualifierStr + " . " + fieldNameStr);
+                } else {
+                    String qualStr = qualifierStr + " . " + fieldNameStr;
+                    String retStr = cast2Type(qualStr, fieldType);
+                    return retStr;
+                }
             }
         }
 
