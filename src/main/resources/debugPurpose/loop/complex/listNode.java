@@ -37,6 +37,11 @@ public class listNode {
         return x;
     }
 
+    /**
+     * @objectStore {
+     *
+     * }
+     */
     static listNode reverse(listNode x)
 /*@ rule <k> $ => return ?p; ...</k>
          <heap>... list(x)(A) => list(?p)(rev(A)) ...</heap> */ {
