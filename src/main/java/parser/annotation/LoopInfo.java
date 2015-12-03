@@ -20,11 +20,9 @@ import java.util.stream.Stream;
 public class LoopInfo {
     private final int startPos;
     private final int endPos;
+    private final LoopVisitor loopVisitor = new LoopVisitor();
     private ArrayList<Expression> loopInvs;
     private WhileStatement loopNode;
-
-    private final LoopVisitor loopVisitor = new LoopVisitor();
-
     private HashMap<String, String> rawEnvMap = new HashMap<>();
     private HashMap<String, String> rawStoreMap = new HashMap<>();
 

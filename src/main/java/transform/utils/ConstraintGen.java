@@ -31,7 +31,7 @@ public class ConstraintGen {
     /**
      * Generate the range constraint for the var of the given type.
      *
-     * @param type    The type of the variable.
+     * @param type The type of the variable.
      * @param expr The name of the expression.
      * @return The constraint expression describing the range of the values that the var can take.
      */

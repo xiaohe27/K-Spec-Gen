@@ -1,7 +1,9 @@
 package transform.utils;
 
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.Type;
 
 import java.util.HashMap;
 
@@ -61,5 +63,27 @@ public class Utils {
         } catch (NullPointerException e) {
         }
         return isInt;
+    }
+
+    public static String convert2KAST_Type(Type jType) {
+        String type = jType.toString();
+        if (jType.isPrimitiveType()) {
+            type = type.equals("boolean") ? "bool" : type;
+        } else {
+//            type = "class ." + type;
+            type = className2ID(type, false);
+        }
+        return type;
+    }
+
+    public static String convert2KAST_Type(ITypeBinding jType) {
+        String type = jType.getName();
+        if (jType.isPrimitive()) {
+            type = type.equals("boolean") ? "bool" : type;
+        } else {
+//            type = "class ." + type;
+            type = className2ID(type, false);
+        }
+        return type;
     }
 }

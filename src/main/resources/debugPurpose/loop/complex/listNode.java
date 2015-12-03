@@ -56,6 +56,9 @@ public class listNode {
         return p;
     }
 
+    /**
+     * @requires x != null;
+     */
     static listNode bubble_sort(listNode x)
 /*@ rule <k> $ => return ?x; ...</k>
          <heap>... list(x)(A) => list(?x)(?A) ...</heap>
