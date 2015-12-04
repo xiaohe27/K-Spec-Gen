@@ -18,13 +18,21 @@ public class KRewriteObj {
     private final String lhs;
     private final String rhs;
 
+    private final boolean isRHSFresh;
+
     private final String kBuiltInType;
     private String javaTypeInK;
 
     public KRewriteObj(ITypeBinding javaType, String lhs, String rhs) {
+        this(javaType, lhs, rhs, false);
+    }
+
+    public KRewriteObj(ITypeBinding javaType, String lhs, String rhs, boolean isRHSFreshVar) {
         this.javaTypeStr = javaType.getName();
         this.lhs = lhs;
         this.rhs = rhs;
+
+        this.isRHSFresh = isRHSFreshVar;
 
         this.kBuiltInType = TypeMapping.getKBuiltInType4SimpleJType(this.javaTypeStr);
 
