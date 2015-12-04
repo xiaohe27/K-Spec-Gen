@@ -39,8 +39,9 @@ public class listNode {
 
     /**
      * @objectStore {
-     *
+     *  (list(lp1)(A:List) => list(?lp2)(rev(A)))
      * }
+     * @returns ?lp2;
      */
     static listNode reverse(listNode x)
 /*@ rule <k> $ => return ?p; ...</k>
@@ -49,7 +50,16 @@ public class listNode {
 
         p = null;
         //@ inv <heap>... list(p)(?B), list(x)(?C) ...</heap> /\ A = rev(?B) @ ?C
-        while (x != null) {
+        while (x != null)
+        /*@env {
+        x |-> 1,
+        p |-> 2
+        }@*/
+        /*@store{
+        1 |-> (lp1 => null),
+        2 |-> (lp2 => ?lp2)
+        }@*/
+        {
             listNode y;
 
             y = x.next;
@@ -61,9 +71,6 @@ public class listNode {
         return p;
     }
 
-    /**
-     * @requires x != null;
-     */
     static listNode bubble_sort(listNode x)
 /*@ rule <k> $ => return ?x; ...</k>
          <heap>... list(x)(A) => list(?x)(?A) ...</heap>
