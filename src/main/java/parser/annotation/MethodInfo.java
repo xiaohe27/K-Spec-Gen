@@ -53,11 +53,11 @@ public class MethodInfo {
         return pos >= this.startPos && pos < this.endPos;
     }
 
-    private void parseMethodContract(String preAndPostCond) {
-        Matcher matcher = Patterns.METHOD_CONTRACT.matcher(preAndPostCond);
+    private void parseMethodContract(String javaDocStr) {
+        Matcher matcher = Patterns.METHOD_CONTRACT.matcher(javaDocStr);
         int count = 0;
         int groupSize = matcher.groupCount();
-        System.out.println("Group size is " + groupSize);
+//        System.out.println("Group size is " + groupSize);
 
         String contractStr = null;
         if (matcher.find()) {
@@ -78,19 +78,19 @@ public class MethodInfo {
 
             switch (category) {
                 case Patterns.REQUIRES:
-//                    System.out.println("@pre : " + matcher.group(2));
+                    System.out.println("@pre : " + matcher.group(2));
                     String preCondStr = matcher.group(2);
                     this.preCondList.add(ExpressionParser.parseExprStr(preCondStr));
                     break;
 
                 case Patterns.ENSURES:
-//                    System.out.println("@post : " + matcher.group(2));
+                    System.out.println("@post : " + matcher.group(2));
                     String postCondStr = matcher.group(2);
                     this.postCondList.add(postCondStr);
                     break;
 
                 case Patterns.RETURNS:
-//                    System.out.println("@ret : " + matcher.group(2));
+                    System.out.println("@ret : " + matcher.group(2));
                     this.expectedRetVal = matcher.group(2);
                     break;
 

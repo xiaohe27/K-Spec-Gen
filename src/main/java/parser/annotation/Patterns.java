@@ -7,11 +7,17 @@ import java.util.regex.Pattern;
  * Created by xiaohe on 10/7/15.
  */
 public class Patterns {
-    public static final String ClauseStr =
+    private static final String ClauseStr0 =
             "@(requires|ensures|returns)\\p{Blank}+([\\p{Print}\\p{Blank}&&[^;]]*);";
+
+    private static final String ClauseStr1 =
+            "@objectStore\\p{Space}*\\{([\\p{Print}\\p{Space}&&[^{}]]*)\\}";
+
+    public static final String ClauseStr = ClauseStr0 + "|" + ClauseStr1;
+
     public static final Pattern SingleClause = Pattern.compile(ClauseStr);
     public static final Pattern METHOD_CONTRACT =
-            Pattern.compile("/\\*\\*\\p{Space}+((\\*\\p{Space}*" + ClauseStr + "\\p{Space}*)*)\\*/");
+            Pattern.compile("/\\*\\*\\p{Space}+((\\*\\p{Space}*(" + ClauseStr + ")\\p{Space}*)*)\\*/");
     public static final Pattern LI =
             Pattern.compile("//@LI\\p{Blank}+([\\p{Print}\\p{Blank}&&[^;]]+);");
     public static final Pattern EnvEntry =
