@@ -74,14 +74,12 @@ public class MethodInfo {
             return;
         }
 
-        matcher = Patterns.SingleClause.matcher(contractStr);
+        matcher = contractStr.matches(Patterns.SingleClause.pattern()) ?
+                Patterns.SingleClause.matcher(contractStr) :
+                Patterns.ObjStoreCellPattern.matcher(contractStr);
 
         while (matcher.find()) {
-            System.out.println("The matched group 0 is " + matcher.group(0));
-            System.out.println("group size is " + matcher.groupCount());
-
             String category = matcher.group(1);
-            System.out.println("category is " + category);
 
             switch (category) {
                 case Patterns.REQUIRES:
@@ -102,7 +100,7 @@ public class MethodInfo {
                     break;
 
                 case Patterns.OBJStore:
-                    System.out.println("@objStore : " + matcher.group(2));
+//                    System.out.println("@objStore : " + matcher.group(2));
                     this.objStoreContent = matcher.group(2);
                     break;
                 default:
