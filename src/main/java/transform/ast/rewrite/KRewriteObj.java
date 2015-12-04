@@ -53,6 +53,8 @@ public class KRewriteObj {
         sb.append(lhs + ":" + this.kBuiltInType);
         if (this.rhs != null) {
             sb.append(" => ");
+            if (this.isRHSFresh)
+                sb.append("?");
             sb.append(rhs);
         }
         return Utils.addBrackets(sb.toString()) + " :: " + this.javaTypeInK;
