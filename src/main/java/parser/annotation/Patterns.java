@@ -11,7 +11,7 @@ public class Patterns {
             "@(requires|ensures|returns)\\p{Blank}+([\\p{Print}\\p{Blank}&&[^;]]*);";
 
     private static final String ClauseStr1 =
-            "@objectStore\\p{Space}*\\{([\\p{Print}\\p{Space}&&[^{}]]*)\\}";
+            "@(objectStore)\\p{Space}*\\{([\\p{Print}\\p{Space}&&[^{}]]*)\\}";
 
     public static final String ClauseStr = ClauseStr0 + "|" + ClauseStr1;
 
@@ -26,6 +26,8 @@ public class Patterns {
     protected static final String REQUIRES = "requires";
     protected static final String ENSURES = "ensures";
     protected static final String RETURNS = "returns";
+    protected static final String OBJStore = "objectStore";
+
     //"/\\*@\\p{Space}*(env|store)\\p{Space}*\\{([\\p{Print}\\p{Space}&&[^{}]]*)\\}\\p{Space}*@\\*/"
     private static final String rawCell = "(env|store)\\p{Space}*\\{([\\p{Print}\\p{Space}&&[^{}]]*)\\}";
     public static final Pattern CellInComment =

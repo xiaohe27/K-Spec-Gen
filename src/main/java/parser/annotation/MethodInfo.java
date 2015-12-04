@@ -33,6 +33,10 @@ public class MethodInfo {
      * then its index is n.
      */
     private ArrayList<LoopInfo> loopsInfo = new ArrayList<>();
+    /**
+     * The user provided objectStore content.
+     */
+    private String objStoreContent;
 
 
     public MethodInfo(String className, MethodDeclaration methodDecl, int startPos, int len, String
@@ -73,27 +77,34 @@ public class MethodInfo {
         matcher = Patterns.SingleClause.matcher(contractStr);
 
         while (matcher.find()) {
+            System.out.println("The matched group 0 is " + matcher.group(0));
+            System.out.println("group size is " + matcher.groupCount());
 
             String category = matcher.group(1);
+            System.out.println("category is " + category);
 
             switch (category) {
                 case Patterns.REQUIRES:
-                    System.out.println("@pre : " + matcher.group(2));
+//                    System.out.println("@pre : " + matcher.group(2));
                     String preCondStr = matcher.group(2);
                     this.preCondList.add(ExpressionParser.parseExprStr(preCondStr));
                     break;
 
                 case Patterns.ENSURES:
-                    System.out.println("@post : " + matcher.group(2));
+//                    System.out.println("@post : " + matcher.group(2));
                     String postCondStr = matcher.group(2);
                     this.postCondList.add(postCondStr);
                     break;
 
                 case Patterns.RETURNS:
-                    System.out.println("@ret : " + matcher.group(2));
+//                    System.out.println("@ret : " + matcher.group(2));
                     this.expectedRetVal = matcher.group(2);
                     break;
 
+                case Patterns.OBJStore:
+                    System.out.println("@objStore : " + matcher.group(2));
+                    this.objStoreContent = matcher.group(2);
+                    break;
                 default:
                     break;
             }
@@ -199,6 +210,10 @@ public class MethodInfo {
         this.postCondList.forEach(postCondStr -> {
             sb.append("@post: " + postCondStr + ";\n");
         });
+
+        if (this.objStoreContent != null) {
+            sb.append("@objectStore: {" + this.objStoreContent + "}\n");
+        }
 
         sb.append("@ret: " + this.expectedRetVal + ";\n");
         sb.append("\nLoop info is :\n");
