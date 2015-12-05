@@ -23,7 +23,7 @@ public class TypeMapping {
     public final static String[] prefixOp = {"!", "-", "+"};
 
     public final static String[] commonInfixOP = {"+", "-", "*", "/", "%", "<", "<=", ">", ">=",
-            "==", "!="};
+            "==", "!=", "in"};
 
     public final static String[] intSpecOP = {"<<", ">>", "~", "^", "&", "|"};
     public final static String[] boolOP = {"&&", "||", "!=", "==", "!"};
@@ -176,6 +176,8 @@ public class TypeMapping {
     public static String covert2KOp_Int(String oldOp) {
         if ("!=".equals(oldOp)) {
             return "=/=Int";
+        } else if ("in".equals(oldOp)) {
+            return oldOp + "IntSet";
         } else if (isIn(infixOP, oldOp)) {
             return oldOp + "Int";
         } else {
@@ -186,6 +188,8 @@ public class TypeMapping {
     public static String covert2KOp_Float(String oldOp) {
         if ("!=".equals(oldOp)) {
             return "=/=Float";
+        } else if ("in".equals(oldOp)) {
+            return oldOp + "FloatSet";
         } else if (isIn(commonInfixOP, oldOp)) {
             return oldOp + "Float";
         } else {
@@ -197,6 +201,8 @@ public class TypeMapping {
         String[] excludeList = {"-", "*", "/", "%"};
         if ("!=".equals(oldOp)) {
             return "=/=String";
+        } else if ("in".equals(oldOp)) {
+            return oldOp + "StringSet";
         } else if (isIn(commonInfixOP, oldOp) && !isIn(excludeList, oldOp)) {
             return oldOp + "String";
         } else {
@@ -207,6 +213,8 @@ public class TypeMapping {
     public static void main(String[] args) {
         String goodExp = ExpressionParser.parseExprStr("min(a,b) + c -d/e >= 72").toString();
         System.out.println(CellContentGenerator.fromLiteral2KExpr(goodExp, TypeMapping.INT_OPERAND));
+
+        System.out.println("k op of in for int is " + convert2KOP("in", INT_OPERAND));
     }
 
 }

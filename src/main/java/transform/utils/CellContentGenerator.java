@@ -7,6 +7,8 @@ import parser.ExpressionParser;
 import transform.ast.rewrite.KRewriteObj;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
@@ -106,8 +108,36 @@ public class CellContentGenerator {
             fromJVarName2KVarName, HashMap<String, String> typeEnv) {
         String jexprStr = ExpressionParser.printExprWithKVars(jexpr, fromJVarName2KVarName);
 
-        String[] disjuncts = jexprStr.split("&&");
+        return fromJExpr2KExprString(jexprStr, typeEnv);
+    }
 
+    public static String fromJExpr2KExprString(String jexprStr,
+                                               ArrayList<SingleVariableDeclaration> params) {
+        HashMap<String, String> jvar2KvarMapping = extractJVar2KVarMapping(params);
+        HashMap<String, String> typeEnv = new HashMap<>();
+
+        params.forEach(var -> {
+            typeEnv.put(jvar2KvarMapping.get(var.getName().getIdentifier()),
+                    var.getType().toString());
+        });
+
+        final String[] output = new String[]{jexprStr};
+        jvar2KvarMapping.forEach((oldName, newName) -> {
+            output[0] = output[0].replaceAll("(?<=\\W)" + oldName + "(?=\\W)", newName);
+        });
+
+        Pattern freshVarPattern = Pattern.compile("(?<=\\?)(\\w+)");
+        Matcher matcher = freshVarPattern.matcher(output[0]);
+        while (matcher.find()) {
+            String varName = matcher.group(1);
+            output[0] = output[0].replaceAll(varName, varName.toUpperCase());
+        }
+
+        return fromJExpr2KExprString(output[0], typeEnv);
+    }
+
+    private static String fromJExpr2KExprString(String jexprStr, HashMap<String, String> typeEnv) {
+        String[] disjuncts = jexprStr.split("&&");
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < disjuncts.length - 1; i++) {
@@ -130,6 +160,12 @@ public class CellContentGenerator {
             int typeId = ExpressionParser.getTypeIdOfTheExpr(literal, typeEnv);
 
             String subResult = fromLiteral2KExpr(literal, typeId);
+            //dirty hack that make the == of type K if there exists special op like membership test
+            if (literal.contains("in")) {
+                subResult = subResult.replaceAll("==Int", " ==K ");
+                subResult = subResult.replaceAll("==Float", " ==K ");
+                subResult = subResult.replaceAll("==(?!K)", "==K");
+            }
             sb.append(subResult + (i == literals.length - 1 ? " " : " orBool "));
         }
 
