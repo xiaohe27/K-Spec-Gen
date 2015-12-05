@@ -6,6 +6,7 @@ import org.eclipse.jdt.core.dom.Type;
 import parser.ExpressionParser;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
+import transform.utils.CellContentGenerator;
 import transform.utils.TypeMapping;
 import transform.utils.Utils;
 
@@ -62,7 +63,7 @@ public class KCell extends Cell {
             } else {
                 //transform all the program vars to K vars.
                 Expression retExpr = ExpressionParser.parseExprStr(retVal);
-                retVal = "(" + TypeMapping.fromJExpr2KExprString(retExpr, this.methArgs).trim() + ")";
+                retVal = "(" + CellContentGenerator.fromJExpr2KExprString(retExpr, this.methArgs).trim() + ")";
             }
             sb.append(retVal + ":" + retKType + "::" + retTypeInJavaSemantics);
         } else {

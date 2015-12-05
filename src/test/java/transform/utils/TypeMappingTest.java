@@ -66,7 +66,7 @@ public class TypeMappingTest {
 
     @Test
     public void testFromJExpr2KExpr() throws Exception {
-        String actualKExprStr = TypeMapping.fromJExpr2KExprString(this.jExpr, this.formalParams);
+        String actualKExprStr = CellContentGenerator.fromJExpr2KExprString(this.jExpr, this.formalParams);
 
         System.out.println("Actual output is " + actualKExprStr);
         assertEquals(this.expectedKExpStr.replaceAll("\\p{Blank}", "").trim(),

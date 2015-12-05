@@ -6,6 +6,7 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.SimpleName;
 import parser.ExpressionParser;
 import transform.ast.KCondition;
+import transform.utils.CellContentGenerator;
 import transform.utils.ConstraintGen;
 import transform.utils.TypeMapping;
 import transform.utils.Utils;
@@ -64,7 +65,7 @@ public class KRewriteObj {
             Expression expI = ExpressionParser.parseExprStr
                     (elements[i].replaceAll("\\?", ""));
             //transform to k expr where every op has been transformed
-            elements[i] = TypeMapping.fromJExpr2KExprString(expI, localVars).trim();
+            elements[i] = CellContentGenerator.fromJExpr2KExprString(expI, localVars).trim();
 
             //N.B. the meta-variables in the expression may not be renamed in the
             // above process, so manually rename them if necessary.

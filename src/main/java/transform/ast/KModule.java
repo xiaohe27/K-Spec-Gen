@@ -1,34 +1,32 @@
 package transform.ast;
 
 import parser.annotation.MethodInfo;
+import transform.ast.rewrite.KRewriteObj;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by hx312 on 13/10/2015.
  */
 public class KModule extends KASTNode {
     private ArrayList<KImport> imports = new ArrayList<>();
-
+    private HashMap<Integer, KRewriteObj> store = new HashMap<>();
     private ArrayList<KRule> rules = new ArrayList<>();
 
     public KModule(MethodInfo methodInfo) {
         super(methodInfo.getKModuleName());
         imports.add(new KImport());
-        this.rules.add(getMethodContractRule(methodInfo));
         this.rules.addAll(getRulesFromLoops(methodInfo));
-    }
-
-    private static KRule getMethodContractRule(MethodInfo methodInfo) {
-        return new KRule(methodInfo);
+        this.rules.add(new KRule(methodInfo, this.store));
     }
 
 
-    private static ArrayList<KRule> getRulesFromLoops(MethodInfo methodInfo) {
+    private ArrayList<KRule> getRulesFromLoops(MethodInfo methodInfo) {
         ArrayList<KRule> rules = new ArrayList<>();
 
         for (int i = 0; i < methodInfo.getNumOfLoops(); i++) {
-            rules.add(new KRule(methodInfo, methodInfo.getLoopInfo(i)));
+            rules.add(new KRule(methodInfo, methodInfo.getLoopInfo(i), this.store));
         }
         return rules;
     }

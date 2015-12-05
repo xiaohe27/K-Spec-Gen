@@ -10,6 +10,7 @@ import parser.annotation.MethodInfo;
 import parser.annotation.Patterns;
 import transform.ast.cells.*;
 import transform.ast.rewrite.KRewriteObj;
+import transform.utils.CellContentGenerator;
 import transform.utils.ConstraintGen;
 import transform.utils.TypeMapping;
 
@@ -27,23 +28,26 @@ public class KRule extends KASTNode {
     private ArrayList<KCondition> postConds = new ArrayList<>();
     private String retVal;
     private ArrayList<Cell> cells = new ArrayList<>();
-
     private HashMap<SimpleName, Integer> env = new HashMap<>(); //env maps vars to locations
-    private HashMap<Integer, KRewriteObj> store = new HashMap<>();  //store maps addr to primitive vals?
+    private HashMap<Integer, KRewriteObj> store = null; //store is shared between methods and loops.
     private List<String> objStore = new ArrayList<>();
 
-    public KRule(MethodInfo methodInfo) {
-        this(methodInfo, null);
+    public KRule(MethodInfo methodInfo, HashMap<Integer, KRewriteObj> store0) {
+        this(methodInfo, null, store0);
     }
 
-    public KRule(MethodInfo methodInfo, LoopInfo loopInfo) {
+    public KRule(MethodInfo methodInfo, LoopInfo loopInfo, HashMap<Integer, KRewriteObj> store0) {
         super("'KRule");
+        this.store = store0;
         if (loopInfo != null) {
-            loopInfo.updateEnvAndStore(this.env, this.store);
+            loopInfo.updateEnvAndStore(this.env, this.store, this.objStore);
             rewriteLI(loopInfo);
+        } else {
+            CellContentGenerator.updateObjStoreByParsingContent(this.objStore,
+                    methodInfo.getObjStoreContent(),
+                    this.store.values());
         }
 
-        this.constructObjStore(methodInfo.getObjStoreContent());
         this.preConds.addAll(extractAllPreCond(methodInfo.getPreCondList(), methodInfo.getFormalParams()));
         this.postConds.addAll(extractAllPostCond(methodInfo.getPostCondList(), methodInfo.getFormalParams()));
         this.retVal = methodInfo.getExpectedRetVal();
@@ -130,37 +134,6 @@ public class KRule extends KASTNode {
         return allPreCond;
     }
 
-    private void constructObjStore(String objStoreContent) {
-        if (objStoreContent == null)
-            return;
-
-        final String[] inputs = objStoreContent.split(",");
-        for (int i = 0; i < inputs.length; i++) {
-            String strI = inputs[i];
-            final String[] elements = strI.split("=>");
-            final String[] lhs = {elements[0]};
-            final String[] rhs = {null};
-            if (elements.length > 1)
-                rhs[0] = elements[1];
-
-            this.store.values().forEach(kRewriteObj -> {
-                lhs[0] = kRewriteObj.rewrite2KVarIfPossible(lhs[0], true);
-            });
-
-            if (rhs[0] != null) {
-                this.store.values().forEach(kRewriteObj -> {
-                    rhs[0] = kRewriteObj.rewrite2KVarIfPossible(rhs[0], false);
-                });
-            }
-
-            String outputI = lhs[0];
-            if (rhs[0] != null) {
-                outputI += " => " + rhs[0];
-            }
-
-            this.objStore.add(outputI);
-        }
-    }
 
     @Override
     public String toString() {

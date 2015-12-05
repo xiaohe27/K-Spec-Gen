@@ -3,7 +3,7 @@ package transform.ast;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import transform.utils.TypeMapping;
+import transform.utils.CellContentGenerator;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -52,9 +52,9 @@ public class KCondition extends KASTNode {
     public String toString() {
         if (this.condString == null) {
             if (this.names == null)
-                this.condString = TypeMapping.fromJExpr2KExprString(this.expression, this.params);
+                this.condString = CellContentGenerator.fromJExpr2KExprString(this.expression, this.params);
             else
-                this.condString = TypeMapping.fromJExpr2KExprString(this.expression, this.names);
+                this.condString = CellContentGenerator.fromJExpr2KExprString(this.expression, this.names);
         }
 
         return this.condString;
