@@ -44,12 +44,10 @@ public class listNode {
      * @returns ?lp2;
      */
     static listNode reverse(listNode x)
-/*@ rule <k> $ => return ?p; ...</k>
-         <heap>... list(x)(A) => list(?p)(rev(A)) ...</heap> */ {
+     {
         listNode p;
 
         p = null;
-        //@ inv <heap>... list(p)(?B), list(x)(?C) ...</heap> /\ A = rev(?B) @ ?C
         while (x != null)
         /*@env {
         x |-> 1,
@@ -58,6 +56,10 @@ public class listNode {
         /*@store{
         1 |-> (lp1 => null),
         2 |-> (lp2 => ?lp2)
+        }@*/
+        /*@objStore{
+        list(lp1)(B:List),
+        list(lp2)(C:List) => list(?lp2)(?A:List)
         }@*/
         {
             listNode y;

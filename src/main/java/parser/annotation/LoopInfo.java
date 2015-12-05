@@ -138,7 +138,6 @@ public class LoopInfo {
     }
 
     public void setObjStoreContent(String rawObjStoreStr) {
-        //TODO to be invoked
         this.objStoreContent = rawObjStoreStr;
     }
 

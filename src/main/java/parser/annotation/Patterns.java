@@ -29,7 +29,8 @@ public class Patterns {
             Pattern.compile("/\\*\\*\\p{Space}+((\\*\\p{Space}*(" + ClauseStr + ")\\p{Space}*)*)\\*/");
 
     //"/\\*@\\p{Space}*(env|store)\\p{Space}*\\{([\\p{Print}\\p{Space}&&[^{}]]*)\\}\\p{Space}*@\\*/"
-    private static final String rawCell = "(env|store)\\p{Space}*\\{([\\p{Print}\\p{Space}&&[^{}]]*)\\}";
+    private static final String rawCell =
+            "(env|store|objectStore)\\p{Space}*\\{([\\p{Print}\\p{Space}&&[^{}]]*)\\}";
     public static final Pattern RAW_CELL = Pattern.compile(rawCell);
     private static final String printableCharsNoCommas = "[\\p{Print}&&[^,]]*";
     public static final Pattern StoreEntry =

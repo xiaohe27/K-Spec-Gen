@@ -1,16 +1,13 @@
 package parser.annotation;
 
-import javafx.util.Pair;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Type;
 import parser.ExpressionParser;
-import transform.ast.rewrite.KRewriteObj;
 import transform.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 
 /**
@@ -74,9 +71,9 @@ public class MethodInfo {
             return;
         }
 
-        matcher = contractStr.matches(Patterns.SingleClause.pattern()) ?
-                Patterns.SingleClause.matcher(contractStr) :
-                Patterns.ObjStoreCellPattern.matcher(contractStr);
+        matcher = Patterns.SingleClause.matcher(contractStr);
+
+        Matcher objStoreMatcher = Patterns.ObjStoreCellPattern.matcher(contractStr);
 
         while (matcher.find()) {
             String category = matcher.group(1);
@@ -99,12 +96,17 @@ public class MethodInfo {
                     this.expectedRetVal = matcher.group(2);
                     break;
 
-                case Patterns.OBJStore:
-//                    System.out.println("@objStore : " + matcher.group(2));
-                    this.objStoreContent = matcher.group(2);
-                    break;
                 default:
                     break;
+            }
+        }
+
+        while (objStoreMatcher.find()) {
+            String category = objStoreMatcher.group(1);
+
+            if (Patterns.OBJStore.equals(category)) {
+//                System.out.println("@objStore : " + objStoreMatcher.group(2));
+                this.objStoreContent = objStoreMatcher.group(2);
             }
         }
     }
@@ -242,7 +244,17 @@ public class MethodInfo {
                 });
     }
 
+    public void addObjStoreInfo4Loop(String objStoreContent, int commentStartPos) {
+        this.loopsInfo.stream()
+                .filter(loopInfo -> loopInfo.isPosInside(commentStartPos))
+                .min((loopInfo1, loopInfo2) -> (loopInfo1.srcCodeSize() - loopInfo2.srcCodeSize()))
+                .ifPresent(tarLoopInfo -> {
+                    tarLoopInfo.setObjStoreContent(objStoreContent);
+                });
+    }
+
     public String getObjStoreContent() {
         return this.objStoreContent;
     }
+
 }

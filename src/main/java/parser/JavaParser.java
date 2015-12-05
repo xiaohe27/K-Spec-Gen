@@ -84,6 +84,12 @@ public class JavaParser {
                                 myASTVisitor.getAnnotationInfo()
                                         .addStoreCellInfo(Cell_Matcher.group(2), commentStartPos);
                                 break;
+
+                            case Cell.OBJ_STORE:
+                                myASTVisitor.getAnnotationInfo()
+                                        .addObjStoreCellInfo(Cell_Matcher.group(2),
+                                                commentStartPos);
+                                break;
                         }
                     }
                 }
