@@ -3,5 +3,6 @@
 *~
 *.iml
 
+*.java.k
 target/*
 .idea/*

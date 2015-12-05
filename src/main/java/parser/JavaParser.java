@@ -8,6 +8,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.annotation.AnnotationInfo;
 import parser.annotation.Patterns;
 import parser.ast_visitor.MyASTVisitor;
+import transform.Main;
 import transform.ast.KSpec;
 import transform.ast.cells.Cell;
 
@@ -20,7 +21,7 @@ import java.util.regex.Matcher;
 public class JavaParser {
 
     //use ASTParse to parse string
-    public static void parse(File file) throws IOException {
+    public static String parse(File file) throws IOException {
         String unitName = file.getName();
         final String pgmTxt = new String(Files.readAllBytes(file.toPath()));
 
@@ -37,7 +38,7 @@ public class JavaParser {
         ////////////////////////////////////////
         parser.setUnitName(unitName);
         String[] sources = new String[]{file.getParentFile().getAbsolutePath()};
-        String[] classpath = getClassPaths();
+        String[] classpath = Main.getClassPaths();
         parser.setEnvironment(classpath, sources, new String[]{"UTF-8"}, true);
         /////////////////////////////////////////
 
@@ -101,46 +102,12 @@ public class JavaParser {
 
         AnnotationInfo annotationInfo = myASTVisitor.getAnnotationInfo();
 
-        System.out.println("Method with pre and post conditions:");
-        annotationInfo.printInfo();
+//        System.out.println("Method with pre and post conditions:");
+//        annotationInfo.printInfo();
 
-        KSpec kSpec = new KSpec("MY-K-Spec", annotationInfo);
-
-        System.out.println(kSpec.toString());
+        KSpec kSpec = new KSpec(unitName + "-K-Spec", annotationInfo);
+//        System.out.println(kSpec.toString());
+        return kSpec.toString();
     }
 
-    //loop directory to get file list
-    public static void ParseFilesInDir(String path) throws IOException {
-        File file = new File(path);
-
-        if (file.isFile()) {
-            parse(file);
-            return;
-        }
-
-        String dirPath = file.getCanonicalPath() + File.separator;
-
-        File root = new File(dirPath);
-        //System.out.println(rootDir.listFiles());
-        File[] files = root.listFiles();
-        String filePath = null;
-
-        for (File f : files) {
-            filePath = f.getAbsolutePath();
-            if (f.isFile()) {
-                parse(f);
-            }
-        }
-    }
-
-    public static String[] getClassPaths() {
-        String pathSeparator = System.getProperty("path.separator");
-        String classPath = System.getProperty("java.class.path");
-        String[] classPaths = classPath.split(pathSeparator);
-        return classPaths;
-    }
-
-    public static void main(String[] args) throws IOException {
-        ParseFilesInDir(args[0]);
-    }
 }
