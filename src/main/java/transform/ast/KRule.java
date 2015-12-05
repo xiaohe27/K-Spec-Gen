@@ -77,7 +77,7 @@ public class KRule extends KASTNode {
 
         cells.add(Cell.getFixedCellWithName(Cell.BUSY));
         cells.add(Cell.getFixedCellWithName(Cell.NEXT_LOC));
-        cells.add(new ObjectStoreCell());
+        cells.add(new ObjectStoreCell(this.objStore));
         return cells;
     }
 

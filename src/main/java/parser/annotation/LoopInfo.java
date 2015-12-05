@@ -11,6 +11,7 @@ import transform.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.stream.Stream;
@@ -123,32 +124,41 @@ public class LoopInfo {
                     Integer loc = envEntry.getValue();
                     String valStr = this.rawStoreMap.get(loc.toString()).trim();
 
-                    boolean withBrace = valStr.startsWith("(") && valStr.endsWith(")");
-                    valStr = Utils.removeBrace(valStr);
-
-                    final String[] elements = valStr.split("=>");
-
                     boolean rhsIsFresh = elements.length == 2 && elements[1].trim().startsWith("?");
 
-                    for (int i = 0; i < elements.length; i++) {
-                        Expression expI = ExpressionParser.parseExprStr
-                                (elements[i].replaceAll("\\?", ""));
-                        //transform to k expr where every op has been transformed
-                        elements[i] = TypeMapping.fromJExpr2KExprString(expI, localVars).trim();
+                    final String[] elements = getElementsOfRewriteObj(valStr, localVars);
 
-                        //N.B. the meta-variables in the expression may not be renamed in the
-                        // above process, so manually rename them if necessary.
-                        if (expI.toString().equals(elements[i]) && expI instanceof SimpleName) {
-                            elements[i] = TypeMapping.convert2KVar(elements[i], true);
-                        }
-                    }
+                    System.out.println("rhs is fresh ? " + rhsIsFresh);
 
                     KRewriteObj kRewriteObj = new KRewriteObj(name.resolveTypeBinding(),
                             elements[0],
                             elements.length == 2 ? elements[1] : null,
                             rhsIsFresh);
+
                     storeMap.put(loc, kRewriteObj);
                 });
+    }
+
+    protected final String[] getElementsOfRewriteObj(String valStr, Set<SimpleName> localVars) {
+        boolean withBrace = valStr.startsWith("(") && valStr.endsWith(")");
+        valStr = Utils.removeBrace(valStr);
+
+        final String[] elements = valStr.split("=>");
+
+        for (int i = 0; i < elements.length; i++) {
+            Expression expI = ExpressionParser.parseExprStr
+                    (elements[i].replaceAll("\\?", ""));
+            //transform to k expr where every op has been transformed
+            elements[i] = TypeMapping.fromJExpr2KExprString(expI, localVars).trim();
+
+            //N.B. the meta-variables in the expression may not be renamed in the
+            // above process, so manually rename them if necessary.
+            if (expI.toString().equals(elements[i]) && expI instanceof SimpleName) {
+                elements[i] = TypeMapping.convert2KVar(elements[i], true);
+            }
+        }
+
+        return elements;
     }
 
     public String toString() {
