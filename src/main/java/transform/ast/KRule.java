@@ -15,6 +15,7 @@ import transform.utils.TypeMapping;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 
 /**
@@ -28,7 +29,7 @@ public class KRule extends KASTNode {
 
     private HashMap<SimpleName, Integer> env = new HashMap<>(); //env maps vars to locations
     private HashMap<Integer, KRewriteObj> store = new HashMap<>();  //store maps addr to primitive vals?
-    private HashMap<String, String> objectStore = new HashMap<>(); //obj store maps addr to obj?
+    private List<KRewriteObj> objStore = new ArrayList<>();
 
     public KRule(MethodInfo methodInfo) {
         this(methodInfo, null);

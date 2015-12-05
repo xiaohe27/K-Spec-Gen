@@ -5,9 +5,11 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Type;
 import parser.ExpressionParser;
+import transform.ast.rewrite.KRewriteObj;
 import transform.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 
 /**
@@ -33,11 +35,12 @@ public class MethodInfo {
      * then its index is n.
      */
     private ArrayList<LoopInfo> loopsInfo = new ArrayList<>();
-    /**
-     * The user provided objectStore content.
-     */
-    private String objStoreContent;
 
+    private String objStoreContent;
+    /**
+     * The user provided objectStore content, in the form of list of k-rewrite obj.
+     */
+    private List<KRewriteObj> objStore = new ArrayList<>();
 
     public MethodInfo(String className, MethodDeclaration methodDecl, int startPos, int len, String
             preAndPostCond) {
@@ -102,11 +105,19 @@ public class MethodInfo {
                 case Patterns.OBJStore:
 //                    System.out.println("@objStore : " + matcher.group(2));
                     this.objStoreContent = matcher.group(2);
+                    constructObjStore();
                     break;
                 default:
                     break;
             }
         }
+    }
+
+    private void constructObjStore() {
+        if (this.objStoreContent == null)
+            return;
+
+
     }
 
     public void addPotentialLI(String loopInv, int commentStartPos) {
@@ -240,5 +251,9 @@ public class MethodInfo {
                 .ifPresent(tarLoopInfo -> {
                     tarLoopInfo.addStoreInfo(storeCellInfo);
                 });
+    }
+
+    public List<KRewriteObj> getObjStore() {
+        return objStore;
     }
 }
