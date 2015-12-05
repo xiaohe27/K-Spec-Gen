@@ -161,6 +161,8 @@ public class LoopInfo {
         this.rawStoreMap.forEach((k, v) -> {
             sb.append(k + " |-> " + v + "\n");
         });
+
+        sb.append("Obj store of the loop is\t" + this.objStoreContent);
         return sb.toString();
     }
 

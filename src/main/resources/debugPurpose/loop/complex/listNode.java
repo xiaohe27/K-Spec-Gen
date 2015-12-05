@@ -57,7 +57,7 @@ public class listNode {
         1 |-> (lp1 => null),
         2 |-> (lp2 => ?lp2)
         }@*/
-        /*@objStore{
+        /*@objectStore{
         list(lp1)(B:List),
         list(lp2)(C:List) => list(?lp2)(?A:List)
         }@*/
