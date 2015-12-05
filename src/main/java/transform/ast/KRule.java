@@ -119,7 +119,8 @@ public class KRule extends KASTNode {
         preCondList.forEach(preCondExpr ->
                 allPreCond.add(KCondition.genKConditionFromJavaExpr(preCondExpr, formalParams)));
 
-        this.store.values().forEach(kRewriteObj -> {
+        this.store.values().stream().filter(kObj -> kObj.isPrimitiveDataType())
+                .forEach(kRewriteObj -> {
             allPreCond.add(kRewriteObj.genConstraint());
         });
         return allPreCond;

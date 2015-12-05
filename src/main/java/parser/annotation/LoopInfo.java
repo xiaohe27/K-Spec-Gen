@@ -7,6 +7,7 @@ import parser.ExpressionParser;
 import parser.ast_visitor.LoopVisitor;
 import transform.ast.rewrite.KRewriteObj;
 import transform.utils.TypeMapping;
+import transform.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -120,17 +121,32 @@ public class LoopInfo {
                 .forEach(envEntry -> {
                     SimpleName name = envEntry.getKey();
                     Integer loc = envEntry.getValue();
-                    String valStr = this.rawStoreMap.get(loc.toString());
+                    String valStr = this.rawStoreMap.get(loc.toString()).trim();
+
+                    boolean withBrace = valStr.startsWith("(") && valStr.endsWith(")");
+                    valStr = Utils.removeBrace(valStr);
+
                     final String[] elements = valStr.split("=>");
+
+                    boolean rhsIsFresh = elements.length == 2 && elements[1].trim().startsWith("?");
+
                     for (int i = 0; i < elements.length; i++) {
-                        Expression expI = ExpressionParser.parseExprStr(elements[i]);
+                        Expression expI = ExpressionParser.parseExprStr
+                                (elements[i].replaceAll("\\?", ""));
                         //transform to k expr where every op has been transformed
-                        elements[i] = TypeMapping.fromJExpr2KExprString(expI, localVars);
+                        elements[i] = TypeMapping.fromJExpr2KExprString(expI, localVars).trim();
+
+                        //N.B. the meta-variables in the expression may not be renamed in the
+                        // above process, so manually rename them if necessary.
+                        if (expI.toString().equals(elements[i]) && expI instanceof SimpleName) {
+                            elements[i] = TypeMapping.convert2KVar(elements[i], true);
+                        }
                     }
 
                     KRewriteObj kRewriteObj = new KRewriteObj(name.resolveTypeBinding(),
                             elements[0],
-                            elements.length == 2 ? elements[1] : null);
+                            elements.length == 2 ? elements[1] : null,
+                            rhsIsFresh);
                     storeMap.put(loc, kRewriteObj);
                 });
     }

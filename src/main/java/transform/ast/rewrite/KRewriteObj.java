@@ -22,6 +22,8 @@ public class KRewriteObj {
 
     private final String kBuiltInType;
     private String javaTypeInK;
+    private boolean isPrimitiveType;
+
 
     public KRewriteObj(ITypeBinding javaType, String lhs, String rhs) {
         this(javaType, lhs, rhs, false);
@@ -35,17 +37,23 @@ public class KRewriteObj {
         this.isRHSFresh = isRHSFreshVar;
 
         this.kBuiltInType = TypeMapping.getKBuiltInType4SimpleJType(this.javaTypeStr);
+        this.isPrimitiveType = javaType.isPrimitive();
 
-        this.javaTypeInK = javaType.isPrimitive() ? this.javaTypeStr
+        this.javaTypeInK = this.isPrimitiveType ? this.javaTypeStr
                 : Utils.className2ID(this.javaTypeStr, false);
 
         if (javaTypeInK.equals("boolean"))
             javaTypeInK = "bool";
+
     }
 
     public KCondition genConstraint() {
         return KCondition.genKConditionFromConstraintString
                 (ConstraintGen.genRangeConstraint4Type(this.javaTypeStr, this.rhs));
+    }
+
+    public boolean isPrimitiveDataType() {
+        return this.isPrimitiveType;
     }
 
     public String toString() {
@@ -56,6 +64,8 @@ public class KRewriteObj {
             if (this.isRHSFresh)
                 sb.append("?");
             sb.append(rhs);
+            if (this.isRHSFresh)
+                sb.append(":RawRefVal");
         }
         return Utils.addBrackets(sb.toString()) + " :: " + this.javaTypeInK;
     }

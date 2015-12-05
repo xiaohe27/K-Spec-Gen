@@ -86,4 +86,12 @@ public class Utils {
         }
         return type;
     }
+
+    public static String removeBrace(String valStr) {
+        while (valStr.startsWith("(") && valStr.endsWith(")")) {
+            valStr = valStr.substring(1, valStr.length() - 1);
+        }
+
+        return valStr;
+    }
 }
