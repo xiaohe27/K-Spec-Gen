@@ -1,13 +1,11 @@
 package transform.ast;
 
-import javafx.util.Pair;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import parser.ExpressionParser;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
-import parser.annotation.Patterns;
 import transform.ast.cells.*;
 import transform.ast.rewrite.KRewriteObj;
 import transform.utils.CellContentGenerator;
@@ -18,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
 
 /**
  * Created by hx312 on 13/10/2015.
@@ -94,15 +91,9 @@ public class KRule extends KASTNode {
 
         postCondList.forEach(postCondExprStr ->
         {
-            Matcher matcher = Patterns.RAW_CELL.matcher(postCondExprStr);
-            if (matcher.find()) {
-                String cellName = matcher.group(1);
-                String cellContent = matcher.group(2);
-                //TODO
-            } else {
-                Expression postCondExp = ExpressionParser.parseExprStr(postCondExprStr);
-                allPostCond.add(KCondition.genKConditionFromJavaExpr(postCondExp, formalParams));
-            }
+            Expression postCondExp = ExpressionParser.parseExprStr(postCondExprStr);
+            allPostCond.add(KCondition.genKConditionFromJavaExpr(postCondExp, formalParams));
+
         });
 
         //also include the constraint related to the return expression.
@@ -129,8 +120,8 @@ public class KRule extends KASTNode {
 
         this.store.values().stream().filter(kObj -> kObj.isPrimitiveDataType())
                 .forEach(kRewriteObj -> {
-            allPreCond.add(kRewriteObj.genConstraint());
-        });
+                    allPreCond.add(kRewriteObj.genConstraint());
+                });
         return allPreCond;
     }
 

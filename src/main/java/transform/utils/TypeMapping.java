@@ -116,6 +116,9 @@ public class TypeMapping {
             }
         } else {
             //step 4
+            if (!freshVar.equals(baseName) && freshVar.endsWith("P"))
+                return freshVar;
+
             return freshVar + "P";
         }
     }
