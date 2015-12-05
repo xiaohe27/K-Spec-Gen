@@ -15,6 +15,8 @@ public class bst {
 
     /**
      * @requires bst(t);
+     * @returns ?b;
+     * @ensures ?b == (v in tree_keys(t));
      */
     static boolean find(int v, bst t) {
         if (t == null)

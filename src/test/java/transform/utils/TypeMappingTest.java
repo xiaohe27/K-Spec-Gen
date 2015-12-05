@@ -46,7 +46,7 @@ public class TypeMappingTest {
                 {"boolean b", "!b", "notBool B"},
                 {"boolean a, boolean b", "a && !b", " A andBool notBool B"},
                 {"boolean a, boolean b", "a != b", " A =/=Bool B"},
-                {"String a, String b", "a != b", "AP =/=String BP"}
+                {"String a, String b", "a != b", "A =/=String B"}
         });
     }
 
@@ -66,7 +66,7 @@ public class TypeMappingTest {
 
     @Test
     public void testFromJExpr2KExpr() throws Exception {
-        String actualKExprStr = TypeMapping.fromJExpr2KExprString(this.jExpr, this.formalParams);
+        String actualKExprStr = CellContentGenerator.fromJExpr2KExprString(this.jExpr, this.formalParams);
 
         System.out.println("Actual output is " + actualKExprStr);
         assertEquals(this.expectedKExpStr.replaceAll("\\p{Blank}", "").trim(),

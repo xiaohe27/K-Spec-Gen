@@ -49,6 +49,15 @@ public class AnnotationInfo {
                 });
     }
 
+    public void addObjStoreCellInfo(String objStoreContent, int commentStartPos) {
+        methodsInfo.values().stream()
+                .filter(curMethod -> curMethod.isInsideMethod(commentStartPos))
+                .forEach(targetMethod -> {
+                    targetMethod.addObjStoreInfo4Loop(objStoreContent, commentStartPos);
+                    return;
+                });
+    }
+
     public MethodInfo getMethodInfo(int index) {
         return methodsInfo.get(index);
     }

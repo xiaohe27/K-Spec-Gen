@@ -6,16 +6,16 @@ import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import parser.ExpressionParser;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
-import parser.annotation.Patterns;
 import transform.ast.cells.*;
 import transform.ast.rewrite.KRewriteObj;
+import transform.utils.CellContentGenerator;
 import transform.utils.ConstraintGen;
 import transform.utils.TypeMapping;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.regex.Matcher;
+import java.util.List;
 
 /**
  * Created by hx312 on 13/10/2015.
@@ -25,21 +25,26 @@ public class KRule extends KASTNode {
     private ArrayList<KCondition> postConds = new ArrayList<>();
     private String retVal;
     private ArrayList<Cell> cells = new ArrayList<>();
-
     private HashMap<SimpleName, Integer> env = new HashMap<>(); //env maps vars to locations
-    private HashMap<Integer, KRewriteObj> store = new HashMap<>();  //store maps addr to primitive vals?
-    private HashMap<String, String> objectStore = new HashMap<>(); //obj store maps addr to obj?
+    private HashMap<Integer, KRewriteObj> store = null; //store is shared between methods and loops.
+    private List<String> objStore = new ArrayList<>();
 
-    public KRule(MethodInfo methodInfo) {
-        this(methodInfo, null);
+    public KRule(MethodInfo methodInfo, HashMap<Integer, KRewriteObj> store0) {
+        this(methodInfo, null, store0);
     }
 
-    public KRule(MethodInfo methodInfo, LoopInfo loopInfo) {
+    public KRule(MethodInfo methodInfo, LoopInfo loopInfo, HashMap<Integer, KRewriteObj> store0) {
         super("'KRule");
+        this.store = store0;
         if (loopInfo != null) {
-            loopInfo.updateEnvAndStore(this.env, this.store);
+            loopInfo.updateEnvAndStore(this.env, this.store, this.objStore);
             rewriteLI(loopInfo);
+        } else {
+            CellContentGenerator.updateObjStoreByParsingContent(this.objStore,
+                    methodInfo.getObjStoreContent(),
+                    this.store.values());
         }
+
         this.preConds.addAll(extractAllPreCond(methodInfo.getPreCondList(), methodInfo.getFormalParams()));
         this.postConds.addAll(extractAllPostCond(methodInfo.getPostCondList(), methodInfo.getFormalParams()));
         this.retVal = methodInfo.getExpectedRetVal();
@@ -71,12 +76,12 @@ public class KRule extends KASTNode {
         cells.add(Cell.getFixedCellWithName(Cell.PROGRAM));
         cells.add(Cell.getFixedCellWithName(Cell.GlobalPhase));
 
-        cells.add(new StoreCell(this.store)); //store cell
+        cells.add(new StoreCell(this.store).setDefinedLoc(this.env.values())); //store cell
         cells.add(new StoreMetaDataCell(this.store.keySet())); //store meta data cell
 
         cells.add(Cell.getFixedCellWithName(Cell.BUSY));
         cells.add(Cell.getFixedCellWithName(Cell.NEXT_LOC));
-        cells.add(new ObjectStoreCell());
+        cells.add(new ObjectStoreCell(this.objStore));
         return cells;
     }
 
@@ -86,15 +91,9 @@ public class KRule extends KASTNode {
 
         postCondList.forEach(postCondExprStr ->
         {
-            Matcher matcher = Patterns.RAW_CELL.matcher(postCondExprStr);
-            if (matcher.find()) {
-                String cellName = matcher.group(1);
-                String cellContent = matcher.group(2);
-                //TODO
-            } else {
-                Expression postCondExp = ExpressionParser.parseExprStr(postCondExprStr);
-                allPostCond.add(KCondition.genKConditionFromJavaExpr(postCondExp, formalParams));
-            }
+            String constraintStr = CellContentGenerator.fromJExpr2KExprString(
+                    postCondExprStr, formalParams);
+            allPostCond.add(KCondition.genKConditionFromConstraintString(constraintStr));
         });
 
         //also include the constraint related to the return expression.
@@ -119,11 +118,13 @@ public class KRule extends KASTNode {
         preCondList.forEach(preCondExpr ->
                 allPreCond.add(KCondition.genKConditionFromJavaExpr(preCondExpr, formalParams)));
 
-        this.store.values().forEach(kRewriteObj -> {
-            allPreCond.add(kRewriteObj.genConstraint());
-        });
+        this.store.values().stream().filter(kObj -> kObj.isPrimitiveDataType())
+                .forEach(kRewriteObj -> {
+                    allPreCond.add(kRewriteObj.genConstraint());
+                });
         return allPreCond;
     }
+
 
     @Override
     public String toString() {

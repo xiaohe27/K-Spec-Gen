@@ -56,6 +56,9 @@ public class ExpressionParser extends ASTVisitor {
      */
     public static int getTypeIdOfTheExpr(String exprStr,
                                          HashMap<String, String> typeEnv0) {
+        //dirty trick to avoid parsing error: eliminate the ? and 'in' keywords
+        exprStr = exprStr.replaceAll("\\?", "").replaceAll("in", "<");
+
         Expression expr = parseExprStr(exprStr);
 
         resetTypeId();

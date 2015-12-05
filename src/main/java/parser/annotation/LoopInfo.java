@@ -1,16 +1,15 @@
 package parser.annotation;
 
+import javafx.util.Pair;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.WhileStatement;
 import parser.ExpressionParser;
 import parser.ast_visitor.LoopVisitor;
 import transform.ast.rewrite.KRewriteObj;
-import transform.utils.TypeMapping;
+import transform.utils.CellContentGenerator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.stream.Stream;
 
@@ -25,6 +24,7 @@ public class LoopInfo {
     private WhileStatement loopNode;
     private HashMap<String, String> rawEnvMap = new HashMap<>();
     private HashMap<String, String> rawStoreMap = new HashMap<>();
+    private String objStoreContent;
 
     public LoopInfo(int start, int len, WhileStatement lpNd) {
         this.loopInvs = new ArrayList<>();
@@ -92,13 +92,15 @@ public class LoopInfo {
      * @param storeMap The store map being updated.
      */
     public void updateEnvAndStore(HashMap<SimpleName, Integer> envMap,
-                                  HashMap<Integer, KRewriteObj> storeMap) {
+                                  HashMap<Integer, KRewriteObj> storeMap,
+                                  List<String> objStore) {
         if (envMap == null || storeMap == null) {
             throw new RuntimeException("env/store maps haven't been initialized before updating");
         }
 
         updateEnvMap(this.loopVisitor.getSetOfVarNames(), envMap);
         updateStoreMap(envMap, storeMap);
+        updateObjStore(objStore, storeMap.values());
     }
 
     private void updateEnvMap(Set<SimpleName> namesInLoop, HashMap<SimpleName, Integer> envMap) {
@@ -120,19 +122,27 @@ public class LoopInfo {
                 .forEach(envEntry -> {
                     SimpleName name = envEntry.getKey();
                     Integer loc = envEntry.getValue();
-                    String valStr = this.rawStoreMap.get(loc.toString());
-                    final String[] elements = valStr.split("=>");
-                    for (int i = 0; i < elements.length; i++) {
-                        Expression expI = ExpressionParser.parseExprStr(elements[i]);
-                        //transform to k expr where every op has been transformed
-                        elements[i] = TypeMapping.fromJExpr2KExprString(expI, localVars);
-                    }
+                    String valStr = this.rawStoreMap.get(loc.toString()).trim();
+
+                    final Pair<Boolean, String[]> pair = KRewriteObj.getParamsOfRewriteObj(valStr, localVars);
+                    boolean rhsIsFresh = pair.getKey();
+                    String[] elements = pair.getValue();
 
                     KRewriteObj kRewriteObj = new KRewriteObj(name.resolveTypeBinding(),
                             elements[0],
-                            elements.length == 2 ? elements[1] : null);
+                            elements.length == 2 ? elements[1] : null,
+                            rhsIsFresh);
+
                     storeMap.put(loc, kRewriteObj);
                 });
+    }
+
+    public void setObjStoreContent(String rawObjStoreStr) {
+        this.objStoreContent = rawObjStoreStr;
+    }
+
+    private void updateObjStore(List<String> objStore, Collection<KRewriteObj> kObjs) {
+        CellContentGenerator.updateObjStoreByParsingContent(objStore, this.objStoreContent, kObjs);
     }
 
     public String toString() {
@@ -151,6 +161,9 @@ public class LoopInfo {
         this.rawStoreMap.forEach((k, v) -> {
             sb.append(k + " |-> " + v + "\n");
         });
+
+        sb.append("Obj store of the loop is\t" + this.objStoreContent);
         return sb.toString();
     }
+
 }

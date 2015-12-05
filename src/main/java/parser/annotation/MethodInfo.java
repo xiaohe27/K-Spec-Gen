@@ -34,6 +34,7 @@ public class MethodInfo {
      */
     private ArrayList<LoopInfo> loopsInfo = new ArrayList<>();
 
+    private String objStoreContent;
 
     public MethodInfo(String className, MethodDeclaration methodDecl, int startPos, int len, String
             preAndPostCond) {
@@ -53,11 +54,11 @@ public class MethodInfo {
         return pos >= this.startPos && pos < this.endPos;
     }
 
-    private void parseMethodContract(String preAndPostCond) {
-        Matcher matcher = Patterns.METHOD_CONTRACT.matcher(preAndPostCond);
+    private void parseMethodContract(String javaDocStr) {
+        Matcher matcher = Patterns.METHOD_CONTRACT.matcher(javaDocStr);
         int count = 0;
         int groupSize = matcher.groupCount();
-        System.out.println("Group size is " + groupSize);
+//        System.out.println("Group size is " + groupSize);
 
         String contractStr = null;
         if (matcher.find()) {
@@ -72,8 +73,9 @@ public class MethodInfo {
 
         matcher = Patterns.SingleClause.matcher(contractStr);
 
-        while (matcher.find()) {
+        Matcher objStoreMatcher = Patterns.ObjStoreCellPattern.matcher(contractStr);
 
+        while (matcher.find()) {
             String category = matcher.group(1);
 
             switch (category) {
@@ -96,6 +98,15 @@ public class MethodInfo {
 
                 default:
                     break;
+            }
+        }
+
+        while (objStoreMatcher.find()) {
+            String category = objStoreMatcher.group(1);
+
+            if (Patterns.OBJStore.equals(category)) {
+//                System.out.println("@objStore : " + objStoreMatcher.group(2));
+                this.objStoreContent = objStoreMatcher.group(2);
             }
         }
     }
@@ -200,6 +211,10 @@ public class MethodInfo {
             sb.append("@post: " + postCondStr + ";\n");
         });
 
+        if (this.objStoreContent != null) {
+            sb.append("@objectStore: {" + this.objStoreContent + "}\n");
+        }
+
         sb.append("@ret: " + this.expectedRetVal + ";\n");
         sb.append("\nLoop info is :\n");
 
@@ -228,4 +243,18 @@ public class MethodInfo {
                     tarLoopInfo.addStoreInfo(storeCellInfo);
                 });
     }
+
+    public void addObjStoreInfo4Loop(String objStoreContent, int commentStartPos) {
+        this.loopsInfo.stream()
+                .filter(loopInfo -> loopInfo.isPosInside(commentStartPos))
+                .min((loopInfo1, loopInfo2) -> (loopInfo1.srcCodeSize() - loopInfo2.srcCodeSize()))
+                .ifPresent(tarLoopInfo -> {
+                    tarLoopInfo.setObjStoreContent(objStoreContent);
+                });
+    }
+
+    public String getObjStoreContent() {
+        return this.objStoreContent;
+    }
+
 }
