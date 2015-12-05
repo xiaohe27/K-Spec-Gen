@@ -46,7 +46,7 @@ public class TypeMappingTest {
                 {"boolean b", "!b", "notBool B"},
                 {"boolean a, boolean b", "a && !b", " A andBool notBool B"},
                 {"boolean a, boolean b", "a != b", " A =/=Bool B"},
-                {"String a, String b", "a != b", "AP =/=String BP"}
+                {"String a, String b", "a != b", "A =/=String B"}
         });
     }
 

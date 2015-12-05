@@ -51,7 +51,7 @@ public class CellContentGenerator {
         HashMap<String, String> fromJVarName2KVarName = new HashMap<>();
 
         formalParams.forEach(varDecl -> fromJVarName2KVarName.put(varDecl.getName().toString(),
-                TypeMapping.convert2KVar(varDecl.getName().toString(), true)));
+                TypeMapping.convert2KVar(varDecl.getName().toString(), varDecl.getType().isPrimitiveType())));
         return fromJVarName2KVarName;
     }
 

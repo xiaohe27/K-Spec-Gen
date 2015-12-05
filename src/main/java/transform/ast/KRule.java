@@ -91,9 +91,8 @@ public class KRule extends KASTNode {
 
         postCondList.forEach(postCondExprStr ->
         {
-            Expression postCondExp = ExpressionParser.parseExprStr(postCondExprStr);
-            allPostCond.add(KCondition.genKConditionFromJavaExpr(postCondExp, formalParams));
-
+//            Expression postCondExp = ExpressionParser.parseExprStr(postCondExprStr);
+//            allPostCond.add(KCondition.genKConditionFromJavaExpr(postCondExp, formalParams));
         });
 
         //also include the constraint related to the return expression.

@@ -105,20 +105,13 @@ public class TypeMapping {
 
         //step 1
         String freshVar = baseName.toUpperCase();
+        if (!freshVar.equals(baseName))
+            return freshVar;
 
         //step 2
         if (isPrimitive) {
-            //step 3
-            if (freshVar.equals(baseName)) {
-                return freshVar + "_raw";
-            } else {
-                return freshVar;
-            }
+            return freshVar + "_raw";
         } else {
-            //step 4
-            if (!freshVar.equals(baseName) && freshVar.endsWith("P"))
-                return freshVar;
-
             return freshVar + "P";
         }
     }
@@ -133,6 +126,8 @@ public class TypeMapping {
             jTypeInJavaSemantics = "bool";
 
         String result = convert2KVar(varName, isPrimitive);
+        if (!isPrimitive)
+            result += "P";
         result += ":" + getKBuiltInType4SimpleJType(jType);
         result = isPrimitive ? result : "(" + result + ")";
         result += "::" + jTypeInJavaSemantics;
