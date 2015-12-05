@@ -1,10 +1,16 @@
 package transform.ast.rewrite;
 
+import javafx.util.Pair;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.SimpleName;
+import parser.ExpressionParser;
 import transform.ast.KCondition;
 import transform.utils.ConstraintGen;
 import transform.utils.TypeMapping;
 import transform.utils.Utils;
+
+import java.util.Set;
 
 /**
  * Created by hx312 on 12/1/2015.
@@ -47,6 +53,29 @@ public class KRewriteObj {
 
     }
 
+    public static final Pair<Boolean, String[]> getParamsOfRewriteObj(String valStr, Set<SimpleName>
+            localVars) {
+        valStr = Utils.removeBrace(valStr);
+
+        final String[] elements = valStr.split("=>");
+        boolean rhsIsFresh = elements.length == 2 && elements[1].trim().startsWith("?");
+
+        for (int i = 0; i < elements.length; i++) {
+            Expression expI = ExpressionParser.parseExprStr
+                    (elements[i].replaceAll("\\?", ""));
+            //transform to k expr where every op has been transformed
+            elements[i] = TypeMapping.fromJExpr2KExprString(expI, localVars).trim();
+
+            //N.B. the meta-variables in the expression may not be renamed in the
+            // above process, so manually rename them if necessary.
+            if (expI.toString().equals(elements[i]) && expI instanceof SimpleName) {
+                elements[i] = TypeMapping.convert2KVar(elements[i], true);
+            }
+        }
+
+        return new Pair<Boolean, String[]>(rhsIsFresh, elements);
+    }
+
     public KCondition genConstraint() {
         return KCondition.genKConditionFromConstraintString
                 (ConstraintGen.genRangeConstraint4Type(this.javaTypeStr, this.rhs));
@@ -54,6 +83,14 @@ public class KRewriteObj {
 
     public boolean isPrimitiveDataType() {
         return this.isPrimitiveType;
+    }
+
+    public String rewrite2KVarIfPossible(String str, boolean isLHS) {
+        if (isLHS) {
+            return str.replaceAll(this.lhs.toLowerCase(), this.lhs);
+        } else {
+            return str.replaceAll(this.rhs.toLowerCase(), this.rhs);
+        }
     }
 
     public String toString() {

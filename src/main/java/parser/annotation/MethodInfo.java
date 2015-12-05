@@ -1,5 +1,6 @@
 package parser.annotation;
 
+import javafx.util.Pair;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
@@ -37,10 +38,6 @@ public class MethodInfo {
     private ArrayList<LoopInfo> loopsInfo = new ArrayList<>();
 
     private String objStoreContent;
-    /**
-     * The user provided objectStore content, in the form of list of k-rewrite obj.
-     */
-    private List<KRewriteObj> objStore = new ArrayList<>();
 
     public MethodInfo(String className, MethodDeclaration methodDecl, int startPos, int len, String
             preAndPostCond) {
@@ -105,19 +102,11 @@ public class MethodInfo {
                 case Patterns.OBJStore:
 //                    System.out.println("@objStore : " + matcher.group(2));
                     this.objStoreContent = matcher.group(2);
-                    constructObjStore();
                     break;
                 default:
                     break;
             }
         }
-    }
-
-    private void constructObjStore() {
-        if (this.objStoreContent == null)
-            return;
-
-
     }
 
     public void addPotentialLI(String loopInv, int commentStartPos) {
@@ -253,7 +242,7 @@ public class MethodInfo {
                 });
     }
 
-    public List<KRewriteObj> getObjStore() {
-        return objStore;
+    public String getObjStoreContent() {
+        return this.objStoreContent;
     }
 }

@@ -7,8 +7,6 @@ import org.eclipse.jdt.core.dom.WhileStatement;
 import parser.ExpressionParser;
 import parser.ast_visitor.LoopVisitor;
 import transform.ast.rewrite.KRewriteObj;
-import transform.utils.TypeMapping;
-import transform.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -124,8 +122,7 @@ public class LoopInfo {
                     Integer loc = envEntry.getValue();
                     String valStr = this.rawStoreMap.get(loc.toString()).trim();
 
-
-                    final Pair<Boolean, String[]> pair = getParamsOfRewriteObj(valStr, localVars);
+                    final Pair<Boolean, String[]> pair = KRewriteObj.getParamsOfRewriteObj(valStr, localVars);
                     boolean rhsIsFresh = pair.getKey();
                     String[] elements = pair.getValue();
 
@@ -136,29 +133,6 @@ public class LoopInfo {
 
                     storeMap.put(loc, kRewriteObj);
                 });
-    }
-
-    protected final Pair<Boolean, String[]> getParamsOfRewriteObj(String valStr, Set<SimpleName>
-            localVars) {
-        valStr = Utils.removeBrace(valStr);
-
-        final String[] elements = valStr.split("=>");
-        boolean rhsIsFresh = elements.length == 2 && elements[1].trim().startsWith("?");
-
-        for (int i = 0; i < elements.length; i++) {
-            Expression expI = ExpressionParser.parseExprStr
-                    (elements[i].replaceAll("\\?", ""));
-            //transform to k expr where every op has been transformed
-            elements[i] = TypeMapping.fromJExpr2KExprString(expI, localVars).trim();
-
-            //N.B. the meta-variables in the expression may not be renamed in the
-            // above process, so manually rename them if necessary.
-            if (expI.toString().equals(elements[i]) && expI instanceof SimpleName) {
-                elements[i] = TypeMapping.convert2KVar(elements[i], true);
-            }
-        }
-
-        return new Pair<Boolean, String[]>(rhsIsFresh, elements);
     }
 
     public String toString() {

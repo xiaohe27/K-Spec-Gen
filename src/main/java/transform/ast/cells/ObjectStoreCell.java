@@ -9,12 +9,14 @@ import java.util.List;
  * Created by xiaohe on 11/1/15.
  */
 public class ObjectStoreCell extends Cell {
-    private final List<KRewriteObj> objStores = new ArrayList<>();
+    private final List<String> objStores = new ArrayList<>();
 
-    public ObjectStoreCell(List<KRewriteObj> objStores0) {
+    public ObjectStoreCell(List<String> objStores0) {
         super(Cell.OBJ_STORE);
         if (objStores0 != null)
             this.objStores.addAll(objStores0);
+        this.hasLeftOmission = true;
+        this.hasRightOmission = true;
     }
 
     @Override
@@ -24,8 +26,8 @@ public class ObjectStoreCell extends Cell {
 
         StringBuilder sb = new StringBuilder();
 
-        this.objStores.forEach(kRewriteObj -> {
-            sb.append(kRewriteObj.toString() + "\n");
+        this.objStores.forEach(obj -> {
+            sb.append(obj.toString() + "\n");
         });
 
         sb.append(" (.Bag => ?_:Bag) ");

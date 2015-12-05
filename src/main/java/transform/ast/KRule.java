@@ -1,5 +1,6 @@
 package transform.ast;
 
+import javafx.util.Pair;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
@@ -29,7 +30,7 @@ public class KRule extends KASTNode {
 
     private HashMap<SimpleName, Integer> env = new HashMap<>(); //env maps vars to locations
     private HashMap<Integer, KRewriteObj> store = new HashMap<>();  //store maps addr to primitive vals?
-    private List<KRewriteObj> objStore = new ArrayList<>();
+    private List<String> objStore = new ArrayList<>();
 
     public KRule(MethodInfo methodInfo) {
         this(methodInfo, null);
@@ -41,6 +42,8 @@ public class KRule extends KASTNode {
             loopInfo.updateEnvAndStore(this.env, this.store);
             rewriteLI(loopInfo);
         }
+
+        this.constructObjStore(methodInfo.getObjStoreContent());
         this.preConds.addAll(extractAllPreCond(methodInfo.getPreCondList(), methodInfo.getFormalParams()));
         this.postConds.addAll(extractAllPostCond(methodInfo.getPostCondList(), methodInfo.getFormalParams()));
         this.retVal = methodInfo.getExpectedRetVal();
@@ -125,6 +128,38 @@ public class KRule extends KASTNode {
             allPreCond.add(kRewriteObj.genConstraint());
         });
         return allPreCond;
+    }
+
+    private void constructObjStore(String objStoreContent) {
+        if (objStoreContent == null)
+            return;
+
+        final String[] inputs = objStoreContent.split(",");
+        for (int i = 0; i < inputs.length; i++) {
+            String strI = inputs[i];
+            final String[] elements = strI.split("=>");
+            final String[] lhs = {elements[0]};
+            final String[] rhs = {null};
+            if (elements.length > 1)
+                rhs[0] = elements[1];
+
+            this.store.values().forEach(kRewriteObj -> {
+                lhs[0] = kRewriteObj.rewrite2KVarIfPossible(lhs[0], true);
+            });
+
+            if (rhs[0] != null) {
+                this.store.values().forEach(kRewriteObj -> {
+                    rhs[0] = kRewriteObj.rewrite2KVarIfPossible(rhs[0], false);
+                });
+            }
+
+            String outputI = lhs[0];
+            if (rhs[0] != null) {
+                outputI += " => " + rhs[0];
+            }
+
+            this.objStore.add(outputI);
+        }
     }
 
     @Override
