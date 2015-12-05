@@ -1,5 +1,6 @@
 package parser.annotation;
 
+import javafx.util.Pair;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.WhileStatement;
@@ -11,7 +12,6 @@ import transform.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.stream.Stream;
@@ -124,11 +124,10 @@ public class LoopInfo {
                     Integer loc = envEntry.getValue();
                     String valStr = this.rawStoreMap.get(loc.toString()).trim();
 
-                    boolean rhsIsFresh = elements.length == 2 && elements[1].trim().startsWith("?");
 
-                    final String[] elements = getElementsOfRewriteObj(valStr, localVars);
-
-                    System.out.println("rhs is fresh ? " + rhsIsFresh);
+                    final Pair<Boolean, String[]> pair = getParamsOfRewriteObj(valStr, localVars);
+                    boolean rhsIsFresh = pair.getKey();
+                    String[] elements = pair.getValue();
 
                     KRewriteObj kRewriteObj = new KRewriteObj(name.resolveTypeBinding(),
                             elements[0],
@@ -139,11 +138,12 @@ public class LoopInfo {
                 });
     }
 
-    protected final String[] getElementsOfRewriteObj(String valStr, Set<SimpleName> localVars) {
-        boolean withBrace = valStr.startsWith("(") && valStr.endsWith(")");
+    protected final Pair<Boolean, String[]> getParamsOfRewriteObj(String valStr, Set<SimpleName>
+            localVars) {
         valStr = Utils.removeBrace(valStr);
 
         final String[] elements = valStr.split("=>");
+        boolean rhsIsFresh = elements.length == 2 && elements[1].trim().startsWith("?");
 
         for (int i = 0; i < elements.length; i++) {
             Expression expI = ExpressionParser.parseExprStr
@@ -158,7 +158,7 @@ public class LoopInfo {
             }
         }
 
-        return elements;
+        return new Pair<Boolean, String[]>(rhsIsFresh, elements);
     }
 
     public String toString() {
