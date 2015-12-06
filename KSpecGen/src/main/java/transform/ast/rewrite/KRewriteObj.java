@@ -1,6 +1,5 @@
 package transform.ast.rewrite;
 
-import javafx.util.Pair;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.SimpleName;
@@ -11,6 +10,7 @@ import transform.utils.ConstraintGen;
 import transform.utils.TypeMapping;
 import transform.utils.Utils;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -108,3 +108,5 @@ public class KRewriteObj {
         return Utils.addBrackets(sb.toString()) + " :: " + this.javaTypeInK;
     }
 }
+
+
