@@ -39,6 +39,15 @@ public class JavaParser {
         parser.setUnitName(unitName);
         String[] sources = new String[]{file.getParentFile().getAbsolutePath()};
         String[] classpath = FileUtils.getClassPaths();
+
+//        System.err.println("The classpath is\n");
+        //remove the additional \
+//        for (int i = 0; i < classpath.length; i++) {
+//            classpath[i] = classpath[i].replaceAll("\\\\\\\\", "\\\\");
+//            System.err.println("Item " + i + ": " + classpath[i]);
+//        }
+
+        classpath = new String[]{"."};
         parser.setEnvironment(classpath, sources, new String[]{"UTF-8"}, true);
         /////////////////////////////////////////
 
