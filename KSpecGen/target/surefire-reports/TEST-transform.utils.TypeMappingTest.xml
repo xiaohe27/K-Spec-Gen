@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite tests="10" failures="0" name="transform.utils.TypeMappingTest" time="0.102" errors="0" skipped="0">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_60\jre\bin"/>
+    <property name="java.vm.version" value="25.60-b23"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="java.vendor.url" value="http://java.oracle.com/"/>
+    <property name="path.separator" value=";"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.script" value=""/>
+    <property name="user.country" value="US"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="A:\UnitProJ\SpecExtractor"/>
+    <property name="java.runtime.version" value="1.8.0_60-b27"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.8.0_60\jre\lib\endorsed"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.io.tmpdir" value="C:\Users\hx312\AppData\Local\Temp\"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.variant" value=""/>
+    <property name="os.name" value="Windows 8.1"/>
+    <property name="classworlds.conf" value="S:\Programming\apache-maven-3.2.3\bin\..\bin\m2.conf"/>
+    <property name="sun.jnu.encoding" value="GBK"/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.8.0_60\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\ProgramData\Oracle\Java\javapath;&quot;C:\Program Files\Java\jdk1.8.0_60\bin&quot;;A:\pupu\k\k-distribution\target\release\k\bin;S:\Programming\Emacs\bin;S:\Programming\jflex-1.6.0\bin;A:\SW_For_Courses\z3-4.3.2-x64-win\bin;S:\Programming\Dafny;;A:\Projects\rv-monitor\bin;A:\Projects\RV-Log\target\release\RV-Log\RV-Log;A:\UIUC-SW\javamop\bin;A:\UIUC-SW\k\bin;;C:\Program Files\Java\jdk1.8.0_60\bin;S:\Programming\apache-maven-3.2.3\bin;S:\Programming\Prolog\swipl\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\OCaml\emacs-23.3\bin;C:\OCaml\bin;C:\Program Files (x86)\HP SimplePass\x64;C:\Program Files (x86)\HP SimplePass\;C:\Python27;S:\cygWIN\home\hx312\SML\bin;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files\MiKTeX 2.9\miktex\bin\x64\;S:\Programming\apache-ant-1.8.4\bin;A:\ICL\StudyTools\spin\pc_spin623;C:\Users\hx312\AppData\Local\Smartbar\Application\;A:\ICL\Concurrency\workbench\CWB7.1-win32;C:\Program Files\SlikSvn\bin;C:\Program Files (x86)\CMake 2.8\bin;S:\CLANG\SW\build\bin\Debug;S:\CLANG\GNU\GetGnuWin32\bin;S:\Programming\Git\cmd;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;S:\CLANG\SW\build4VS11\bin\Debug;S:\MinGW\bin;S:\MinGW\MPI\bin;A:\IC_FYP_Material\TeXcount_3_0;S:\Programming\perl\c\bin;S:\Programming\perl\perl\site\bin;S:\Programming\perl\perl\bin;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\ProgramData\ComposerSetup\bin;C:\aspectj1.8\bin;;S:\MinGW\msys\1.0\bin;S:\i686-w64-MinGW32-GCC\mingw32/bin;C:\WINDOWS\System32\Wbem;C:\WINDOWS;C:\WINDOWS\system32;C:\Program Files\TortoiseHg\;C:\WINDOWS\system32\config\systemprofile\.dnx\bin;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files (x86)\Heroku\bin;C:\Program Files (x86)\git\cmd;S:\Programming\Git\cmd;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\OCaml\emacs-23.3\bin;C:\OCaml\bin;C:\Program Files (x86)\HP SimplePass\x64;C:\Program Files (x86)\HP SimplePass\;C:\Python27;S:\cygWIN\home\hx312\SML\bin;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files\MiKTeX 2.9\miktex\bin\x64\;S:\Programming\apache-ant-1.8.4\bin;A:\ICL\StudyTools\spin\pc_spin623;C:\Users\hx312\AppData\Local\Smartbar\Appli;."/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="52.0"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="6.3"/>
+    <property name="user.home" value="C:\Users\hx312"/>
+    <property name="user.timezone" value="America/Chicago"/>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
+    <property name="java.specification.version" value="1.8"/>
+    <property name="file.encoding" value="GBK"/>
+    <property name="user.name" value="hx312"/>
+    <property name="java.class.path" value="S:\Programming\apache-maven-3.2.3\bin\..\boot\plexus-classworlds-2.5.1.jar"/>
+    <property name="java.vm.specification.version" value="1.8"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk1.8.0_60\jre"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean package"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.language" value="en"/>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.8.0_60"/>
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.8.0_60\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext"/>
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.8.0_60\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_60\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_60\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.8.0_60\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_60\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_60\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_60\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_60\jre\classes"/>
+    <property name="sun.stderr.encoding" value="ms936"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="maven.home" value="S:\Programming\apache-maven-3.2.3\bin\.."/>
+    <property name="file.separator" value="\"/>
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.stdout.encoding" value="ms936"/>
+    <property name="sun.desktop" value="windows"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+  </properties>
+  <testcase classname="transform.utils.TypeMappingTest" name="testFromJExpr2KExpr[0]" time="0.059"/>
+  <testcase classname="transform.utils.TypeMappingTest" name="testFromJExpr2KExpr[1]" time="0.003"/>
+  <testcase classname="transform.utils.TypeMappingTest" name="testFromJExpr2KExpr[2]" time="0.004"/>
+  <testcase classname="transform.utils.TypeMappingTest" name="testFromJExpr2KExpr[3]" time="0.005"/>
+  <testcase classname="transform.utils.TypeMappingTest" name="testFromJExpr2KExpr[4]" time="0.005"/>
+  <testcase classname="transform.utils.TypeMappingTest" name="testFromJExpr2KExpr[5]" time="0.005"/>
+  <testcase classname="transform.utils.TypeMappingTest" name="testFromJExpr2KExpr[6]" time="0.005"/>
+  <testcase classname="transform.utils.TypeMappingTest" name="testFromJExpr2KExpr[7]" time="0.005"/>
+  <testcase classname="transform.utils.TypeMappingTest" name="testFromJExpr2KExpr[8]" time="0.005"/>
+  <testcase classname="transform.utils.TypeMappingTest" name="testFromJExpr2KExpr[9]" time="0.006"/>
+</testsuite>

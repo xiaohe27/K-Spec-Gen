@@ -1,0 +1,10 @@
+*.class
+*.bak
+*~
+*.iml
+
+*.java.k
+target/*
+.idea/*
+
+k-spec-output/*
