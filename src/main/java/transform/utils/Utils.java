@@ -102,46 +102,4 @@ public class Utils {
         return valStr;
     }
 
-    public static void print2File(Path outputFile, String content) {
-        byte[] rawContents = content.getBytes();
-        if (outputFile != null) {
-            try {
-                if (outputFile.toFile().exists()) {
-                    Files.write(outputFile, rawContents, StandardOpenOption.TRUNCATE_EXISTING);
-                } else {
-                    Files.write(outputFile, rawContents, StandardOpenOption.CREATE_NEW);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static String[] getClassPaths() {
-        String pathSeparator = System.getProperty("path.separator");
-        String classPath = System.getProperty("java.class.path");
-        String[] classPaths = classPath.split(pathSeparator);
-        return classPaths;
-    }
-
-    /**
-     * The implementation of this method is copied from oracle java's tutorial.
-     * https://docs.oracle.com/javase/tutorial/networking/urls/readingURL.html
-     *
-     * @param url The (github) url to be read.
-     * @return The returned contents.
-     */
-    public static String getContentFromURL(String url) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        URL oracle = new URL(url);
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(oracle.openStream()));
-
-        String inputLine;
-        while ((inputLine = in.readLine()) != null)
-            sb.append(inputLine + "\n");
-        in.close();
-
-        return sb.toString();
-    }
 }

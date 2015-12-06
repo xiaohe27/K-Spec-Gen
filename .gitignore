@@ -6,3 +6,5 @@
 *.java.k
 target/*
 .idea/*
+
+k-spec-output/*
