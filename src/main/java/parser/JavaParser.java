@@ -8,9 +8,9 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import parser.annotation.AnnotationInfo;
 import parser.annotation.Patterns;
 import parser.ast_visitor.MyASTVisitor;
-import transform.Main;
 import transform.ast.KSpec;
 import transform.ast.cells.Cell;
+import transform.utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +38,7 @@ public class JavaParser {
         ////////////////////////////////////////
         parser.setUnitName(unitName);
         String[] sources = new String[]{file.getParentFile().getAbsolutePath()};
-        String[] classpath = Main.getClassPaths();
+        String[] classpath = Utils.getClassPaths();
         parser.setEnvironment(classpath, sources, new String[]{"UTF-8"}, true);
         /////////////////////////////////////////
 

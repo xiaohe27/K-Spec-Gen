@@ -39,14 +39,25 @@ public class Main {
         }
     }
 
-    public static String[] getClassPaths() {
-        String pathSeparator = System.getProperty("path.separator");
-        String classPath = System.getProperty("java.class.path");
-        String[] classPaths = classPath.split(pathSeparator);
-        return classPaths;
-    }
-
     public static void main(String[] args) throws IOException {
-        Main.ParseFilesInDir(args[0]);
+        if (args.length != 1) {
+            System.err.println("Please provide exactly one argument which is the input path, can " +
+                    "be either directory or .java file with annotation");
+            System.exit(0);
+        }
+
+        String inputPath = args[0];
+        if (inputPath.startsWith("https://raw.githubusercontent.com")
+                && inputPath.endsWith(".java")) {
+            String fileName = inputPath.substring(inputPath.lastIndexOf("/") + 1);
+            //it is a source file in github
+            System.out.println("Read the file " + fileName + " from github.");
+            String content = Utils.getContentFromURL(inputPath);
+//            System.out.println(content);
+
+        } else {
+            Main.ParseFilesInDir(inputPath);
+        }
+
     }
 }

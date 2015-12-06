@@ -39,12 +39,11 @@ public class listNode {
 
     /**
      * @objectStore {
-     *  (list(lp1)(A:List) => list(?lp2)(rev(A)))
+     * (list(lp1)(A:List) => list(?lp2)(rev(A)))
      * }
      * @returns ?lp2;
      */
-    static listNode reverse(listNode x)
-     {
+    static listNode reverse(listNode x) {
         listNode p;
 
         p = null;
@@ -60,8 +59,7 @@ public class listNode {
         /*@objectStore{
         list(lp1)(B:List),
         list(lp2)(C:List) => list(?lp2)(?A:List)
-        }@*/
-        {
+        }@*/ {
             listNode y;
 
             y = x.next;
