@@ -5,7 +5,10 @@ import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.Type;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -99,18 +102,4 @@ public class Utils {
         return valStr;
     }
 
-    public static void print2File(Path outputFile, String content) {
-        byte[] rawContents = content.getBytes();
-        if (outputFile != null) {
-            try {
-                if (outputFile.toFile().exists()) {
-                    Files.write(outputFile, rawContents, StandardOpenOption.TRUNCATE_EXISTING);
-                } else {
-                    Files.write(outputFile, rawContents, StandardOpenOption.CREATE_NEW);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }

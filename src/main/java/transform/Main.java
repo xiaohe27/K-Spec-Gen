@@ -1,7 +1,7 @@
 package transform;
 
 import parser.JavaParser;
-import transform.utils.Utils;
+import transform.utils.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class Main {
         if (file.isFile()) {
             String output = JavaParser.parse(file);
             Path kspecPath = Paths.get(file.getAbsolutePath() + ".k");
-            Utils.print2File(kspecPath, output);
+            FileUtils.print2File(kspecPath, output);
             return;
         }
 
@@ -39,14 +39,42 @@ public class Main {
         }
     }
 
-    public static String[] getClassPaths() {
-        String pathSeparator = System.getProperty("path.separator");
-        String classPath = System.getProperty("java.class.path");
-        String[] classPaths = classPath.split(pathSeparator);
-        return classPaths;
+    public static void main(String[] args) throws IOException {
+        if (args.length != 1) {
+            System.err.println("Please provide exactly one argument which is the input path, can " +
+                    "be either directory or .java file with annotation");
+            System.exit(0);
+        }
+
+        //init the output dir
+        init();
+
+        String inputPath = args[0];
+        if (inputPath.startsWith("https://raw.githubusercontent.com")
+                && inputPath.endsWith(".java")) {
+            String fileName = inputPath.substring(inputPath.lastIndexOf("/") + 1);
+            //it is a source file in github
+            System.out.println("Read the file " + fileName + " from github.");
+            String content = FileUtils.getContentFromURL(inputPath);
+//            System.out.println(content);
+            Path inputJavaFilePath = FileUtils.getOutputFilePath(fileName);
+            FileUtils.print2File(inputJavaFilePath, content);
+            inputPath = inputJavaFilePath.toString();
+//            System.out.println(inputPath + " is the path of the downloaded git file");
+        }
+
+        Main.ParseFilesInDir(inputPath);
     }
 
-    public static void main(String[] args) throws IOException {
-        Main.ParseFilesInDir(args[0]);
+    private static void init() {
+        File outputDir = new File(FileUtils.outputBasePath);
+        if (!outputDir.exists()) {
+            outputDir.mkdirs();
+        } else {
+            if (outputDir.isFile()) {
+                outputDir.delete();
+                outputDir.mkdir();
+            }
+        }
     }
 }

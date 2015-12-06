@@ -59,7 +59,7 @@ public class KCell extends Cell {
             String retKType = TypeMapping.getKBuiltInType4SimpleJType(retType.toString());
             String retVal = this.methodInfo.getExpectedRetVal();
             if (retVal.startsWith("?")) {
-              retVal = retVal.toUpperCase();
+                retVal = retVal.toUpperCase();
             } else {
                 //transform all the program vars to K vars.
                 Expression retExpr = ExpressionParser.parseExprStr(retVal);

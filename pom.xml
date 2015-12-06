@@ -8,9 +8,11 @@
     <artifactId>k-spec-generator</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <properties>
-        <jmockit.version>1.8</jmockit.version>
-    </properties>
+    <name>kspec-gen</name>
+    <scm>
+        <connection>scm:git:https://github.com/xiaohe27/K-Spec-Gen.git</connection>
+    </scm>
+
 
     <dependencies>
         <dependency>
@@ -39,23 +41,10 @@
             <version>3.10.0</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.equinox</groupId>
-            <artifactId>common</artifactId>
-            <version>3.6.200-v20130402-1505</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jmockit</groupId>
-            <artifactId>jmockit</artifactId>
-            <version>1.8</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
         </dependency>
-
     </dependencies>
     <build>
         <plugins>
@@ -68,6 +57,34 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <formats>
+                                <format>dir</format>
+                                <format>tar.gz</format>
+                                <format>zip</format>
+                            </formats>
+                            <finalName>kspec-gen</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <outputDirectory>${project.build.directory}/release</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 </project>
