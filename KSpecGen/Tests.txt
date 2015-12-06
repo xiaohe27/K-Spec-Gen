@@ -1,0 +1,21 @@
+1. Test the function which converts a java expr (denoting the pre/post conditions of the
+methods under test) to k expr, given the type mapping
+provided by the formal params of the method under test.
+
+2. Test the function which converts java ast to k ast
+
+3. Test regex
+
+Problem: 
+The method under test takes an argument which is of type "SingleVariableDeclaration",
+which cannot be instantiated by clients; as a result, to make the test easier,
+we can either extract an obj of SingleVariableDeclaration via traversing the compilation
+unit; or, refactored the original method so that it takes hash map as args which are 
+easier to build from scratch.
+
+Considering the fact that building hashmap from string of java expr also requries work.
+The first approach is adopted.
+
+The param str 's' is used to gen a simple class whose only method's formal param list is
+'s'. Then the class string is parsed into compilation unit, which can be traversed and
+retrieve the list of SingleVariableDeclaration (the method param list).

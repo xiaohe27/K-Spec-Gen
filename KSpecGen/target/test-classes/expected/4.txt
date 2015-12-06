@@ -1,0 +1,22 @@
+  while ( cast ( bool , 'ExprName(String2Id("change")) ) ) { .AnnoVarModList class String2Id(".listNode") String2Id("y") ;
+  cast ( bool , ('ExprName(String2Id("change")) = false :: bool)::AssignExp ) ; cast ( class String2Id(".listNode") , ('ExprName(String2Id("y")) = cast (
+                    class String2Id(".listNode") , 'ExprName(String2Id("x")) ))::AssignExp ) ; while ( cast ( bool , cast (
+                    class String2Id(".listNode") , cast ( class String2Id(".listNode") , cast (class String2Id(".listNode") , 'ExprName(String2Id("y")) ) ) . String2Id("next") ) != null :: nullType ) ) { if (
+                    cast ( bool , cast ( int , cast ( class String2Id(".listNode") , cast (
+                     class String2Id(".listNode") , 'ExprName(String2Id("y")) ) ) . String2Id("val") ) > cast ( int , cast (
+                    class String2Id(".listNode") , cast ( class String2Id(".listNode") , cast (class String2Id(".listNode")
+                     , cast ( class String2Id(".listNode") , 'ExprName(String2Id("y")) ) ) . String2Id("next") ) ) .
+                    String2Id("val") ) ) ) { .AnnoVarModList int String2Id("temp") ;
+                    cast ( bool , ('ExprName(String2Id("change")) = true :: bool)::AssignExp ) ;
+                    cast ( int , ('ExprName(String2Id("temp")) = cast ( int , cast (
+                    class String2Id(".listNode") , cast ( class String2Id(".listNode") , 'ExprName(String2Id("y")) ) ) . String2Id("val") ))::AssignExp )
+                     ; cast ( int , ((cast ( class String2Id(".listNode") , cast (class String2Id(".listNode")
+                     , 'ExprName(String2Id("y")) ) ) . String2Id("val")) = cast ( int , cast ( class String2Id(".listNode")
+                     , cast ( class String2Id(".listNode") , cast (  class String2Id(".listNode")
+                     , cast ( class String2Id(".listNode") , 'ExprName(String2Id("y")) ) ) . String2Id("next") ) ) .
+                    String2Id("val") ))::AssignExp ) ; cast ( int , ((cast ( class String2Id(".listNode") , cast (
+                    class String2Id(".listNode") , cast ( class String2Id(".listNode") , cast ( class String2Id(".listNode")
+                     , 'ExprName(String2Id("y")) ) ) . String2Id("next") ) ) . String2Id("val")) = cast ( int , 'ExprName(String2Id("temp")) ))::AssignExp
+                    ) ; } cast ( class String2Id(".listNode") , ('ExprName(String2Id("y")) = cast ( class String2Id(".listNode")
+                    , cast ( class String2Id(".listNode") , cast ( class String2Id(".listNode") , 'ExprName(String2Id("y")) ) )
+                    . String2Id("next") ))::AssignExp ) ; } }
