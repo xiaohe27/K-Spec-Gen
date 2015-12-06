@@ -6,12 +6,17 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 /**
  * Created by hx312 on 12/6/2015.
  */
 public class FileUtils {
+
+    private static String fileSeparator = System.getProperty("file.separator");
+    public static String outputBasePath = System.getProperty("user.dir")
+            + fileSeparator + "k-spec-output";
 
     public static void print2File(Path outputFile, String content) {
         byte[] rawContents = content.getBytes();
@@ -54,5 +59,9 @@ public class FileUtils {
         in.close();
 
         return sb.toString();
+    }
+
+    public static Path getOutputFilePath(String outputFileName) {
+        return Paths.get(outputBasePath + fileSeparator + outputFileName);
     }
 }

@@ -12,8 +12,6 @@ import java.nio.file.Paths;
  * Created by hx312 on 12/5/2015.
  */
 public class Main {
-    private static String outputPath = System.getProperty("user.dir")
-            + System.getProperty("file.separator") + "k-spec-output";
 
     //loop directory to get file list
     public static void ParseFilesInDir(String path) throws IOException {
@@ -59,15 +57,17 @@ public class Main {
             System.out.println("Read the file " + fileName + " from github.");
             String content = FileUtils.getContentFromURL(inputPath);
 //            System.out.println(content);
-
-        } else {
-            Main.ParseFilesInDir(inputPath);
+            Path inputJavaFilePath = FileUtils.getOutputFilePath(fileName);
+            FileUtils.print2File(inputJavaFilePath, content);
+            inputPath = inputJavaFilePath.toString();
+//            System.out.println(inputPath + " is the path of the downloaded git file");
         }
 
+        Main.ParseFilesInDir(inputPath);
     }
 
     private static void init() {
-        File outputDir = new File(outputPath);
+        File outputDir = new File(FileUtils.outputBasePath);
         if (!outputDir.exists()) {
             outputDir.mkdirs();
         } else {
