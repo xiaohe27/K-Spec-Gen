@@ -13,7 +13,7 @@
     <dependencies>
         <dependency>
             <groupId>k-spec-generator</groupId>
-            <artifactId>k-spec-generator</artifactId>
+            <artifactId>k-spec-generator-model</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
