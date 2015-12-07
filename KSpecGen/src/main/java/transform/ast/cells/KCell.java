@@ -47,7 +47,7 @@ public class KCell extends Cell {
             sb.append(TypeMapping.convert2KType(this.methArgs.get(this.methArgs.size() - 1)));
             sb.append(")\n");
 
-            sb.append("==>\n");
+            sb.append("=>\n");
 
             Type retType = this.methodInfo.getRetType();
             String retTypeInJavaSemantics = retType.isPrimitiveType() ? retType.toString() :
