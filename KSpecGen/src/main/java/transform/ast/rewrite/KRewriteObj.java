@@ -10,7 +10,6 @@ import transform.utils.ConstraintGen;
 import transform.utils.TypeMapping;
 import transform.utils.Utils;
 
-import java.io.Serializable;
 import java.util.Set;
 
 /**
