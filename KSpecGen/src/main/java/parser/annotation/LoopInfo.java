@@ -1,12 +1,11 @@
 package parser.annotation;
-
-import javafx.util.Pair;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.WhileStatement;
 import parser.ExpressionParser;
 import parser.ast_visitor.LoopVisitor;
 import transform.ast.rewrite.KRewriteObj;
+import transform.ast.rewrite.Pair;
 import transform.utils.CellContentGenerator;
 
 import java.util.*;

@@ -13,12 +13,20 @@ import java.nio.file.Paths;
  */
 public class Main {
 
+    private static String cachedResult = null;
+
+    private static boolean allowCache = false;
+
     //loop directory to get file list
     public static void ParseFilesInDir(String path) throws IOException {
         File file = new File(path);
 
         if (file.isFile()) {
             String output = JavaParser.parse(file);
+
+            if (allowCache)
+                cachedResult = output;
+
             Path kspecPath = Paths.get(file.getAbsolutePath() + ".k");
             FileUtils.print2File(kspecPath, output);
             return;
@@ -39,6 +47,14 @@ public class Main {
         }
     }
 
+    public static String getCachedResult() {
+        return cachedResult;
+    }
+
+    public static void setAllowCache() {
+        Main.allowCache = true;
+    }
+
     public static void main(String[] args) throws IOException {
         if (args.length != 1) {
             System.err.println("Please provide exactly one argument which is the input path, can " +
@@ -54,7 +70,7 @@ public class Main {
                 && inputPath.endsWith(".java")) {
             String fileName = inputPath.substring(inputPath.lastIndexOf("/") + 1);
             //it is a source file in github
-            System.out.println("Read the file " + fileName + " from github.");
+            System.err.println("Read the file " + fileName + " from github.");
             String content = FileUtils.getContentFromURL(inputPath);
 //            System.out.println(content);
             Path inputJavaFilePath = FileUtils.getOutputFilePath(fileName);
