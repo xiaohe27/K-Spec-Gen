@@ -2,7 +2,9 @@ package servlet;
 
 import transform.Main;
 import transform.utils.FileUtils;
+import view.KSpecBean;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -21,23 +23,26 @@ public class HelloServlet extends HttpServlet {
     private static final String TMP_FILE_NAME = "TMP_INPUT_JAVA_FILE.java";
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ServletOutputStream out = resp.getOutputStream();
-        String inputPath = req.getParameter("path");
-        String inputContent = req.getParameter("content");
-        String str = "The path to the annotated file is: " + inputPath + "\n";
-        str += "And the content of the java file is\n";
-        out.write(str.getBytes());
+//        ServletOutputStream out = response.getOutputStream();
+
+        KSpecBean bean = new KSpecBean();
+        request.setAttribute("bean",bean);
+
+        String inputPath = request.getParameter("path");
+        String inputContent = request.getParameter("content");
+        String additionalInfo = "The path to the annotated file is: " + inputPath + "\n";
+        bean.setAdditionalInfo(additionalInfo);
         if (inputContent != null && !inputContent.trim().equals("")) {
-            System.out.println(inputContent);
+//            System.out.println(inputContent);
             Path inputJavaFilePath = FileUtils.getOutputFilePath(TMP_FILE_NAME);
             FileUtils.print2File(inputJavaFilePath, inputContent);
             inputPath = inputJavaFilePath.toString();
-
+            bean.setInputJavaContent(inputContent);
         } else if (inputPath != null) {
             String content = FileUtils.getContentFromURL(inputPath);
-            out.write(content.getBytes());
+            bean.setInputJavaContent(content);
         }
 
         Main.setAllowCache();//to ease the process of retrieving result.
@@ -47,9 +52,12 @@ public class HelloServlet extends HttpServlet {
         sb.append("The corresponding k-spec is\n");
         sb.append(Main.getCachedResult() + "\n");
 
-        out.write(sb.toString().getBytes());
-        out.flush();
-        out.close();
+        bean.setOutputKSpecContent(sb.toString());
+
+        RequestDispatcher rd=request.getRequestDispatcher("k-spec-gen.jsp");
+        rd.forward(request, response);
+//        out.flush();
+//        out.close();
     }
 
 }
