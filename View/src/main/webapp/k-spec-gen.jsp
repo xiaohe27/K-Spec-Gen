@@ -24,7 +24,7 @@
 <br/>
   <h2>The k spec generated for the java file is</h2>
 <font size="5">
-    <code style="background-clip: border-box" class="prettyprint">
+    <code style="background-clip: border-box">
     <%
         out.println(kspec.getOutputKSpecContent());
     %>
