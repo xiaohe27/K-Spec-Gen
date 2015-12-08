@@ -49,7 +49,6 @@ public class HelloServlet extends HttpServlet {
         Main.main(new String[]{inputPath}); //parse the file.
 
         StringBuilder sb = new StringBuilder();
-        sb.append("The corresponding k-spec is\n");
         sb.append(Main.getCachedResult() + "\n");
 
         bean.setOutputKSpecContent(sb.toString());
