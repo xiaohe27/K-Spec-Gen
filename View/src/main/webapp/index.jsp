@@ -5,7 +5,7 @@
 <form action="HelloServlet" method="GET">
     <br/>
     URL to the annotated java file:
-    <input type="text" width="20cm" name="path"/>
+    <input type="text" width="20cm" name="path" onfocus="this.value = ''"/>
 <textarea style="height: 15cm; width: 35cm" wrap="hard" name="content">
 </textarea>
     <br/>
