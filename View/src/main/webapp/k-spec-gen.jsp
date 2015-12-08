@@ -16,7 +16,7 @@
 <div><span><pre>
 
 <font size="5">
-    <code style="align-content: space-between" class="prettyprint"><%
+    <code style="align-content: space-between" class="prettyprint lang-java"><%
         out.println(kspec.getInputJavaContent());
     %></code>
 </font>
@@ -24,7 +24,7 @@
 <br/>
   <h2>The k spec generated for the java file is</h2>
 <font size="5">
-    <code style="background-clip: border-box">
+    <code style="background-clip: border-box" class="prettyprint lang-xml">
     <%
         out.println(kspec.getOutputKSpecContent());
     %>
