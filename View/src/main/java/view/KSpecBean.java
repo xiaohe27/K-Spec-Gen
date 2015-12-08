@@ -1,4 +1,5 @@
 package view;
+import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 
 /**
  * Created by hx312 on 12/7/2015.
@@ -18,6 +19,10 @@ public class KSpecBean {
 
     public String getOutputKSpecContent() {
         return outputKSpecContent;
+    }
+
+    public String getHTMLOutputOfKSpec() {
+        return escapeHtml4(this.outputKSpecContent);
     }
 
     public void setOutputKSpecContent(String outputKSpecContent) {

@@ -13,20 +13,24 @@
 
 <h2>The content of the input java file is</h2>
 
-<div><span><pre>
+<div><span><pre class="prettyprint">
 
 <font size="5">
-    <code style="align-content: space-between" class="prettyprint lang-java"><%
+    <code style="align-content: space-between" class="language-java"><%
         out.println(kspec.getInputJavaContent());
     %></code>
 </font>
 
+</pre></span></div>
+
 <br/>
   <h2>The k spec generated for the java file is</h2>
+
+<div><span><pre class="prettyprint">
 <font size="5">
-    <code style="background-clip: border-box" class="prettyprint lang-xml">
+    <code style="background-clip: border-box" class="language-xml">
     <%
-        out.println(kspec.getOutputKSpecContent());
+        out.println(kspec.getHTMLOutputOfKSpec());
     %>
     </code>
 </font>
