@@ -43,8 +43,9 @@ public class ExpressionParser extends ASTVisitor {
 
     public static String printExprWithKVars(Expression expr, HashMap<String, String>
             jvar2kvarMapping) {
-        expr.accept(new ExpressionParser(null, jvar2kvarMapping));
-        return expr.toString();
+        Expression exprClone = parseExprStr(expr.toString());
+        exprClone.accept(new ExpressionParser(null, jvar2kvarMapping));
+        return exprClone.toString();
     }
 
 
