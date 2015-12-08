@@ -22,11 +22,7 @@ public class FileUtils {
         byte[] rawContents = content.getBytes();
         if (outputFile != null) {
             try {
-                if (outputFile.toFile().exists()) {
-                    Files.write(outputFile, rawContents, StandardOpenOption.TRUNCATE_EXISTING);
-                } else {
-                    Files.write(outputFile, rawContents, StandardOpenOption.CREATE_NEW);
-                }
+                Files.write(outputFile, rawContents);
             } catch (IOException e) {
                 e.printStackTrace();
             }
