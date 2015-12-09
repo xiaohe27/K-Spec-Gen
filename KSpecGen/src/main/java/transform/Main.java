@@ -36,8 +36,8 @@ public class Main {
 
         File root = new File(dirPath);
 
-        System.out.println("File " + dirPath + " is a dir with contents:");
-        System.out.println(root.listFiles());
+//        System.out.println("File " + dirPath + " is a dir with contents:");
+//        System.out.println(root.listFiles());
 
         File[] files = root.listFiles();
 
