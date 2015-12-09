@@ -22,6 +22,7 @@ public class FileUtils {
         byte[] rawContents = content.getBytes();
         if (outputFile != null) {
             try {
+                outputFile.toFile().getParentFile().mkdirs();
                 Files.write(outputFile, rawContents);
             } catch (IOException e) {
                 e.printStackTrace();
