@@ -1,17 +1,11 @@
 <html>
 <head>
-    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+    <link href="google-code-prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="google-code-prettify/prettify.js"></script>
     <meta charset="UTF-8">
 </head>
 <body>
 <script>
-    document.getElementById("pgmText").addEventListener('onchange', reset
-            , false);
-
-    function reset() {
-        document.getElementById("pgmText").value = "good";
-    }
-
     function loadXMLDoc(myURL) {
         var xmlhttp;
         if (window.XMLHttpRequest) {
@@ -24,11 +18,12 @@
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 document.getElementById("javacode").innerHTML =
                         xmlhttp.responseText;
+                document.getElementById("javablock").className = "prettyprint";
+                prettyPrint();
             }
         };
         xmlhttp.open("GET", myURL, true);
         xmlhttp.send();
-        prettyPrint();
     }
 </script>
 
@@ -56,9 +51,9 @@
     </select>
 
     <br/>
-    <input type="text" width="20cm" name="path" id="url" hidden/>
+    <input type="text" name="path" id="url" hidden/>
 
-    <div><span><pre class="prettyprint">
+    <div><span><pre class="prettyprint" id="javablock">
 <font size="5">
     <code style="align-content: space-between" class="language-java" id="javacode">
 <textarea style="height: 15cm; width: 35cm" wrap="hard" name="content"

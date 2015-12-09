@@ -2,7 +2,8 @@
 <%@page import="view.KSpecBean" %>
 <html lang="en">
 <head>
-    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+    <link href="google-code-prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="google-code-prettify/prettify.js"></script>
     <meta charset="UTF-8">
     <title>K Spec for the input Java file</title>
 </head>
