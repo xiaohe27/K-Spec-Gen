@@ -35,12 +35,13 @@ public class Main {
         String dirPath = file.getCanonicalPath() + File.separator;
 
         File root = new File(dirPath);
-        //System.out.println(rootDir.listFiles());
+
+        System.out.println("File " + dirPath + " is a dir with contents:");
+        System.out.println(root.listFiles());
+
         File[] files = root.listFiles();
-        String filePath = null;
 
         for (File f : files) {
-            filePath = f.getAbsolutePath();
             if (f.isFile()) {
                 JavaParser.parse(f);
             }
