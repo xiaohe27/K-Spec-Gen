@@ -6,7 +6,6 @@ import view.KSpecBean;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,18 +22,17 @@ public class HelloServlet extends HttpServlet {
     private static final String TMP_FILE_NAME = "TMP_INPUT_JAVA_FILE.java";
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        ServletOutputStream out = response.getOutputStream();
 
         KSpecBean bean = new KSpecBean();
-        request.setAttribute("bean",bean);
+        request.setAttribute("bean", bean);
 
         String inputPath = null;
         String inputContent = request.getParameter("content");
 
         if (inputContent != null) {
-//            System.out.println(inputContent);
             Path inputJavaFilePath = FileUtils.getOutputFilePath(TMP_FILE_NAME);
             FileUtils.print2File(inputJavaFilePath, inputContent);
             inputPath = inputJavaFilePath.toString();
@@ -48,7 +46,7 @@ public class HelloServlet extends HttpServlet {
             bean.setOutputKSpecContent(sb.toString());
         }
 
-        RequestDispatcher rd=request.getRequestDispatcher("k-spec-gen.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("k-spec-gen.jsp");
         rd.forward(request, response);
     }
 

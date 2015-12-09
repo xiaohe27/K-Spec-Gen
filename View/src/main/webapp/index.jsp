@@ -33,7 +33,7 @@
 
 <h2>Online K spec generator</h2>
 
-<form action="HelloServlet" method="GET" onsubmit="setContent()">
+<form action="HelloServlet" method="POST" onsubmit="setContent()">
     <select onchange="loadXMLDoc(this.value)">
         <option value="" selected="selected"></option>
         <option
@@ -65,7 +65,7 @@
 
 </pre></span></div>
 
-    <input id="code" name="content" value="" hidden/>
+    <textarea id="code" name="content" value="" hidden></textarea>
 
     <br/>
     <input type="submit" value="!Submit!"/>
