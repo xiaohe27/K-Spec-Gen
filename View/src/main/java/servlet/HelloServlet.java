@@ -30,33 +30,26 @@ public class HelloServlet extends HttpServlet {
         KSpecBean bean = new KSpecBean();
         request.setAttribute("bean",bean);
 
-        String inputPath = request.getParameter("path");
+        String inputPath = null;
         String inputContent = request.getParameter("content");
-        String additionalInfo = "The path to the annotated file is: " + inputPath + "\n";
-        bean.setAdditionalInfo(additionalInfo);
-        if (inputContent != null && !inputContent.trim().equals("")) {
+
+        if (inputContent != null) {
 //            System.out.println(inputContent);
             Path inputJavaFilePath = FileUtils.getOutputFilePath(TMP_FILE_NAME);
             FileUtils.print2File(inputJavaFilePath, inputContent);
             inputPath = inputJavaFilePath.toString();
-            bean.setInputJavaContent(inputContent);
-        } else if (inputPath != null) {
-            String content = FileUtils.getContentFromURL(inputPath);
-            bean.setInputJavaContent(content);
+
+            Main.setAllowCache();//to ease the process of retrieving result.
+            Main.main(new String[]{inputPath}); //parse the file.
+
+            StringBuilder sb = new StringBuilder();
+            sb.append(Main.getCachedResult() + "\n");
+
+            bean.setOutputKSpecContent(sb.toString());
         }
-
-        Main.setAllowCache();//to ease the process of retrieving result.
-        Main.main(new String[]{inputPath}); //parse the file.
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(Main.getCachedResult() + "\n");
-
-        bean.setOutputKSpecContent(sb.toString());
 
         RequestDispatcher rd=request.getRequestDispatcher("k-spec-gen.jsp");
         rd.forward(request, response);
-//        out.flush();
-//        out.close();
     }
 
 }

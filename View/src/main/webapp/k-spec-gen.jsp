@@ -7,25 +7,10 @@
     <meta charset="UTF-8">
     <title>K Spec for the input Java file</title>
 </head>
-<body>
+<body onload="prettyPrint()">
 <%KSpecBean kspec = (KSpecBean) request.getAttribute("bean");%>
 
-<h6><%out.println(kspec.getAdditionalInfo());%></h6>
-
-<h2>The content of the input java file is</h2>
-
-<div><span><pre class="prettyprint">
-
-<font size="5">
-    <code style="align-content: space-between" class="language-java"><%
-        out.println(kspec.getInputJavaContent());
-    %></code>
-</font>
-
-</pre></span></div>
-
-<br/>
-  <h2>The k spec generated for the java file is</h2>
+<h2>The k spec generated for the java file is</h2>
 
 <div><span><pre class="prettyprint">
 <font size="5">

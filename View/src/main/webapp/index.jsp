@@ -7,6 +7,8 @@
 <body>
 <script>
     function loadXMLDoc(myURL) {
+        if (myURL == "")
+            return;
         var xmlhttp;
         if (window.XMLHttpRequest) {
             xmlhttp = new XMLHttpRequest();
@@ -16,6 +18,7 @@
         }
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                document.getElementById("code").value = xmlhttp.responseText;
                 document.getElementById("javacode").innerHTML =
                         xmlhttp.responseText;
                 document.getElementById("javablock").className = "prettyprint";
@@ -30,9 +33,9 @@
 
 <h2>Online K spec generator</h2>
 
-<form action="HelloServlet" method="GET">
-    <select onchange="document.getElementById('url').value = this.value;
-    loadXMLDoc(this.value)">
+<form action="HelloServlet" method="GET" onsubmit="setContent()">
+    <select onchange="loadXMLDoc(this.value)">
+        <option value="" selected="selected"></option>
         <option
                 value="https://raw.githubusercontent.com/xiaohe27/K-Spec-Gen/master/KSpecGen/examples/bst/bst.java">
             bst.java
@@ -51,22 +54,30 @@
     </select>
 
     <br/>
-    <input type="text" name="path" id="url" hidden/>
-
     <div><span><pre class="prettyprint" id="javablock">
 <font size="5">
     <code style="align-content: space-between" class="language-java" id="javacode">
-<textarea style="height: 15cm; width: 35cm" wrap="hard" name="content"
-id="pgmText">
+<textarea style="height: 15cm; width: 35cm" wrap="hard" id="pgmText" ondblclick="this.value = ''">
+    Type your program here or choose an existing example from the left hand side popup menu.
 </textarea>
     </code>
 </font>
 
 </pre></span></div>
 
+    <input id="code" name="content" value="" hidden/>
+
     <br/>
-    <input type="submit" value="Submit"/>
+    <input type="submit" value="!Submit!"/>
 </form>
 
+<script>
+    function setContent() {
+        if (document.getElementById("pgmText") != null) {
+            document.getElementById("code").value =
+                    document.getElementById("pgmText").value;
+        }
+    }
+</script>
 </body>
 </html>
