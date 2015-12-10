@@ -33,7 +33,7 @@
 
 <h2>Online K spec generator</h2>
 
-<form action="HelloServlet" method="POST" onsubmit="setContent()">
+<form action="HelloServlet" method="POST" onsubmit="setContent()" target="_blank">
     <select onchange="loadXMLDoc(this.value)">
         <option value="" selected="selected"></option>
         <option
