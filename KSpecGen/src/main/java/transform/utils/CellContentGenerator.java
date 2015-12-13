@@ -181,6 +181,8 @@ public class CellContentGenerator {
         if (exp.equals("<") || exp.equals(">"))
             return exp + "(?!=)";
 
+        if (exp.equals("in"))
+            return "(?<=\\p{Space})in(?=\\p{Space})";
         return exp;
     }
 
