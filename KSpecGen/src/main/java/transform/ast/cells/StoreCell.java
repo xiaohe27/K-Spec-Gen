@@ -28,7 +28,7 @@ public class StoreCell extends Cell {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(".Map => ?_:Map");
+        sb.append("( .Map => ?_:Map )");
 
         sb.append("\n");
 
