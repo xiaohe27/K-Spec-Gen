@@ -20,6 +20,10 @@ public class EnvCell extends Cell {
     }
 
     public String toString() {
+        if (this.env == null || this.env.isEmpty()) {
+            return "";
+        }
+
         StringBuilder sb = new StringBuilder();
         sb.append(" (.Map => ?_:Map)\n");
         this.env.forEach((var, loc) -> {
