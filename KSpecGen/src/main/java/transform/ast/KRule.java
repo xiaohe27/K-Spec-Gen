@@ -76,7 +76,6 @@ public class KRule extends KASTNode {
         cells.add(Cell.getFixedCellWithName(Cell.GlobalPhase));
 
         cells.add(new StoreCell(this.store).setDefinedLoc(this.env.values())); //store cell
-        cells.add(new StoreMetaDataCell(this.store.keySet())); //store meta data cell
 
         cells.add(Cell.getFixedCellWithName(Cell.BUSY));
         cells.add(Cell.getFixedCellWithName(Cell.NEXT_LOC));
