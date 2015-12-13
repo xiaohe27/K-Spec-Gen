@@ -41,7 +41,7 @@ public class KRule extends KASTNode {
         } else {
             CellContentGenerator.updateObjStoreByParsingContent(this.objStore,
                     methodInfo.getObjStoreContent(),
-                    this.store.values());
+                    this.store.values(), methodInfo.getFormalParams());
         }
 
         this.preConds.addAll(extractAllPreCond(methodInfo.getPreCondList(), methodInfo.getFormalParams()));

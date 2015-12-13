@@ -15,36 +15,9 @@ import java.util.stream.Stream;
  * Created by hx312 on 12/5/2015.
  */
 public class CellContentGenerator {
+
     public static void updateObjStoreByParsingContent(List<String> objStore, String objStoreContent, Collection<KRewriteObj> kObjs) {
-        if (objStoreContent == null || objStore == null)
-            return;
-
-        final String[] inputs = objStoreContent.split(",");
-        for (int i = 0; i < inputs.length; i++) {
-            String strI = inputs[i];
-            final String[] elements = strI.split("=>");
-            final String[] lhs = {elements[0]};
-            final String[] rhs = {null};
-            if (elements.length > 1)
-                rhs[0] = elements[1];
-
-            kObjs.forEach(kRewriteObj -> {
-                lhs[0] = kRewriteObj.rewrite2KVarIfPossible(lhs[0], true);
-            });
-
-            if (rhs[0] != null) {
-                kObjs.forEach(kRewriteObj -> {
-                    rhs[0] = kRewriteObj.rewrite2KVarIfPossible(rhs[0], false);
-                });
-            }
-
-            String outputI = lhs[0];
-            if (rhs[0] != null) {
-                outputI += " => " + rhs[0];
-            }
-
-            objStore.add(outputI);
-        }
+        updateObjStoreByParsingContent(objStore, objStoreContent, kObjs, null);
     }
 
     private static HashMap<String, String> extractJVar2KVarMapping
@@ -186,6 +159,10 @@ public class CellContentGenerator {
         return exp;
     }
 
+    private static String name2Regex(String name) {
+        return "(?<=\\W)" + name + "(?=\\W)";
+    }
+
     /**
      * We can assume that there is neither '&&' nor '||' in the literal, and focus on
      * transforming the literal according to the type of atoms.
@@ -221,5 +198,47 @@ public class CellContentGenerator {
         }
 
         return kexp;
+    }
+
+    public static void updateObjStoreByParsingContent(List<String> objStore, String objStoreContent,
+                                                      Collection<KRewriteObj> kObjs,
+                                                      ArrayList<SingleVariableDeclaration> formalParams) {
+        if (objStoreContent == null || objStore == null)
+            return;
+
+        final String[] inputs = objStoreContent.split(",");
+        for (int i = 0; i < inputs.length; i++) {
+            String strI = inputs[i];
+            final String[] elements = strI.split("=>");
+            final String[] lhs = {elements[0]};
+            final String[] rhs = {null};
+            if (elements.length > 1)
+                rhs[0] = elements[1];
+
+            kObjs.forEach(kRewriteObj -> {
+                lhs[0] = kRewriteObj.rewrite2KVarIfPossible(lhs[0], true);
+            });
+
+            if (formalParams != null && !formalParams.isEmpty()) {
+                formalParams.forEach(var -> {
+                    lhs[0] = lhs[0].replaceAll(name2Regex(var.getName().getIdentifier()),
+                            TypeMapping.convert2KVar(var.getName().getIdentifier(),
+                                    var.getType().isPrimitiveType()));
+                });
+            }
+
+            if (rhs[0] != null) {
+                kObjs.forEach(kRewriteObj -> {
+                    rhs[0] = kRewriteObj.rewrite2KVarIfPossible(rhs[0], false);
+                });
+            }
+
+            String outputI = lhs[0];
+            if (rhs[0] != null) {
+                outputI += " => " + rhs[0];
+            }
+
+            objStore.add(outputI);
+        }
     }
 }

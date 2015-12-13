@@ -55,6 +55,8 @@ public class MethodInfo {
     }
 
     private void parseMethodContract(String javaDocStr) {
+//        System.out.println("Javadoc is " + javaDocStr);
+
         Matcher matcher = Patterns.METHOD_CONTRACT.matcher(javaDocStr);
         int count = 0;
         int groupSize = matcher.groupCount();
@@ -105,7 +107,7 @@ public class MethodInfo {
             String category = objStoreMatcher.group(1);
 
             if (Patterns.OBJStore.equals(category)) {
-//                System.out.println("@objStore : " + objStoreMatcher.group(2));
+                System.out.println("@objStore : " + objStoreMatcher.group(2));
                 this.objStoreContent = objStoreMatcher.group(2);
             }
         }
