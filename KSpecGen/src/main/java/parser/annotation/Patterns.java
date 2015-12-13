@@ -23,10 +23,12 @@ public class Patterns {
             "@(objectStore)\\p{Space}*\\{([\\p{Print}\\p{Space}&&[^{}]]*)\\}";
     public static final Pattern ObjStoreCellPattern = Pattern.compile(ClauseStr1);
 
-    public static final String ClauseStr = ClauseStr0 + "|" + ClauseStr1;
+    public static final String ClauseStr = "((" + ClauseStr0 + ")|(" + ClauseStr1 + "))";
 
+    private static final String methodContractStr =
+            "/\\*\\*\\p{Space}+((\\*\\p{Space}*" + ClauseStr + "\\p{Space}*)*)\\*/";
     public static final Pattern METHOD_CONTRACT =
-            Pattern.compile("/\\*\\*\\p{Space}+((\\*\\p{Space}*(" + ClauseStr + ")\\p{Space}*)*)\\*/");
+            Pattern.compile(methodContractStr);
 
     //"/\\*@\\p{Space}*(env|store)\\p{Space}*\\{([\\p{Print}\\p{Space}&&[^{}]]*)\\}\\p{Space}*@\\*/"
     private static final String rawCell =

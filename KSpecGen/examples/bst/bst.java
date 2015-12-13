@@ -14,6 +14,9 @@ public class bst {
 
 
     /**
+     * @objectStore {
+     *     tree(TP)(t:Tree)
+     * }
      * @requires bst(t);
      * @returns ?b;
      * @ensures ?b == (v in tree_keys(t));
