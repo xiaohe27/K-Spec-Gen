@@ -28,8 +28,7 @@ public class EnvCell extends Cell {
         sb.append(" (.Map => ?_:Map)\n");
         this.env.forEach((var, loc) -> {
             String varID = Utils.string2ID(var.getIdentifier());
-            String locStr = "P" + loc + ":" + TypeMapping.getKBuiltInType4SimpleJType(var
-                    .resolveTypeBinding().getName());
+            String locStr = "P" + loc + ":Int";
             sb.append(varID + " |-> " + locStr + "\n");
         });
         sb.deleteCharAt(sb.lastIndexOf("\n"));

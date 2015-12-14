@@ -135,7 +135,7 @@ public class KRule extends KASTNode {
 
         //include the range constraint of return expr.
         if (this.retType != null && this.retType.isPrimitiveType()
-                && !this.isLoop) {
+                && !this.isLoop && !this.retType.toString().equals("boolean")) {
             Expression retExpr = ExpressionParser.parseExprStr(this.retVal);
             String retKVal = CellContentGenerator.fromJExpr2KExprString(retExpr, formalParams).trim();
 
