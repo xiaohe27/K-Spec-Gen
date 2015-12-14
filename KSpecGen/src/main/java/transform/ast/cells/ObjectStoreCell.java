@@ -22,13 +22,21 @@ public class ObjectStoreCell extends Cell {
         if (this.objStores.isEmpty())
             return "";
 
+        final boolean[] hasRewrite = {false};
+
         StringBuilder sb = new StringBuilder();
 
         this.objStores.forEach(obj -> {
+            if (obj.contains("=>"))
+                hasRewrite[0] = true;
+
             sb.append(obj.toString() + "\n");
         });
 
-        sb.append(" (.Bag => ?_:Bag) ");
+        if (hasRewrite[0])
+            sb.append(" (.Bag => ?_:Bag) ");
         return super.surroundWithTags(sb.toString());
     }
+
+
 }
