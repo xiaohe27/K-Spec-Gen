@@ -3,6 +3,8 @@ package transform.ast;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.Type;
+import parser.ExpressionParser;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
 import transform.ast.cells.*;
@@ -20,9 +22,11 @@ import java.util.List;
  * Created by hx312 on 13/10/2015.
  */
 public class KRule extends KASTNode {
+    private boolean isLoop = false;
     private ArrayList<KCondition> preConds = new ArrayList<>();
     private ArrayList<KCondition> postConds = new ArrayList<>();
     private String retVal;
+    private Type retType;
     private ArrayList<Cell> cells = new ArrayList<>();
     private HashMap<SimpleName, Integer> env = new HashMap<>(); //env maps vars to locations
     private HashMap<Integer, KRewriteObj> store = null; //store is shared between methods and loops.
@@ -35,7 +39,11 @@ public class KRule extends KASTNode {
     public KRule(MethodInfo methodInfo, LoopInfo loopInfo, HashMap<Integer, KRewriteObj> store0) {
         super("'KRule");
         this.store = store0;
+        this.retVal = methodInfo.getExpectedRetVal();
+        this.retType = methodInfo.getRetType();
+
         if (loopInfo != null) {
+            this.isLoop = true;
             loopInfo.updateEnvAndStore(this.env, this.store, this.objStore);
             rewriteLI(loopInfo);
         } else {
@@ -46,7 +54,6 @@ public class KRule extends KASTNode {
 
         this.preConds.addAll(extractAllPreCond(methodInfo.getPreCondList(), methodInfo.getFormalParams()));
         this.postConds.addAll(extractAllPostCond(methodInfo.getPostCondList(), methodInfo.getFormalParams()));
-        this.retVal = methodInfo.getExpectedRetVal();
         this.cells = constructCells(methodInfo, loopInfo);
     }
 
@@ -126,6 +133,15 @@ public class KRule extends KASTNode {
                         allPreCond.add(kObj.genConstraint());
                 });
 
+        //include the range constraint of return expr.
+        if (this.retType != null && this.retType.isPrimitiveType()
+                && !this.isLoop) {
+            Expression retExpr = ExpressionParser.parseExprStr(this.retVal);
+            String retKVal = CellContentGenerator.fromJExpr2KExprString(retExpr, formalParams).trim();
+
+            allPreCond.add(KCondition.genKConditionFromConstraintString
+                    (ConstraintGen.genRangeConstraint4Type(this.retType.toString(), retKVal)));
+        }
         return allPreCond;
     }
 
