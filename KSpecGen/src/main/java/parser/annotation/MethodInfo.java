@@ -24,6 +24,7 @@ public class MethodInfo {
     private ArrayList<String> postCondList = new ArrayList<>();
     //the expected return value according to the method contract.
     private String expectedRetVal;
+
     //the return expression
     private Expression retExpr;
 
