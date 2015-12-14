@@ -113,13 +113,19 @@ public class KRule extends KASTNode {
                                                 (primVar.getType().toString(), TypeMapping.convert2KVar
                                                         (primVar.getName().toString(), true)))));
 
+        //the preconditions in the method contract
         preCondList.forEach(preCondExpr ->
                 allPreCond.add(KCondition.genKConditionFromJavaExpr(preCondExpr, formalParams)));
 
-        this.store.values().stream().filter(kObj -> kObj.isPrimitiveDataType())
-                .forEach(kRewriteObj -> {
-                    allPreCond.add(kRewriteObj.genConstraint());
+
+        this.store.keySet().stream()
+                .filter(loc -> (this.env.values().contains(loc)))
+                .forEach(loc -> {
+                    KRewriteObj kObj = this.store.get(loc);
+                    if (kObj.isPrimitiveDataType())
+                        allPreCond.add(kObj.genConstraint());
                 });
+
         return allPreCond;
     }
 
