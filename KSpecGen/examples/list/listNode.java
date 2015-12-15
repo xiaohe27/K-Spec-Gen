@@ -37,7 +37,9 @@ public class listNode {
         }@*/
         /*@objectStore{
         list(lp1)(B:List) list(lp2)(C:List) => list(?lp2)(?A:List)
-        }@*/ {
+        }@*/
+        //@exit ?A == rev(B) C;
+        {
             listNode y;
 
             y = x.next;

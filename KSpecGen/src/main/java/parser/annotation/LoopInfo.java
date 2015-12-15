@@ -1,4 +1,5 @@
 package parser.annotation;
+
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.WhileStatement;
@@ -19,7 +20,9 @@ public class LoopInfo {
     private final int startPos;
     private final int endPos;
     private final LoopVisitor loopVisitor = new LoopVisitor();
-    private ArrayList<Expression> loopInvs;
+    private List<Expression> loopInvs;
+    private List<String> loopPreCondList;
+    private List<String> loopPostCondList;
     private WhileStatement loopNode;
     private HashMap<String, String> rawEnvMap = new HashMap<>();
     private HashMap<String, String> rawStoreMap = new HashMap<>();
@@ -27,6 +30,8 @@ public class LoopInfo {
 
     public LoopInfo(int start, int len, WhileStatement lpNd) {
         this.loopInvs = new ArrayList<>();
+        this.loopPreCondList = new ArrayList<>();
+        this.loopPostCondList = new ArrayList<>();
 
         this.startPos = start;
         this.endPos = start + len;
@@ -57,13 +62,32 @@ public class LoopInfo {
         return pos >= startPos && pos < endPos;
     }
 
-    public boolean addLI(String loopInvStr) {
-        Expression li = ExpressionParser.parseExprStr(loopInvStr);
-        return loopInvs.add(li);
+    public boolean addLoopProp(AnnotationInfo.LoopPropKind kind, String loopPropStr) {
+        switch (kind) {
+            case LI:
+                Expression li = ExpressionParser.parseExprStr(loopPropStr);
+                return loopInvs.add(li);
+            case LoopPre:
+                this.loopPreCondList.add(loopPropStr);
+                break;
+            case LoopPost:
+                this.loopPostCondList.add(loopPropStr);
+                break;
+        }
+
+        return false;
     }
 
     public Stream<Expression> getLIStream() {
         return this.loopInvs.stream();
+    }
+
+    public Stream<String> getLoopPreCondStream() {
+        return this.loopPreCondList.stream();
+    }
+
+    public Stream<String> getLoopPostCondStream() {
+        return this.loopPostCondList.stream();
     }
 
     public void addEnvInfo(String envCellInfo) {
@@ -147,7 +171,7 @@ public class LoopInfo {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Loop ranges in lines [" + startPos + ", " + endPos + "]\n");
-        sb.append("LI of the loop is \n");
+        sb.append("LOOP_PROP of the loop is \n");
         loopInvs.forEach(li -> sb.append(li + "\n"));
 
         sb.append("Env of the loop is\n");

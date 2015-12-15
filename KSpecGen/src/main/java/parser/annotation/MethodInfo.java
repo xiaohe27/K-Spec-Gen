@@ -114,12 +114,13 @@ public class MethodInfo {
         }
     }
 
-    public void addPotentialLI(String loopInv, int commentStartPos) {
+    public void addPotentialLI(AnnotationInfo.LoopPropKind kind,
+                               String loopInv, int commentStartPos) {
         this.loopsInfo.stream()
                 .filter(loopInfo -> loopInfo.isPosInside(commentStartPos))
                 .min((loopInfo1, loopInfo2) -> (loopInfo1.srcCodeSize() - loopInfo2.srcCodeSize()))
                 .ifPresent(tarLoopInfo -> {
-                    tarLoopInfo.addLI(loopInv);
+                    tarLoopInfo.addLoopProp(kind, loopInv);
                 });
     }
 

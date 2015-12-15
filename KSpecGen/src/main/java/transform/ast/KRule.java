@@ -7,16 +7,16 @@ import org.eclipse.jdt.core.dom.Type;
 import parser.ExpressionParser;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
-import transform.ast.cells.*;
+import transform.ast.cells.Cell;
+import transform.ast.cells.ObjectStoreCell;
+import transform.ast.cells.StoreCell;
+import transform.ast.cells.ThreadsCell;
 import transform.ast.rewrite.KRewriteObj;
 import transform.utils.CellContentGenerator;
 import transform.utils.ConstraintGen;
 import transform.utils.TypeMapping;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by hx312 on 13/10/2015.
@@ -58,19 +58,54 @@ public class KRule extends KASTNode {
     }
 
     /**
-     * Rewrite the LI java-expr to k-expr.
+     * Rewrite the LOOP_PROP java-expr to k-expr.
      *
      * @param loopInfo
      */
     private void rewriteLI(LoopInfo loopInfo) {
+        final Set<SimpleName> vars = loopInfo.getSetOfVarNames();
         loopInfo.getLIStream().forEach(
                 liExp -> {
-                    this.preConds.add(KCondition.genKConditionFromJavaExpr(liExp,
-                            loopInfo.getSetOfVarNames()));
+                    this.preConds.add(KCondition.genKConditionFromJavaExpr(liExp, vars));
+                }
+        );
+
+        loopInfo.getLoopPreCondStream().forEach(
+                loopPre -> {
+                    final String[] processedPreCond = new String[1];
+                    processedPreCond[0] = CellContentGenerator.fromLiteral2KExpr
+                            (loopPre, TypeMapping.OTHER_OPERAND);
+
+                    vars.forEach(var -> {
+                        processedPreCond[0] = processedPreCond[0]
+                                .replaceAll(CellContentGenerator.name2Regex(var.getIdentifier()),
+                                        var.getIdentifier().toUpperCase());
+                    });
+
+                    KCondition preCond = KCondition.genKConditionFromConstraintString
+                            (processedPreCond[0]);
+                    this.preConds.add(preCond);
+                }
+        );
+
+        loopInfo.getLoopPostCondStream().forEach(
+                loopPost -> {
+                    final String[] processedPostCond = new String[1];
+                    processedPostCond[0] = CellContentGenerator.fromLiteral2KExpr
+                            (loopPost, TypeMapping.OTHER_OPERAND);
+
+                    vars.forEach(var -> {
+                        processedPostCond[0] = processedPostCond[0]
+                                .replaceAll(CellContentGenerator.name2Regex(var.getIdentifier()),
+                                        var.getIdentifier().toUpperCase());
+                    });
+
+                    KCondition postCond = KCondition.genKConditionFromConstraintString
+                            (processedPostCond[0]);
+                    this.postConds.add(postCond);
                 }
         );
     }
-
 
     private ArrayList<Cell> constructCells(MethodInfo methodInfo, LoopInfo loopInfo) {
         ArrayList<Cell> cells = new ArrayList<>();
