@@ -120,17 +120,7 @@ public class MethodInfo {
                 .filter(loopInfo -> loopInfo.isPosInside(commentStartPos))
                 .min((loopInfo1, loopInfo2) -> (loopInfo1.srcCodeSize() - loopInfo2.srcCodeSize()))
                 .ifPresent(tarLoopInfo -> {
-                    switch (kind) {
-                        case LI:
-                            tarLoopInfo.addLI(loopInv);
-                            break;
-                        case LoopPre:
-                            //TODO;
-                            break;
-                        case LoopPost:
-                            //TODO;
-                            break;
-                    }
+                    tarLoopInfo.addLoopProp(kind, loopInv);
                 });
     }
 

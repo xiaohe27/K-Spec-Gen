@@ -57,9 +57,20 @@ public class LoopInfo {
         return pos >= startPos && pos < endPos;
     }
 
-    public boolean addLI(String loopInvStr) {
-        Expression li = ExpressionParser.parseExprStr(loopInvStr);
-        return loopInvs.add(li);
+    public boolean addLoopProp(AnnotationInfo.LoopPropKind kind, String loopInvStr) {
+        switch (kind) {
+            case LI:
+                Expression li = ExpressionParser.parseExprStr(loopInvStr);
+                return loopInvs.add(li);
+            case LoopPre:
+                //TODO;
+                break;
+            case LoopPost:
+                //TODO;
+                break;
+        }
+
+        return false;
     }
 
     public Stream<Expression> getLIStream() {
