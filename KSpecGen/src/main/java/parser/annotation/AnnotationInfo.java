@@ -9,6 +9,8 @@ import java.util.stream.Stream;
  * construct. So the order can be used to associate two AST.
  */
 public class AnnotationInfo {
+    public enum LoopPropKind {LI, LoopPre, LoopPost};
+
     private HashMap<Integer, MethodInfo> methodsInfo = new HashMap<>();
 
 
@@ -16,21 +18,20 @@ public class AnnotationInfo {
         this.methodsInfo.put(index, methodInfo);
     }
 
-    //The line comment may be a LI if its pos is inside some loop.
-    public void addPotentialLI(String loopInv, int commentStartPos) {
+    //The line comment may be a LOOP_PROP if its pos is inside some loop.
+    public void addPotentialLI(LoopPropKind kind, String loopInv, int commentStartPos) {
         methodsInfo.keySet().forEach(
                 index -> {
                     MethodInfo curMethod = methodsInfo.get(index);
                     if (curMethod.isInsideMethod(commentStartPos)) {
-                        curMethod.addPotentialLI(loopInv, commentStartPos);
+                        curMethod.addPotentialLI(kind, loopInv, commentStartPos);
                         return;
                     }
                 }
         );
-
     }
 
-    //The line comment may be a LI if its pos is inside some loop.
+    //The line comment may be a LOOP_PROP if its pos is inside some loop.
     public void addEnvCellInfo(String envCellInfo, int commentStartPos) {
         methodsInfo.values().stream()
                 .filter(curMethod -> curMethod.isInsideMethod(commentStartPos))

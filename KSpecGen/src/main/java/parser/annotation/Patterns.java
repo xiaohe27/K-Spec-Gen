@@ -7,8 +7,8 @@ import java.util.regex.Pattern;
  * Created by xiaohe on 10/7/15.
  */
 public class Patterns {
-    public static final Pattern LI =
-            Pattern.compile("//@LI\\p{Blank}+([\\p{Print}\\p{Blank}&&[^;]]+);");
+    public static final Pattern LOOP_PROP =
+            Pattern.compile("//@(LI|entry|exit)\\p{Blank}+([\\p{Print}\\p{Blank}&&[^;]]+);");
     public static final Pattern EnvEntry =
             Pattern.compile("([_\\p{Alpha}][_\\p{Alnum}]*)\\p{Space}*\\|->\\p{Space}*" +
                     "([\\p{Digit}]+)");
@@ -41,6 +41,7 @@ public class Patterns {
 
     public static final Pattern objStoreEntry =
             Pattern.compile("[\\(]*\\p{Alpha}\\p{Alnum}*\\((\\p{Alpha}\\p{Alnum}*)\\)[\\p{Print}]*");
+
 
     public static void main(String[] args) {
         String input = "/**" +

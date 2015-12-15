@@ -64,7 +64,7 @@ public class JavaParser {
         MyASTVisitor myASTVisitor = new MyASTVisitor(cu, pgmTxt);
         cu.accept(myASTVisitor);
 
-        //check each line comment and judge whether they are LI
+        //check each line comment and judge whether they are LOOP_PROP
         cu.getCommentList().forEach(commentObj ->
         {
             if (commentObj instanceof Comment) {
@@ -74,11 +74,34 @@ public class JavaParser {
                         commentStartPos + comment.getLength()).trim();
 
                 if (comment.isLineComment()) {
-                    //the comment with regex: //@LI some expression here
-                    //is considered a LI.
-                    Matcher LI_Matcher = Patterns.LI.matcher(commentStr);
-                    if (LI_Matcher.find())
-                        myASTVisitor.getAnnotationInfo().addPotentialLI(LI_Matcher.group(1), commentStartPos);
+                    //the comment with regex: //@LOOP_PROP some expression here
+                    //is considered a LOOP_PROP.
+                    //the comment with regex: //@exit some expression
+                    //refers to the post condition that will be held after exiting the loop
+                    Matcher LI_Matcher = Patterns.LOOP_PROP.matcher(commentStr);
+                    if (LI_Matcher.find()) {
+                        String kind = LI_Matcher.group(1);
+                        String propStr = LI_Matcher.group(2);
+                        switch (kind) {
+                            case "LI":
+                                myASTVisitor.getAnnotationInfo()
+                                        .addPotentialLI(AnnotationInfo.LoopPropKind.LI,
+                                                propStr, commentStartPos);
+                                break;
+
+                            case "entry":
+                                myASTVisitor.getAnnotationInfo()
+                                        .addPotentialLI(AnnotationInfo.LoopPropKind.LoopPre,
+                                                propStr, commentStartPos);
+                                break;
+
+                            case "exit":
+                                myASTVisitor.getAnnotationInfo()
+                                        .addPotentialLI(AnnotationInfo.LoopPropKind.LoopPost,
+                                                propStr, commentStartPos);
+                                break;
+                        }
+                    }
                 } else if (comment.isBlockComment()) {
                     //the comment with regex:
                     // "/\\*@\\p{Space}*(env|store)\\p{Space}*\\{([\\p{Print}\\p{Space}&&[^{}]]*)\\}@\\*/"

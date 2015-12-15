@@ -58,7 +58,7 @@ public class KRule extends KASTNode {
     }
 
     /**
-     * Rewrite the LI java-expr to k-expr.
+     * Rewrite the LOOP_PROP java-expr to k-expr.
      *
      * @param loopInfo
      */

@@ -20,7 +20,7 @@ class sum {
         /*@store {1 |-> n => 0 ,
          2 |-> s => s + ((n + 1) * n / 2)
          } @*/
-        //@LI s >= 0;
+        //@LOOP_PROP s >= 0;
         {
             s = s + n;
             n = n - 1;

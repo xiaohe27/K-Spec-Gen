@@ -147,7 +147,7 @@ public class LoopInfo {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Loop ranges in lines [" + startPos + ", " + endPos + "]\n");
-        sb.append("LI of the loop is \n");
+        sb.append("LOOP_PROP of the loop is \n");
         loopInvs.forEach(li -> sb.append(li + "\n"));
 
         sb.append("Env of the loop is\n");
