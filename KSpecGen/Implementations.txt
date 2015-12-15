@@ -44,3 +44,8 @@ will be incorporated into the map.
 TODO:
 ensure the return expr matches the thing that actually computed by the method
 for the rule corresponds to the method.
+
+**
+The object store in the method contract should match each input param in sequence.
+The lhs of the obj store (if there is rewrite) have two parentheses where the first 
+pair of parentheses enclose the name of the K's var for that param.
