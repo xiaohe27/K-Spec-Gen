@@ -116,7 +116,7 @@ public class TypeMapping {
         }
     }
 
-    public static String convert2KType(SingleVariableDeclaration v) {
+    public static String convert2KType(SingleVariableDeclaration v, String suggestedName) {
         String jType = v.getType().toString();
         String varName = v.getName().toString();
         boolean isPrimitive = v.getType().isPrimitiveType();
@@ -125,13 +125,23 @@ public class TypeMapping {
         if (jTypeInJavaSemantics.equals("boolean"))
             jTypeInJavaSemantics = "bool";
 
-        String result = convert2KVar(varName, isPrimitive);
-        if (!isPrimitive)
-            result += "P";
+        String result = "";
+        if (suggestedName == null) {
+            result = convert2KVar(varName, isPrimitive);
+            if (!isPrimitive)
+                result += "P";
+        } else {
+            result = suggestedName;
+        }
+
         result += ":" + getKBuiltInType4SimpleJType(jType);
         result = isPrimitive ? result : "(" + result + ")";
         result += "::" + jTypeInJavaSemantics;
         return result;
+    }
+
+    public static String convert2KType(SingleVariableDeclaration curVar) {
+        return convert2KType(curVar, null);
     }
 
     public static String convert2KOP(String oldOp, int operandType) {
@@ -216,5 +226,4 @@ public class TypeMapping {
 
         System.out.println("k op of in for int is " + convert2KOP("in", INT_OPERAND));
     }
-
 }

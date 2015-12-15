@@ -74,7 +74,7 @@ public class KRule extends KASTNode {
 
     private ArrayList<Cell> constructCells(MethodInfo methodInfo, LoopInfo loopInfo) {
         ArrayList<Cell> cells = new ArrayList<>();
-        ThreadsCell threadsCell = new ThreadsCell(methodInfo, loopInfo, this.env);
+        ThreadsCell threadsCell = new ThreadsCell(methodInfo, loopInfo, this.env, this.objStore);
         cells.add(threadsCell);
 
         cells.add(Cell.getFixedCellWithName(Cell.CLASSES));

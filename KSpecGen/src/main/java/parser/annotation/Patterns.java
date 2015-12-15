@@ -39,6 +39,9 @@ public class Patterns {
             Pattern.compile("([\\p{Digit}]+)\\p{Space}*\\|->\\p{Space}*(" + printableCharsNoCommas
                     + "[\\p{Graph}&&[^,]]" + printableCharsNoCommas + ")");
 
+    public static final Pattern objStoreEntry =
+            Pattern.compile("[\\(]*\\p{Alpha}\\p{Alnum}*\\((\\p{Alpha}\\p{Alnum}*)\\)[\\p{Print}]*");
+
     public static void main(String[] args) {
         String input = "/**" +
                 "\n * @requires a < b && b < c + 2;\n" +
