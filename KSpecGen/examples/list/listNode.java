@@ -38,7 +38,7 @@ public class listNode {
         /*@objectStore{
         list(lp1)(B:List) list(lp2)(C:List) => list(?lp2)(?A:List)
         }@*/
-        //@exit ?A ==K rev(B) C;
+        //@exit ?A == rev(B) C;
         {
             listNode y;
 

@@ -159,7 +159,7 @@ public class CellContentGenerator {
         return exp;
     }
 
-    private static String name2Regex(String name) {
+    public static String name2Regex(String name) {
         return "(?<=\\W)" + name + "(?=\\W)";
     }
 
@@ -187,7 +187,7 @@ public class CellContentGenerator {
         else transformCandidates = null;
 
         if (transformCandidates == null)
-            return literal;
+            return literal.replaceAll("(?<=\\W)==(?=\\W)", "==K");
 
         for (int i = 0; i < transformCandidates.length; i++) {
             String curOp = transformCandidates[i];
