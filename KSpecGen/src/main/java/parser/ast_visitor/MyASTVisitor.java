@@ -4,6 +4,7 @@ import org.eclipse.jdt.core.dom.*;
 import parser.annotation.AnnotationInfo;
 import parser.annotation.LoopInfo;
 import parser.annotation.MethodInfo;
+import parser.annotation.Patterns;
 
 /**
  * Created by hx312 on 30/09/2015.
@@ -61,11 +62,18 @@ public class MyASTVisitor extends ASTVisitor {
         System.out.println("Method " + this.curClsName + "." + methodNode.getName()
                 .getFullyQualifiedName() + " is visited!");
 
+        String jdocStr = null;
         if (methodNode.getJavadoc() != null) {
-            MethodInfo methodInfo = new MethodInfo(this.curClsName, methodNode,
+            jdocStr = methodNode.getJavadoc().toString();
+        }
+
+        if (jdocStr != null && jdocStr.trim().matches(Patterns.METHOD_CONTRACT.pattern())) {
+            MethodInfo methodInfo = new MethodInfo(
+                    this.curClsName,
+                    methodNode,
                     methodNode.getStartPosition(),
                     methodNode.getLength(),
-                    methodNode.getJavadoc().toString());
+                    jdocStr);
 
 //            System.out.println(methodInfo.toString());
 //            System.out.println(methodNode.getJavadoc().toString() + " is the javadoc!!!");
