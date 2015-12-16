@@ -36,15 +36,12 @@ public class NoAnnotationTest extends BasicTest {
 
     @Before
     public void setUp() {
-        Main.setAllowCache();
+        super.prepare();
     }
 
     @After
     public void tearDown() {
-        Path kspecPath = Paths.get(super.inputFile.getAbsolutePath() + ".k");
-        if (kspecPath != null && kspecPath.toFile().exists()) {
-            kspecPath.toFile().delete();
-        }
+        super.clean();
     }
 
     @Test
