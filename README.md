@@ -14,6 +14,7 @@ Web-interface:
    displayed in a new tab.
 
 Command-line interface:
+
 0. open the terminal in some directory.
 
 1. ```git clone https://github.com/xiaohe27/K-Spec-Gen.git```
@@ -21,6 +22,7 @@ Command-line interface:
 2. ```mvn package```
 
 3. The generated executable is in the path:
+
    ```<The-Path-To-Proj-Home>/KSpecGen/target/release/kspec-gen/kspec-gen/bin```
 
 4. If you add the path of the program "kspec-gen" to environment variable,
