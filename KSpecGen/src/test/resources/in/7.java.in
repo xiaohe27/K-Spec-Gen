@@ -1,4 +1,4 @@
-public class bst {
+    public class bst {
     int value;
     bst left;
     bst right;
@@ -15,7 +15,7 @@ public class bst {
 
     /**
      * @objectStore {
-     * tree(TP)(t:Tree)
+     *     tree(TP)(t:Tree)
      * }
      * @requires bst(t);
      * @returns ?b;

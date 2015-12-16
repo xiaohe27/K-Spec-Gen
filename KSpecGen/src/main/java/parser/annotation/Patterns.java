@@ -26,7 +26,7 @@ public class Patterns {
     public static final String ClauseStr = "((" + ClauseStr0 + ")|(" + ClauseStr1 + "))";
 
     private static final String methodContractStr =
-            "/\\*\\*\\p{Space}+(([\\p{Print}&&[^.]]*\\.\\p{Space})?((\\*\\p{Space}*"
+            "/\\*\\*\\p{Space}+(([\\p{Print}&&[^.]]*\\.\\p{Space})?((\\p{Blank}*\\*\\p{Space}*"
                     + ClauseStr + "\\p{Space}*)+))\\*/";
     public static final Pattern METHOD_CONTRACT =
             Pattern.compile(methodContractStr);

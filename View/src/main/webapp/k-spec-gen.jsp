@@ -2,7 +2,7 @@
 <%@page import="view.KSpecBean" %>
 <html lang="en">
 <head>
-    <link href="google-code-prettify/k.css" type="text/css" rel="stylesheet" />
+    <link href="google-code-prettify/k.css" type="text/css" rel="stylesheet"/>
     <script type="text/javascript" src="google-code-prettify/prettify.js"></script>
     <script type="text/javascript" src="google-code-prettify/lang-k.js"></script>
     <meta charset="UTF-8">
@@ -16,9 +16,9 @@
 <div><span><pre class="prettyprint lang-k">
 <font size="5">
     <code style="background-clip: border-box">
-    <%
-        out.println(kspec.getHTMLOutputOfKSpec());
-    %>
+        <%
+            out.println(kspec.getHTMLOutputOfKSpec());
+        %>
     </code>
 </font>
 

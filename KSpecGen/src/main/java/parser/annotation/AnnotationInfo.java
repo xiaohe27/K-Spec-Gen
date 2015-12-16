@@ -10,7 +10,9 @@ import java.util.stream.Stream;
  */
 public class AnnotationInfo {
 
-    public enum LoopPropKind {LI, LoopPre, LoopPost};
+    public enum LoopPropKind {LI, LoopPre, LoopPost}
+
+    ;
 
     private HashMap<Integer, MethodInfo> methodsInfo = new HashMap<>();
 

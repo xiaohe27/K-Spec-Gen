@@ -1,6 +1,6 @@
 <html>
 <head>
-    <link href="google-code-prettify/prettify.css" type="text/css" rel="stylesheet" />
+    <link href="google-code-prettify/prettify.css" type="text/css" rel="stylesheet"/>
     <script type="text/javascript" src="google-code-prettify/prettify.js"></script>
     <meta charset="UTF-8">
 </head>
@@ -16,7 +16,7 @@
             // code for older browsers
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        xmlhttp.onreadystatechange = function() {
+        xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 document.getElementById("code").value = xmlhttp.responseText;
                 document.getElementById("javacode").innerHTML =
@@ -45,7 +45,9 @@
             listNode.java
         </option>
 
-        <option value="https://raw.githubusercontent.com/xiaohe27/K-Spec-Gen/master/KSpecGen/examples/min/min.java">min.java</option>
+        <option value="https://raw.githubusercontent.com/xiaohe27/K-Spec-Gen/master/KSpecGen/examples/min/min.java">
+            min.java
+        </option>
 
         <option
                 value="https://raw.githubusercontent.com/xiaohe27/K-Spec-Gen/master/KSpecGen/examples/sum/sum.java">
@@ -54,6 +56,7 @@
     </select>
 
     <br/>
+
     <div><span><pre class="prettyprint" id="javablock">
 <font size="5">
     <code style="align-content: space-between" class="language-java" id="javacode">
