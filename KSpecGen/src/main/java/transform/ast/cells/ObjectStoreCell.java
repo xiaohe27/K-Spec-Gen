@@ -1,5 +1,7 @@
 package transform.ast.cells;
 
+import transform.utils.Utils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class ObjectStoreCell extends Cell {
             if (obj.contains("=>"))
                 hasRewrite[0] = true;
 
-            sb.append(obj.toString() + "\n");
+            sb.append(Utils.addBrackets(obj.trim()) + "\n");
         });
 
         if (hasRewrite[0])
