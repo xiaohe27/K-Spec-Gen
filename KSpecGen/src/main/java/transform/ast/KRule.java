@@ -15,6 +15,7 @@ import transform.ast.rewrite.KRewriteObj;
 import transform.utils.CellContentGenerator;
 import transform.utils.ConstraintGen;
 import transform.utils.TypeMapping;
+import transform.utils.Utils;
 
 import java.util.*;
 
@@ -191,7 +192,7 @@ public class KRule extends KASTNode {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("rule\n");
+        sb.append("rule" + Utils.NEW_LINE);
         this.cells.forEach(cell -> sb.append(cell.toString()));
 
         if (!this.preConds.isEmpty()) {
@@ -199,7 +200,7 @@ public class KRule extends KASTNode {
             this.preConds.forEach(preCond ->
                     sb.append(preCond.toString() +
                             ((this.preConds.get(this.preConds.size() - 1).equals
-                                    (preCond)) ? "\n" : " andBool ")
+                                    (preCond)) ? Utils.NEW_LINE : " andBool ")
                     ));
         }
 
@@ -208,7 +209,7 @@ public class KRule extends KASTNode {
             this.postConds.forEach(postCond ->
                     sb.append(postCond.toString() +
                             ((this.postConds.get(this.postConds.size() - 1).equals
-                                    (postCond)) ? "\n" : " andBool ")
+                                    (postCond)) ? Utils.NEW_LINE : " andBool ")
                     ));
         }
 

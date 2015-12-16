@@ -79,9 +79,9 @@ public class KCell extends Cell {
                 sb.append(TypeMapping.convert2KType(lastVar));
             }
 
-            sb.append(")\n");
+            sb.append(")" + Utils.NEW_LINE);
 
-            sb.append("=>\n");
+            sb.append("=>" + Utils.NEW_LINE);
 
             Type retType = this.methodInfo.getRetType();
             String retTypeInJavaSemantics = retType.isPrimitiveType() ? retType.toString() :

@@ -1,6 +1,7 @@
 package transform.ast;
 
 import parser.annotation.AnnotationInfo;
+import transform.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -25,8 +26,8 @@ public class KSpec extends KASTNode {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        reqClauses.forEach(reqClause -> sb.append(reqClause.toString() + "\n"));
-        modules.forEach(module -> sb.append(module.toString() + "\n"));
+        reqClauses.forEach(reqClause -> sb.append(reqClause.toString() + Utils.NEW_LINE));
+        modules.forEach(module -> sb.append(module.toString() + Utils.NEW_LINE));
         return sb.toString();
     }
 }

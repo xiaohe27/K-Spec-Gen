@@ -24,15 +24,15 @@ public class EnvCell extends Cell {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" (.Map => ?_:Map)\n");
+        sb.append(" (.Map => ?_:Map)" + Utils.NEW_LINE);
         this.env.entrySet().stream()
                 .sorted((entry1, entry2) -> entry1.getValue() - entry2.getValue())
                 .forEach(entry -> {
                     String varID = Utils.string2ID(entry.getKey().getIdentifier());
                     String locStr = "P" + entry.getValue() + ":Int";
-                    sb.append(varID + " |-> " + locStr + "\n");
+                    sb.append(varID + " |-> " + locStr + Utils.NEW_LINE);
                 });
-        sb.deleteCharAt(sb.lastIndexOf("\n"));
+        sb.deleteCharAt(sb.lastIndexOf(Utils.NEW_LINE));
         return super.surroundWithTags(sb.toString());
     }
 }

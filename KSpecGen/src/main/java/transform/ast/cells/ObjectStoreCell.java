@@ -32,7 +32,7 @@ public class ObjectStoreCell extends Cell {
             if (obj.contains("=>"))
                 hasRewrite[0] = true;
 
-            sb.append(Utils.addBrackets(obj.trim()) + "\n");
+            sb.append(Utils.addBrackets(obj.trim()) + Utils.NEW_LINE);
         });
 
         if (hasRewrite[0])

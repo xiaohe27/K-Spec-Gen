@@ -1,6 +1,7 @@
 package transform.ast.cells;
 
 import transform.ast.rewrite.KRewriteObj;
+import transform.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,17 +31,17 @@ public class StoreCell extends Cell {
         StringBuilder sb = new StringBuilder();
         sb.append("( .Map => ?_:Map )");
 
-        sb.append("\n");
+        sb.append(Utils.NEW_LINE);
 
         if (this.definedLoc != null)
             this.store.entrySet().stream()
                     .sorted((entry1, entry2) -> entry1.getKey() - entry2.getKey())
                     .forEach(entry -> {
                         if (this.definedLoc.contains(entry.getKey()))
-                            sb.append("P" + entry.getKey() + " |-> " + entry.getValue() + "\n");
+                            sb.append("P" + entry.getKey() + " |-> " + entry.getValue() + Utils.NEW_LINE);
                     });
 
-        sb.deleteCharAt(sb.lastIndexOf("\n"));
+        sb.deleteCharAt(sb.lastIndexOf(Utils.NEW_LINE));
 
         return super.surroundWithTags(sb.toString());
     }

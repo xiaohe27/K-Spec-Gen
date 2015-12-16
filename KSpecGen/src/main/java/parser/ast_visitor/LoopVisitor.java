@@ -55,7 +55,7 @@ public class LoopVisitor extends ASTVisitor {
             thenStmt.accept(this);
 
             if (elseStmt != null) {
-                this.whileAST.append("\nelse ");
+                this.whileAST.append(Utils.NEW_LINE + "else ");
                 elseStmt.accept(this);
             }
         } catch (Exception e) {
@@ -67,14 +67,14 @@ public class LoopVisitor extends ASTVisitor {
 
     @Override
     public boolean visit(Block block) {
-        this.whileAST.append("{\n");
+        this.whileAST.append("{" + Utils.NEW_LINE);
 
         return true;
     }
 
     @Override
     public void endVisit(Block block) {
-        this.whileAST.append("\n} ");
+        this.whileAST.append(Utils.NEW_LINE + "} ");
     }
 
     @Override
@@ -92,7 +92,7 @@ public class LoopVisitor extends ASTVisitor {
         }
 
         sb.append(Utils.string2ID(ids.get(ids.size() - 1).getName().getIdentifier()));
-        sb.append(" ;\n");
+        sb.append(" ;" + Utils.NEW_LINE);
         this.whileAST.append(sb.toString());
 
         return false;
