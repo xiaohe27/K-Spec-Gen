@@ -9,10 +9,14 @@ import java.util.stream.Stream;
  * construct. So the order can be used to associate two AST.
  */
 public class AnnotationInfo {
+
     public enum LoopPropKind {LI, LoopPre, LoopPost};
 
     private HashMap<Integer, MethodInfo> methodsInfo = new HashMap<>();
 
+    public boolean isNOTEmpty() {
+        return methodsInfo.isEmpty() == false;
+    }
 
     public void addMethod(int index, MethodInfo methodInfo) {
         this.methodsInfo.put(index, methodInfo);

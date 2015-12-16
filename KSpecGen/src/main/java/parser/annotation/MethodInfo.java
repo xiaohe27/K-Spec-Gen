@@ -108,7 +108,7 @@ public class MethodInfo {
             String category = objStoreMatcher.group(1);
 
             if (Patterns.OBJStore.equals(category)) {
-                System.out.println("@objStore : " + objStoreMatcher.group(2));
+//                System.out.println("@objStore : " + objStoreMatcher.group(2));
                 this.objStoreContent = objStoreMatcher.group(2);
             }
         }

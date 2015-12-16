@@ -137,9 +137,13 @@ public class JavaParser {
 //        System.out.println("Method with pre and post conditions:");
 //        annotationInfo.printInfo();
 
-        KSpec kSpec = new KSpec(unitName + "-K-Spec", annotationInfo);
+        if (annotationInfo.isNOTEmpty()) {
+            KSpec kSpec = new KSpec(unitName + "-K-Spec", annotationInfo);
 //        System.out.println(kSpec.toString());
-        return kSpec.toString();
+            return kSpec.toString();
+        } else {
+            return "";
+        }
     }
 
 }
