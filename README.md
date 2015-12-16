@@ -2,7 +2,7 @@ This is a project for generating k specification from annotated java program.
 The k specification is an input for k-verifier[1] which can do program verification.
 
 This software aims to be a service for programmers who want to do program verification
-using k framewrok[2], and therefore we've tried our best to present the service in a
+using [k framewrok](http://www.kframework.org/index.php/Main_Page), and therefore we've tried our best to present the service in a
 user-friendly way. We have provided an online interface (with syntax highlighting)
 for using the service in addition to the traditional command-line interface.
 
@@ -28,6 +28,6 @@ Command-line interface:
 
    ```kspec-gen <path-to-the-annotated-java-file-or-directory>```
 
-The project can be located in the github page:
-https://github.com/xiaohe27/K-Spec-Gen
+The project can be located in the [github](https://github.com/xiaohe27/K-Spec-Gen) page.
+
 
