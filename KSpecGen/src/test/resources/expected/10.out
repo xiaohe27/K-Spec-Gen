@@ -12,8 +12,8 @@ cast ( int, ('ExprName(String2Id("s"))=cast ( int, cast ( int, 'ExprName(String2
  ... </k>
 
 <env> ...  (.Map => ?_:Map)
-String2Id("s") |-> P2:Int
 String2Id("n") |-> P1:Int
+String2Id("s") |-> P2:Int
  ... </env>
 
 <holds>

@@ -13,8 +13,8 @@ cast ( class String2Id(".listNode"), ('ExprName(String2Id("y"))=cast ( class Str
  ... </k>
 
 <env> ...  (.Map => ?_:Map)
-String2Id("p") |-> P2:Int
 String2Id("x") |-> P1:Int
+String2Id("p") |-> P2:Int
  ... </env>
 
 <holds>
