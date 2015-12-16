@@ -10,4 +10,6 @@ public class Const {
     public static final String expectedFolder = basePath + "expected" + fileSep;
     public static final String inputFolder = basePath + "in" + fileSep;
     public static final String extension = ".txt";
+    public static final String inExt = ".java.in";
+    public static final String outExt = ".out";
 }

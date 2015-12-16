@@ -17,4 +17,9 @@ public class BasicTest {
         this.inputFile = new File(Const.inputFolder + testId + Const.extension);
         this.expectedFile = new File(Const.expectedFolder + testId + Const.extension);
     }
+
+    public BasicTest(int testId, String inputSuffix, String outputSuffix) {
+        this.inputFile = new File(Const.inputFolder + testId + inputSuffix);
+        this.expectedFile = new File(Const.expectedFolder + testId + outputSuffix);
+    }
 }

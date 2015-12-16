@@ -1,6 +1,7 @@
 package integration;
 
 import common.BasicTest;
+import common.Const;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -13,7 +14,7 @@ import java.util.Collection;
 @RunWith(Parameterized.class)
 public class NoAnnotationTest extends BasicTest {
     public NoAnnotationTest(int testId) {
-        super(testId);
+        super(testId, Const.inExt, Const.outExt);
     }
 
     @Parameterized.Parameters
@@ -21,5 +22,9 @@ public class NoAnnotationTest extends BasicTest {
         return Arrays.asList(new Object[][]{
 //                {5}, {6}
         });
+    }
+
+    public void testOutput() {
+
     }
 }
