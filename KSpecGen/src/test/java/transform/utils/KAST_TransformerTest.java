@@ -1,7 +1,6 @@
 package transform.utils;
 
 import common.BasicTest;
-import common.Const;
 import org.eclipse.jdt.core.dom.WhileStatement;
 import org.junit.After;
 import org.junit.Before;
@@ -10,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import parser.ast_visitor.LoopVisitor;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,7 +40,7 @@ public class KAST_TransformerTest extends BasicTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         this.whileNd = null;
     }
 

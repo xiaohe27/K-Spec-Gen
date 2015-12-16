@@ -5,7 +5,7 @@
 class sum {
 
 /**
-irrelevant javadoc.
+* irrelevant javadoc.
 */
     static int sum_iterative(int n) {
         int s;
