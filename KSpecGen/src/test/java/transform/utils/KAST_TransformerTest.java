@@ -1,5 +1,7 @@
 package transform.utils;
 
+import common.BasicTest;
+import common.Const;
 import org.eclipse.jdt.core.dom.WhileStatement;
 import org.junit.After;
 import org.junit.Before;
@@ -17,21 +19,12 @@ import static org.junit.Assert.assertEquals;
 
 
 @RunWith(Parameterized.class)
-public class KAST_TransformerTest {
-    private static final String fileSep = System.getProperty("file.separator");
-    private static final String basePath = System.getProperty("user.dir") + fileSep +
-            "src" + fileSep + "test" + fileSep + "resources" + fileSep;
-    private static final String inputFolder = basePath + "in" + fileSep;
-    private static final String expectedFolder = basePath + "expected" + fileSep;
-    private static final String extension = ".txt";
-    private int testId;
+public class KAST_TransformerTest extends BasicTest {
     //The while stmt node used in the test
     private WhileStatement whileNd;
 
-    private File expectedFile;
-
     public KAST_TransformerTest(int testId) {
-        this.testId = testId;
+        super(testId);
     }
 
     @Parameterized.Parameters
@@ -43,10 +36,7 @@ public class KAST_TransformerTest {
 
     @Before
     public void setUp() throws Exception {
-        File inputFile = new File(inputFolder + this.testId + extension);
         this.whileNd = MyTestHelper.extractWhileNdFromJavaFile(inputFile);
-
-        this.expectedFile = new File(expectedFolder + this.testId + extension);
 //        System.out.println("Expected file " + this.expectedFile.getName() + " exists ? " +
 //                expectedFile.exists());
     }
