@@ -15,13 +15,18 @@ Web-interface:
 
 Command-line interface:
 0. open the terminal in some directory.
-1. git clone https://github.com/xiaohe27/K-Spec-Gen.git
-2. mvn package
+
+1. ```git clone https://github.com/xiaohe27/K-Spec-Gen.git```
+
+2. ```mvn package```
+
 3. The generated executable is in the path:
-	<The-Path-To-Proj-Home>/KSpecGen/target/release/kspec-gen/kspec-gen/bin
+   ```<The-Path-To-Proj-Home>/KSpecGen/target/release/kspec-gen/kspec-gen/bin```
+
 4. If you add the path of the program "kspec-gen" to environment variable,
    then, it is easy to run it to generate k specification from java file:
-   kspec-gen <path-to-the-annotated-java-file-or-directory>
+
+   ```kspec-gen <path-to-the-annotated-java-file-or-directory>```
 
 The project can be located in the github page:
 https://github.com/xiaohe27/K-Spec-Gen
