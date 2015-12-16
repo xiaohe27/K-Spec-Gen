@@ -14,8 +14,8 @@ import java.nio.file.Paths;
 public class FileUtils {
 
     private static String fileSeparator = System.getProperty("file.separator");
-    public static String outputBasePath = System.getProperty("user.dir")
-            + fileSeparator + "k-spec-output";
+    public static String workingDir = System.getProperty("user.dir");
+    public static String outputBasePath = workingDir + fileSeparator + "k-spec-output";
 
     public static void print2File(Path outputFile, String content) {
         byte[] rawContents = content.getBytes();
@@ -59,5 +59,11 @@ public class FileUtils {
 
     public static Path getOutputFilePath(String outputFileName) {
         return Paths.get(outputBasePath + fileSeparator + outputFileName);
+    }
+
+    public static String toAbsolutePath(String inputPath) {
+        Path path = Paths.get(inputPath);
+
+        return path.toAbsolutePath().toString();
     }
 }

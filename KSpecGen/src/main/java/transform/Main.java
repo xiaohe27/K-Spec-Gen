@@ -80,7 +80,7 @@ public class Main {
 //            System.out.println(inputPath + " is the path of the downloaded git file");
         }
 
-        Main.ParseFilesInDir(inputPath);
+        Main.ParseFilesInDir(FileUtils.toAbsolutePath(inputPath));
     }
 
     private static void init() {
