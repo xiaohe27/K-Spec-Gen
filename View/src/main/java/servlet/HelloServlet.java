@@ -18,6 +18,7 @@ import java.nio.file.Path;
         urlPatterns = {"/HelloServlet"}
 )
 public class HelloServlet extends HttpServlet {
+    public static final String NEW_LINE = System.getProperty("line.separator");
 
     private static final String TMP_FILE_NAME = "TMP_INPUT_JAVA_FILE.java";
 
@@ -41,7 +42,7 @@ public class HelloServlet extends HttpServlet {
             Main.main(new String[]{inputPath}); //parse the file.
 
             StringBuilder sb = new StringBuilder();
-            sb.append(Main.getCachedResult() + "\n");
+            sb.append(Main.getCachedResult() + NEW_LINE);
 
             bean.setOutputKSpecContent(sb.toString());
         }

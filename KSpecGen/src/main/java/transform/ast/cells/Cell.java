@@ -1,6 +1,7 @@
 package transform.ast.cells;
 
 import transform.ast.KASTNode;
+import transform.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -38,10 +39,10 @@ public class Cell extends KASTNode {
 
     protected String surroundWithTags(String content) {
         return "<" + this.name + ">"
-                + (this.hasLeftOmission ? " ... " : "\n")
-                + content + "\n"
+                + (this.hasLeftOmission ? " ... " : Utils.NEW_LINE)
+                + content + Utils.NEW_LINE
                 + (this.hasRightOmission ? " ... " : "")
-                + "</" + this.name + ">\n";
+                + "</" + this.name + ">" + Utils.NEW_LINE;
     }
 
     @Override
@@ -70,7 +71,7 @@ public class Cell extends KASTNode {
 
             default:
                 StringBuilder sb = new StringBuilder();
-                this.childrenCells.forEach(childCell -> sb.append(childCell.toString() + "\n"));
+                this.childrenCells.forEach(childCell -> sb.append(childCell.toString() + Utils.NEW_LINE));
                 return surroundWithTags(sb.toString());
         }
 

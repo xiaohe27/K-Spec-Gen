@@ -81,6 +81,8 @@ public class Main {
         }
 
         Main.ParseFilesInDir(FileUtils.toAbsolutePath(inputPath));
+
+        clean();//delete the output dir if there is no output file in that dir.
     }
 
     private static void init() {
@@ -92,6 +94,15 @@ public class Main {
                 outputDir.delete();
                 outputDir.mkdir();
             }
+        }
+    }
+
+    private static void clean() {
+        File outputDir = new File(FileUtils.outputBasePath);
+        if (outputDir.exists() && outputDir.isDirectory()
+                && (outputDir.listFiles() == null
+                || outputDir.listFiles().length == 0)) {
+            outputDir.delete();
         }
     }
 }

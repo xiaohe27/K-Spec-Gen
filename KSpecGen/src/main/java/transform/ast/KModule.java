@@ -2,6 +2,7 @@ package transform.ast;
 
 import parser.annotation.MethodInfo;
 import transform.ast.rewrite.KRewriteObj;
+import transform.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,13 +34,13 @@ public class KModule extends KASTNode {
 
     private String printImports() {
         StringBuilder sb = new StringBuilder();
-        this.imports.forEach(importClause -> sb.append(importClause.toString() + "\n"));
+        this.imports.forEach(importClause -> sb.append(importClause.toString() + Utils.NEW_LINE));
         return sb.toString();
     }
 
     private String printRules() {
         StringBuilder sb = new StringBuilder();
-        this.rules.forEach(ruleClause -> sb.append(ruleClause.toString() + "\n"));
+        this.rules.forEach(ruleClause -> sb.append(ruleClause.toString() + Utils.NEW_LINE));
         return sb.toString();
     }
 
@@ -47,10 +48,10 @@ public class KModule extends KASTNode {
     public String toString() {
         StringBuilder sb = new StringBuilder("module ");
         sb.append(super.name);
-        sb.append("\n");
-        sb.append(printImports() + "\n");
-        sb.append(printRules() + "\n");
-        sb.append("endmodule\n");
+        sb.append(Utils.NEW_LINE);
+        sb.append(printImports() + Utils.NEW_LINE);
+        sb.append(printRules() + Utils.NEW_LINE);
+        sb.append("endmodule" + Utils.NEW_LINE);
 
         return sb.toString();
     }

@@ -51,7 +51,7 @@ public class FileUtils {
 
         String inputLine;
         while ((inputLine = in.readLine()) != null)
-            sb.append(inputLine + "\n");
+            sb.append(inputLine + Utils.NEW_LINE);
         in.close();
 
         return sb.toString();
