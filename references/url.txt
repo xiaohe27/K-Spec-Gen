@@ -1,3 +1,9 @@
 Pretty-Printer:
 https://code.google.com/p/google-code-prettify/wiki/GettingStarted
 
+W3C school
+http://www.w3schools.com/
+
+StackOverflow
+http://stackoverflow.com/
+
