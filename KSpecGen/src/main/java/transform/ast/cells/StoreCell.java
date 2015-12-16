@@ -33,10 +33,12 @@ public class StoreCell extends Cell {
         sb.append("\n");
 
         if (this.definedLoc != null)
-            this.store.forEach((loc, val) -> {
-                if (this.definedLoc.contains(loc))
-                    sb.append("P" + loc + " |-> " + val + "\n");
-            });
+            this.store.entrySet().stream()
+                    .sorted((entry1, entry2) -> entry1.getKey() - entry2.getKey())
+                    .forEach(entry -> {
+                        if (this.definedLoc.contains(entry.getKey()))
+                            sb.append("P" + entry.getKey() + " |-> " + entry.getValue() + "\n");
+                    });
 
         sb.deleteCharAt(sb.lastIndexOf("\n"));
 

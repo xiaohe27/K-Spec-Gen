@@ -15,7 +15,7 @@ public class bst {
 
     /**
      * @objectStore {
-     *     tree(TP)(t:Tree)
+     * tree(TP)(t:Tree)
      * }
      * @requires bst(t);
      * @returns ?b;

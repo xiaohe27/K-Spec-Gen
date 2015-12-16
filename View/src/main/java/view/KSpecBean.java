@@ -1,5 +1,5 @@
 package view;
-import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
+
 import static org.apache.commons.lang3.StringEscapeUtils.escapeXml11;
 
 /**

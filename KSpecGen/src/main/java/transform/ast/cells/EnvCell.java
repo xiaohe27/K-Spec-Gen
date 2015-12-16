@@ -1,7 +1,6 @@
 package transform.ast.cells;
 
 import org.eclipse.jdt.core.dom.SimpleName;
-import transform.utils.TypeMapping;
 import transform.utils.Utils;
 
 import java.util.HashMap;
@@ -29,10 +28,10 @@ public class EnvCell extends Cell {
         this.env.entrySet().stream()
                 .sorted((entry1, entry2) -> entry1.getValue() - entry2.getValue())
                 .forEach(entry -> {
-            String varID = Utils.string2ID(entry.getKey().getIdentifier());
-            String locStr = "P" + entry.getValue() + ":Int";
-            sb.append(varID + " |-> " + locStr + "\n");
-        });
+                    String varID = Utils.string2ID(entry.getKey().getIdentifier());
+                    String locStr = "P" + entry.getValue() + ":Int";
+                    sb.append(varID + " |-> " + locStr + "\n");
+                });
         sb.deleteCharAt(sb.lastIndexOf("\n"));
         return super.surroundWithTags(sb.toString());
     }

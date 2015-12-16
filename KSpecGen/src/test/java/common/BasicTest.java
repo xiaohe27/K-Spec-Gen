@@ -1,10 +1,6 @@
 package common;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
 import java.io.File;
-import java.util.Collection;
 
 /**
  * Created by hx312 on 12/16/2015.
