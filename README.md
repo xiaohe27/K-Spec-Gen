@@ -9,6 +9,8 @@ for using the service in addition to the traditional command-line interface.
 Web-interface:
 
 1. Go to url [http://k-spec-generator.herokuapp.com/](http://k-spec-generator.herokuapp.com/)
+ 
+ N.B. Due to the limitation of the free heroku service, the first time to open the url might be slower (5-10 seconds). 
 
 2. Either select a pre-defined example from the top-center pop-up menu,
    or directly paste the annotated java program into the central textbox. 
