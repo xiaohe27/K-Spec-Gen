@@ -6,7 +6,7 @@ There are 21 tests of different types coming along with the deliverable.
 
 Using ```mvn verify``` at current directory will run all these tests.
 
-The evaluation presented here is focusing on the correctness and functionality
+The testing presented here is focusing on the correctness and functionality
 of this software instead of answering research questions. The detailed evaluation
 can be found in the submitted report.
 
