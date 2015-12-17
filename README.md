@@ -46,7 +46,7 @@ for using the service in addition to the traditional command-line interface.
 
  ```kspec-gen <path-to-the-annotated-java-file-or-directory>```
 
-There are some simple descriptions about the current test cases in [docs/Evaluation.md](docs/Evaluation.md).
+There are some simple descriptions about the current test cases in [docs/Testing.md](docs/Testing.md).
 
 The project can be located in the [github](https://github.com/xiaohe27/K-Spec-Gen) page.
 
