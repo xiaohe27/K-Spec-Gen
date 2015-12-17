@@ -92,8 +92,6 @@
     function redisplayMe() {
         document.getElementById("pgmText").style.fontSize = "17px";
         document.getElementById("pgmText").style.textAlign = "left";
-        document.getElementById("pgmText").className = "prettyprint";
-        prettyPrint();
     }
 </script>
 </body>
