@@ -18,3 +18,19 @@ invariant should be put in either line comment or block comment.
 + Method return value
 
  ```@returns <Method-Return-Expression-Here> ;```
+
++ Loop invariant
+
+ ```@LI <Loop Invariant Expression> ;```
+
++  K's objectStore cell: store all the objects in the memory.
+ 
+ ```@objectStore <The objects list>```
+
++ Environment: the stack is represented by the K's env cell, which maps variables to locations.
+
+ ```@env{<The stack structure>}```
+ 
++ Heap structure: The heap is represented by the K's store cell which maps locations to values.
+
+ ```@store{<The store structure>}```
