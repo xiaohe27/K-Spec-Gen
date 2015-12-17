@@ -42,3 +42,5 @@ invariant should be put in either line comment or block comment.
  
  You may find the [sample annotated java programs](../KSpecGen/examples) helpful for understanding the syntax.
 
+##Detailed regular expression
+The detailed regular expression used in the system can be found at [regex.md](regex.md).
