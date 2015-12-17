@@ -1,12 +1,16 @@
+##Overview
 This is a project for automatically generating k specification from annotated java program, 
 where the k specification is an input for [k-program-verifier](https://github.com/paper-submission/pldi16-paper177) which can do program verification. Refer to [docs/Annotation-Syntax.md](docs/Annotation-Syntax.md) for the syntax of the supported annotations.
+
+###Two Modes of Usage
 
 This software aims to be a service for programmers who want to do program verification
 using [k framewrok](http://www.kframework.org/index.php/Main_Page), and therefore we've tried our best to present the service in a
 user-friendly way. We have provided an online interface (with syntax highlighting)
 for using the service in addition to the traditional command-line interface.
 
-Web-interface:
+
+####Web-interface:
 
 1. Go to url [http://k-spec-generator.herokuapp.com/](http://k-spec-generator.herokuapp.com/)
  
@@ -18,7 +22,7 @@ Web-interface:
 3. Click the "Get K-SPEC" button and the generated k specification will be
    displayed in a new tab.
 
-Command-line interface:
+####Command-line interface:
 
 1. open the terminal in some directory.
 
