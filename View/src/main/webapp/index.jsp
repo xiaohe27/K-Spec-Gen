@@ -34,7 +34,8 @@
 </script>
 
 
-<h2>Online K spec generator</h2>
+<h3><a href="https://github.com/xiaohe27/K-Spec-Gen"
+target="_blank">Online K spec generator</a></h3>
 
 
 <form action="HelloServlet" method="POST" onsubmit="setContent()" target="_blank">
