@@ -66,7 +66,7 @@
     <div><pre class="prettyprint" id="javablock">
     <code style="align-content: space-between;" class="language-java" id="javacode">
 <textarea style="width: 100%; height: 60%; font-size: 20px; text-align: center" id="pgmText"
-          ondblclick="this.value =''">
+          ondblclick="this.value =''" onpaste="redisplayMe()">
     Type your program here or choose an existing example from the top-center popup menu.
 </textarea>
     </code>
@@ -87,6 +87,13 @@
             document.getElementById("code").value =
                     document.getElementById("pgmText").value;
         }
+    }
+
+    function redisplayMe() {
+        document.getElementById("pgmText").style.fontSize = "17px";
+        document.getElementById("pgmText").style.textAlign = "left";
+        document.getElementById("pgmText").className = "prettyprint";
+        prettyPrint();
     }
 </script>
 </body>
