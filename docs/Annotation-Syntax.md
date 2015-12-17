@@ -7,6 +7,8 @@ invariant should be put in either line comment or block comment.
 
 ##High-Level Syntax
 
++ Basic property: all the java boolean expressions (e.g. `3 * 7 > 5 && x != 2`).  
+
 + Method precondition
  
  ```@requires <Method-Precondition-Here> ;```
@@ -34,3 +36,9 @@ invariant should be put in either line comment or block comment.
 + Heap structure: The heap is represented by the K's store cell which maps locations to values.
 
  ```@store{<The store structure>}```
+ 
+ The internal elements of env, store and objectStore are separated by commas, and the rewrite is presented by 
+ the usual `=>` symbol.
+ 
+ You may find the [sample annotated java programs](../KSpecGen/examples) helpful for understanding the syntax.
+
