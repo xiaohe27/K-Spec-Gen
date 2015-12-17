@@ -14,13 +14,11 @@
 <h2>The k spec generated for the java file is</h2>
 
 <div><span><pre class="prettyprint lang-k">
-<font size="5">
-    <code style="background-clip: border-box">
+    <code style="background-clip: border-box; font-size: 21px">
         <%
             out.println(kspec.getHTMLOutputOfKSpec());
         %>
     </code>
-</font>
 
 </pre></span></div>
 </body>

@@ -91,7 +91,7 @@ target="_blank">Online K spec generator</a></h3>
     }
 
     function redisplayMe() {
-        document.getElementById("pgmText").style.fontSize = "17px";
+        document.getElementById("pgmText").style.fontSize = "25px";
         document.getElementById("pgmText").style.textAlign = "left";
     }
 </script>
