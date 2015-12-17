@@ -23,7 +23,7 @@
                 document.getElementById("code").value = xmlhttp.responseText;
                 document.getElementById("javacode").innerHTML =
                         xmlhttp.responseText;
-                document.getElementById("javacode").style.fontSize = "17px";
+                document.getElementById("javacode").style.fontSize = "25px";
                 document.getElementById("javablock").className = "prettyprint";
                 prettyPrint();
             }
